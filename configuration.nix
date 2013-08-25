@@ -141,17 +141,6 @@ in
       isSystemUser = false;
       useDefaultShell = true; # default is false => .../bin/nologin
     };
-
-    #test = {
-    #  #password = "changeme";
-    #  createHome = true;
-    #  description = "test user";
-    #  uid = 1005;
-    #  extraGroups = [ "audio" ];
-    #  group = "users";
-    #  home = "/home/test";
-    #  useDefaultShell = true; # default is false => .../bin/nologin
-    #};
   };
 
   users.extraGroups = {
