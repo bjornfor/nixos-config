@@ -209,6 +209,7 @@ in
     # work (not environment.systemPackages)
     #aspell
     #aspellDicts.en
+    bmon
     chromiumWrapper
     clangUnwrapped   # for libclang, required by clang_complete.vim
     cmake
@@ -244,6 +245,7 @@ in
     ncdu
     networkmanager
     networkmanagerapplet
+    nixpkgs-lint
     nmap
     openscad
     parted
@@ -265,6 +267,7 @@ in
     tree
     unzip
     vim_configurable
+    virtmanager
     vlc
     #weston   # broken in master, pull #649 makes it build
     wget
