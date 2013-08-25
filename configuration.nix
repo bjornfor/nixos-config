@@ -134,7 +134,7 @@ in
       uid = 1000;
       extraGroups = [
         "wheel" "transmission" "networkmanager" "audio" "video" "tty" "adm"
-        "dialout" "systemd-journal" "vboxusers" "plugdev"
+        "dialout" "systemd-journal" "vboxusers" "plugdev" "libvirtd"
       ];
       group = "users";
       home = "/home/bfo";
