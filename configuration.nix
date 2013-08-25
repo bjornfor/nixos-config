@@ -134,7 +134,7 @@ in
       uid = 1000;
       extraGroups = [
         "wheel" "transmission" "networkmanager" "audio" "video" "tty" "adm"
-        "dialout" "systemd-journal" "vboxusers"
+        "dialout" "systemd-journal" "vboxusers" "plugdev"
       ];
       group = "users";
       home = "/home/bfo";
@@ -152,6 +152,10 @@ in
     #  home = "/home/test";
     #  useDefaultShell = true; # default is false => .../bin/nologin
     #};
+  };
+
+  users.extraGroups = {
+    plugdev = {};
   };
 
 
@@ -332,6 +336,29 @@ in
     avahi = { enable = true; nssmdns = true; };
   
     locate.enable = true;
+
+    udev.extraRules = ''
+      # udev rules to let users in group "plugdev" access development tools
+
+      # Atmel Corp. STK600 development board
+      SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2106", GROUP="plugdev", MODE="0660"
+      
+      # Atmel Corp. JTAG ICE mkII
+      SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2103", GROUP="plugdev", MODE="0660"
+      
+      # TinCanTools Flyswatter 2
+      SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", GROUP="plugdev", MODE="0660"
+      
+      # Amontec JTAGkey2
+      SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="cff8", GROUP="plugdev", MODE="0660"
+      
+      # STMicroelectronics ST-LINK/V2
+      SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="3748", GROUP="plugdev", MODE="0660"
+      
+      # Saleae Logic Analyzer
+      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="0925", ATTR{idProduct}=="3881", GROUP="plugdev", MODE="0660"
+      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="21a9", ATTR{idProduct}=="1001", GROUP="plugdev", MODE="0660"
+    '';
 
     lighttpd = {
       enable = (hostname == myDesktop);
