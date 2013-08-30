@@ -237,6 +237,7 @@ in
     kde4.kdemultimedia  # for volume control applet (kmix), and probably lots more
     #kde4.networkmanagement
     kde4.okular
+    libreoffice
     lshw
     manpages # for "man 2 fork" etc.
     mercurial
@@ -247,6 +248,7 @@ in
     networkmanagerapplet
     nixpkgs-lint
     nmap
+    openocd
     openscad
     parted
     powertop
@@ -256,6 +258,7 @@ in
     pythonPackages.ipython
     qemu
     #qemu_kvm   # qemu-kvm has been merged into qemu (use "qemu-system-x86_64 -enable-kvm")
+    qmmp
     #qtcreator
     rmlint
     rubyLibs.taskjuggler
