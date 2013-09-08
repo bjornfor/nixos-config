@@ -332,6 +332,12 @@ in
   
     locate.enable = true;
 
+    cron.mailto = "root";
+    cron.systemCronJobs = pkgs.lib.optionals (hostname == myDesktop) [
+      # minute hour day-of-month month day-of-week user command
+      " 15     01   *            *     *           root /home/bfo/bin/backup.sh > /tmp/backup.log 2>&1"
+    ];
+
     udev.extraRules = ''
       # udev rules to let users in group "plugdev" access development tools
 
