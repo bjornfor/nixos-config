@@ -408,6 +408,7 @@ in
   
     samba = {
       enable = true;
+      nsswins = true;
       extraConfig = ''
         workgroup = WORKGROUP
         [upload]
