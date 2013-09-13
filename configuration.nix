@@ -46,6 +46,47 @@ let
       propagatedBuildInputs = [ vpnc openssl libxml2 ];
     };
 
+    ltsa = { stdenv, fetchurl, unzip, jre }:
+      stdenv.mkDerivation rec {
+        name = "ltsa-3.0";
+
+        src = fetchurl {
+          # The archive is unfortunately unversioned
+          url = "http://www.doc.ic.ac.uk/~jnm/book/ltsa/ltsatool.zip";
+          sha256 = "0ilhzr2m0k2gas2sr9l5zvw0i2xk6qznx3pllhcy28mfyb299n4y";
+        };
+
+        buildInputs = [ unzip ];
+
+        phases = [ "installPhase" ];
+
+        installPhase = ''
+          unzip "$src"
+
+          mkdir -p "$out/bin"
+          mkdir -p "$out/lib"
+          mkdir -p "$out/share/ltsa"
+
+          cd ltsatool
+          cp *.jar "$out/lib"
+          cp *.txt "$out/share/ltsa"
+          cp -r Chapter_examples/ "$out/share/ltsa"
+
+          cat > "$out/bin/ltsa" << EOF
+          #!${stdenv.shell}
+          exec ${jre}/bin/java -jar "$out/lib/ltsa.jar" "\$@"
+          EOF
+
+          chmod +x "$out/bin/ltsa"
+        '';
+
+        meta = with stdenv.lib; {
+          description = "Verification tool for concurrent systems";
+          homepage = http://www.doc.ic.ac.uk/ltsa/;
+          license = licenses.unfree;
+        };
+      };
+
 in
 {
 
@@ -217,6 +258,7 @@ in
   ##### System packages #####
   environment.systemPackages = with pkgs; [
     (callPackage openconnect3x {})
+    (callPackage ltsa {})
     # Because of ASPELL_CONF (set in /etc/profile), only "nix-env -i aspell-dict-en"
     # work (not environment.systemPackages)
     #aspell
