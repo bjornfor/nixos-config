@@ -260,10 +260,9 @@ in
   environment.systemPackages = with pkgs; [
     (callPackage openconnect3x {})
     (callPackage ltsa {})
-    # Because of ASPELL_CONF (set in /etc/profile), only "nix-env -i aspell-dict-en"
-    # work (not environment.systemPackages)
-    #aspell
-    #aspellDicts.en
+    aspell
+    aspellDicts.en
+    aspellDicts.nb
     bmon
     chromiumWrapper
     clangUnwrapped   # for libclang, required by clang_complete.vim
