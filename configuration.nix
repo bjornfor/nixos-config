@@ -318,10 +318,12 @@ in
     rubyLibs.taskjuggler
     saleaeLogic
     screen
+    sloccount
     spice
     subversion
     tig
     tree
+    unoconv
     unzip
     vim_configurable
     virtmanager
