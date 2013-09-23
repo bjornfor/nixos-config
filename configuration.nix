@@ -235,9 +235,6 @@ in
     ${if hostname == myLaptop then "xset mouse 10/4 0" else ""}
 
     #export PYTHONPATH=$PYTHONPATH:/run/current-system/sw/lib/python2.7/site-packages/
-
-    # /etc/profile exports ASPELL_CONF="dict-dir $HOME/.nix-profile/lib/aspell"
-    #export ASPELL_CONF="dict-dir /run/current-system/sw/lib/aspell"
   '';
 
   # Show git info in bash prompt. This is the default NixOS prompt plus
