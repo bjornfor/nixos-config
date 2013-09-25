@@ -258,6 +258,7 @@ in
   environment.systemPackages = with pkgs; [
     (callPackage openconnect3x {})
     (callPackage ltsa {})
+    asciidoc
     aspell
     aspellDicts.en
     aspellDicts.nb
