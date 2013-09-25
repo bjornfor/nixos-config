@@ -239,7 +239,7 @@ in
 
   # Show git info in bash prompt. This is the default NixOS prompt plus
   # $(__git_ps1 " [git::%s]")
-  environment.promptInit = ''
+  programs.bash.promptInit = ''
     export GIT_PS1_SHOWDIRTYSTATE=1
     source ${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh
     PROMPT_COLOR="1;31m"
@@ -250,7 +250,7 @@ in
     fi
   '';
 
-  environment.enableBashCompletion = true;
+  programs.bash.enableCompletion = true;
 
 
   ##### System packages #####
