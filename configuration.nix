@@ -208,7 +208,8 @@ in
   };
 
   # Override similar to ~/.nixpkgs/config.nix (see "man configuration.nix" and
-  # search for "nixpkgs.config")
+  # search for "nixpkgs.config"). Also, make sure to read
+  # http://nixos.org/nixos/manual/#sec-customising-packages
   nixpkgs.config = {
     packageOverrides = pkgs: {
       #qtcreator = pkgs.qtcreator.override { qt48 = pkgs.qt48Full; };
