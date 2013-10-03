@@ -251,14 +251,14 @@ in
     #export PYTHONPATH=$PYTHONPATH:/run/current-system/sw/lib/python2.7/site-packages/
   '';
 
-  # Show git info in bash prompt. This is the default NixOS prompt plus
+  # Show git info in bash prompt. This is (mostly) the default NixOS prompt plus
   # $(__git_ps1 " [git::%s]")
   programs.bash.promptInit = ''
     export GIT_PS1_SHOWDIRTYSTATE=1
     source ${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh
     PROMPT_COLOR="1;31m"
     let $UID && PROMPT_COLOR="1;32m"
-    PS1='\n\[\033[$PROMPT_COLOR\][\u@\h:\w$(__git_ps1 " [git::%s]")]\\$\[\033[0m\] '
+    PS1='\[\033[$PROMPT_COLOR\][\u@\h:\w$(__git_ps1 " [git::%s]")]\\$\[\033[0m\] '
     if test "$TERM" = "xterm"; then
       PS1="\[\033]2;\h:\u:\w\007\]$PS1"
     fi
