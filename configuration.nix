@@ -82,8 +82,21 @@ let
 
         meta = with stdenv.lib; {
           description = "Verification tool for concurrent systems";
+          longDescription = ''
+            LTSA (Labelled Transition System Analyser) mechanically checks that
+            the specification of a concurrent system satisfies the properties
+            required of its behaviour. In addition, LTSA supports specification
+            animation to facilitate interactive exploration of system
+            behaviour.
+
+            A system in LTSA is modelled as a set of interacting finite state
+            machines. The properties required of the system are also modelled
+            as state machines. LTSA performs compositional reachability
+            analysis to exhaustively search for violations of the desired
+            properties.
+          '';
           homepage = http://www.doc.ic.ac.uk/ltsa/;
-          license = licenses.unfree;
+          license = "unknown";
         };
       };
 
