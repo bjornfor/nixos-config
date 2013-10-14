@@ -316,6 +316,7 @@ in
     openocd
     openscad
     parted
+    pavucontrol
     powertop
     psmisc
     pythonFull
