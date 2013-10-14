@@ -232,8 +232,7 @@ in
 
   time.timeZone = "Europe/Oslo";
 
-  # pulseaudio makes it impossible to control audio in KDE (TODO: investigate)
-  #hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = true;
 
   # KDE displays a warning if this isn't enabled
   powerManagement.enable = true;
