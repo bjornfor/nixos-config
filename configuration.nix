@@ -342,6 +342,7 @@ in
     vlc
     #weston   # broken in master, pull #649 makes it build
     wget
+    wgetpaste
     wpa_supplicant
     wpa_supplicant_gui
     xchat
