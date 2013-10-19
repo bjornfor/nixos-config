@@ -317,6 +317,7 @@ in
     manpages # for "man 2 fork" etc.
     mercurial
     minicom
+    mosh
     msmtp
     ncdu
     networkmanager
