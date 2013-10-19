@@ -341,6 +341,7 @@ in
     rubyLibs.taskjuggler
     saleaeLogic
     screen
+    skype
     sloccount
     spice
     sqliteInteractive
