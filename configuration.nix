@@ -270,7 +270,16 @@ in
   environment.systemPackages = with pkgs; [
     (callPackage openconnect3x {})
     (callPackage ltsa {})
-    asciidoc
+    (asciidocFull.override {
+      enableDitaaFilter = true;
+      enableMscgenFilter = true;
+      enableDiagFilter = true;
+      enableQrcodeFilter = true;
+      enableMatplotlibFilter = true;
+      enableAafigureFilter = true;
+      enableDeckjsBackend = true;
+      enableOdfBackend = true;
+    })
     aspell
     aspellDicts.en
     aspellDicts.nb
