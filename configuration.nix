@@ -322,6 +322,7 @@ in
     ncdu
     networkmanager
     networkmanagerapplet
+    nfsUtils
     nixpkgs-lint
     nmap
     openocd
