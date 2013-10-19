@@ -313,6 +313,7 @@ in
     kde4.okular
     libreoffice
     lshw
+    lsof
     manpages # for "man 2 fork" etc.
     mercurial
     minicom
