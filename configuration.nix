@@ -509,7 +509,7 @@ in
         guest ok = yes
         force user = bfo
       ''
-      + (if hostname == myDesktop then ''
+      + (if config.services.transmission.enable then ''
         [torrents]
         path = /srv/torrents
         read only = no
