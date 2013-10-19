@@ -9,12 +9,15 @@ let
   myLaptop  = "nixos-laptop"; # Similar, but no webserver etc
   hostname  = myDesktop;      # Select between desktop/laptop setup
 
-  # Run newer linux on my laptop
+  # Select Linux version
+  #
   # Black screen issue on my Asus UL30A laptop:
   # - 3.2.44 works
   # - 3.2.45 is broken (but works if "nomodeset" is on the kernel command line
+  # - 3.2.51 works
+  # - 3.4.x works, current default on NixOS
   # - 3.9.x works
-  linuxPackages = if hostname == myLaptop then pkgs.linuxPackages_3_9 else pkgs.linuxPackages;
+  linuxPackages = pkgs.linuxPackages;
 
   # This is a copy of the nixpkgs openconnect derivation (only the version number is changed)
   # Turns out that 4.x and 5.x is incompatible with my work VPN.
