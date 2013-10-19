@@ -346,6 +346,7 @@ in
     spice
     sqliteInteractive
     subversion
+    telnet
     tig
     tree
     unoconv
