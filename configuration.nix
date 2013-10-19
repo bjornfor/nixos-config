@@ -343,6 +343,7 @@ in
     screen
     sloccount
     spice
+    sqliteInteractive
     subversion
     tig
     tree
