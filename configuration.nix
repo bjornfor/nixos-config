@@ -506,6 +506,8 @@ in
       nsswins = true;
       extraConfig = ''
         workgroup = WORKGROUP
+        map to guest = Bad User
+
         [upload]
         path = /home/bfo/upload
         read only = no
