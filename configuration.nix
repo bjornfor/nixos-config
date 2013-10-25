@@ -239,11 +239,10 @@ in
 
   # KDE displays a warning if this isn't enabled
   powerManagement.enable = true;
-  # "nix-build -A something" fails after resuming from suspend (it's the curl
-  # calls that fail to resolve hostnames). But, chromium works, and ping'ing
-  # the same host seemingly fixes it nix-build curl calls. Another solution is
-  # to restart nscd. TODO: is this true?
-  #powerManagement.resumeCommands = "systemctl restart nscd";
+
+  # Hostname lookup doesn't work after system suspend.
+  # Restarting nscd fixes it.
+  powerManagement.resumeCommands = "systemctl restart nscd";
 
   # Shell script code called during login shell initialization
   # "xset" makes my Asus UL30A touchpad move quite nicely.
