@@ -250,6 +250,18 @@ in
     ${if hostname == myLaptop then "xset mouse 10/4 0" else ""}
 
     #export PYTHONPATH=$PYTHONPATH:/run/current-system/sw/lib/python2.7/site-packages/
+
+    # A nix query helper function
+    nq()
+    {
+      case "$@" in
+        -h|--help|"")
+          printf "nq: A tiny nix-env wrapper to search for packages in package name, attribute name and description fields\n";
+          printf "\nUsage: nq <case insensitive regexp>\n";
+          return;;
+      esac
+      nix-env -qaP --description \* | grep -i "$@"
+    }
   '';
 
   # Show git info in bash prompt and display a colorful hostname if using ssh.
