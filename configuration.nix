@@ -523,6 +523,15 @@ in
   
     };
   
+    munin-node.enable = true;
+    munin-cron = {
+      enable = true;
+      hosts = ''
+        [${config.networking.hostName}]
+        address localhost
+      '';
+    };
+
     mysql = {
       enable = (hostname == myDesktop);
       extraOptions = ''
