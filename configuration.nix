@@ -370,6 +370,7 @@ in
     spice
     sqliteInteractive
     subversion
+    teamviewer
     telnet
     tig
     tree
