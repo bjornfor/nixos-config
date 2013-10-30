@@ -347,6 +347,7 @@ in
     networkmanagerapplet
     nfsUtils
     nixpkgs-lint
+    nix-repl
     nmap
     openocd
     openscad
