@@ -367,6 +367,7 @@ in
     #qemu_kvm   # qemu-kvm has been merged into qemu (use "qemu-system-x86_64 -enable-kvm")
     qmmp
     #qtcreator
+    remmina
     rmlint
     rubyLibs.taskjuggler
     saleaeLogic
