@@ -552,11 +552,20 @@ in
     };
   
     munin-node.enable = true;
+    munin-node.extraConfig = ''
+      allow ^192\.168\.1\..*$
+    '';
     munin-cron = {
       enable = true;
       hosts = ''
         [${config.networking.hostName}]
         address localhost
+      '' + pkgs.lib.optionalString (hostname == myLaptop) ''
+        [${myDesktop}]
+        address ${myDesktop}.local
+      '' + pkgs.lib.optionalString (hostname == myDesktop) ''
+        [${myLaptop}]
+        address ${myLaptop}.local
       '';
     };
 
