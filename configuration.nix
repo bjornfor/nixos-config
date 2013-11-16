@@ -374,6 +374,7 @@ in
     screen
     skype
     sloccount
+    smartmontools
     spice
     sqliteInteractive
     subversion
