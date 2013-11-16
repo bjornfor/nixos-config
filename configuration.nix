@@ -202,6 +202,7 @@ in
 
   users.extraGroups = {
     plugdev = {};
+    tracing = {};
   };
 
 
