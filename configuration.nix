@@ -340,6 +340,7 @@ in
     kde4.kdemultimedia  # for volume control applet (kmix), and probably lots more
     #kde4.networkmanagement
     kde4.okular
+    lftp
     libreoffice
     lshw
     lsof
