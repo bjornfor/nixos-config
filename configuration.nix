@@ -312,6 +312,7 @@ in
     aspell
     aspellDicts.en
     aspellDicts.nb
+    bc
     bmon
     chromiumWrapper
     clangUnwrapped   # for libclang, required by clang_complete.vim
