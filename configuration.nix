@@ -363,6 +363,7 @@ in
     pavucontrol
     powertop
     psmisc
+    pv
     pythonFull
     pythonPackages.demjson  # has a jsonlint command line tool (alternative: json_pp from perl)
     pythonPackages.ipython
