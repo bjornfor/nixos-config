@@ -10,13 +10,6 @@ let
   hostname  = myDesktop;      # Select between desktop/laptop setup
 
   # Select Linux version
-  #
-  # Black screen issue on my Asus UL30A laptop:
-  # - 3.2.44 works
-  # - 3.2.45 is broken (but works if "nomodeset" is on the kernel command line
-  # - 3.2.51 works
-  # - 3.4.x works, current default on NixOS
-  # - 3.9.x works
   linuxPackages = pkgs.linuxPackages;
 
   # This is a copy of the nixpkgs openconnect derivation (only the version number is changed)
