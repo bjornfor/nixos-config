@@ -302,6 +302,7 @@ in
       enableDeckjsBackend = true;
       enableOdfBackend = true;
     })
+    ascii
     aspell
     aspellDicts.en
     aspellDicts.nb
