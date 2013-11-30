@@ -236,6 +236,8 @@ in
 
   hardware.pulseaudio.enable = true;
 
+  hardware.bluetooth.enable = true;
+
   # KDE displays a warning if this isn't enabled
   powerManagement.enable = true;
 
