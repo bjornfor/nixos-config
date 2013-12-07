@@ -342,6 +342,7 @@ in
     libreoffice
     lshw
     lsof
+    lttngTools
     manpages # for "man 2 fork" etc.
     mercurial
     minicom
