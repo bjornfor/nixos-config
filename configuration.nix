@@ -580,6 +580,11 @@ in
       '';
     };
 
+    ntopng = {
+      enable = true;
+      extraConfig = "--disable-login";
+    };
+
     vsftpd = {
       enable = (hostname == myDesktop);
       #anonymousUploadEnable = true;
