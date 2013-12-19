@@ -265,6 +265,11 @@ in
       esac
       nix-env -qaP --description \* | grep -i "$@"
     }
+
+    export HISTCONTROL=ignoreboth   # ignorespace + ignoredups
+    export HISTSIZE=1000000         # big big history
+    export HISTFILESIZE=$HISTSIZE
+    shopt -s histappend             # append to history, don't overwrite it
   '';
 
   # Show git info in bash prompt and display a colorful hostname if using ssh.
