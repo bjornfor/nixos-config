@@ -560,7 +560,6 @@ in
         guest ok = yes
         force user = transmission
       '' else "");
-  
     };
   
     munin-node.enable = true;
@@ -614,7 +613,7 @@ in
   ##### Custom services #####
   systemd.services.helloworld = {
     description = "Hello World Loop";
-    #wantedBy = ["multi-user.target"];
+    #wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       User = "bfo";
       ExecStart = ''
