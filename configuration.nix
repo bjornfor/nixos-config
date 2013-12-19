@@ -487,6 +487,7 @@ in
       mod_userdir = true;
       extraConfig = ''
         dir-listing.activate = "enable"
+        alias.url += ( "/munin" => "/var/www/munin" )
       '';
       gitweb.enable = true;
       cgit = {
