@@ -605,6 +605,7 @@ in
       #anonymousUser = true;
       #anonymousMkdirEnable = true;
       #localUsers = true;
+      #userlist = [ "bfo" ];
       #writeEnable = true;
     };
   };
