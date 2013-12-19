@@ -251,7 +251,9 @@ in
     ${if hostname == myLaptop then "xset mouse 10/4 0" else ""}
 
     #export PYTHONPATH=$PYTHONPATH:/run/current-system/sw/lib/python2.7/site-packages/
+  '';
 
+  environment.interactiveShellInit = ''
     # A nix query helper function
     nq()
     {
