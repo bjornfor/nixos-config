@@ -385,6 +385,7 @@ in
     sloccount
     smartmontools
     spice
+    spotify
     sqliteInteractive
     subversion
     teamviewer
