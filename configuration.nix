@@ -210,7 +210,7 @@ in
   };
 
   # Select internationalisation properties.
-  i18n.consoleKeyMap = "no";
+  i18n.consoleKeyMap = "qwerty/no";
 
   security.sudo = {
     enable = true;
