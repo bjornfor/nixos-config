@@ -229,9 +229,9 @@ in
   # Shell script code called during shell initialization
   # "xset" makes my Asus UL30A touchpad move quite nicely.
   environment.shellInit = ''
-    ${if hostname == myLaptop then "xset mouse 10/4 0" else ""}
-
     #export PYTHONPATH=$PYTHONPATH:/run/current-system/sw/lib/python2.7/site-packages/
+  '' + pkgs.lib.optionalString (hostname == myLaptop) ''
+    test -n "$DISPLAY" && xset mouse 10/4 0
   '';
 
   environment.interactiveShellInit = ''
