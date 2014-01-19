@@ -481,7 +481,11 @@ in
       cgit = {
         enable = true;
         configText = ''
+          # Allow download of tar.gz, tar.bz2, tar.xz and zip-files
+          snapshots=tar.gz tar.bz2 tar.xz zip
           cache-size=1000
+          # scan-path must be last so that earlier settings take effect when
+          # scanning
           scan-path=/srv/git
         '';
       };
