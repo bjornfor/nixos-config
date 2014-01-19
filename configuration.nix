@@ -226,7 +226,7 @@ in
   # Restarting nscd fixes it.
   powerManagement.resumeCommands = "systemctl restart nscd";
 
-  # Shell script code called during login shell initialization
+  # Shell script code called during shell initialization
   # "xset" makes my Asus UL30A touchpad move quite nicely.
   environment.shellInit = ''
     ${if hostname == myLaptop then "xset mouse 10/4 0" else ""}
