@@ -12,35 +12,16 @@ let
   # Select Linux version
   linuxPackages = pkgs.linuxPackages;
 
-  # This is a copy of the nixpkgs openconnect derivation (only the version number is changed)
-  # Turns out that 4.x and 5.x is incompatible with my work VPN.
-  # TODO: Use override instead of copy/paste?
-  openconnect3x = { stdenv, fetchurl, pkgconfig, vpnc, openssl, libxml2 }:
-    stdenv.mkDerivation rec {
+  # openconnect 4.x and 5.x is incompatible with my work VPN.
+  openconnect3x = with pkgs; lib.overrideDerivation openconnect (
+    attrs: (rec {
       name = "openconnect-3.18";
-
       src = fetchurl {
-        urls = [
-          "ftp://ftp.infradead.org/pub/openconnect/${name}.tar.gz"
-        ];
-        #sha256 = "18y72hrpxpiv6r9ps3yp5128aicrswdc8cx8gzx4sfkbgrvabz8y"; # 3.17
-        sha256 = "1wkszj6cqaqqmfinbjsg40l0p46agq26yh1ps8lln3wfbnkd5fbd"; # 3.18
+        url = "ftp://ftp.infradead.org/pub/openconnect/${name}.tar.gz";
+        sha256 = "1wkszj6cqaqqmfinbjsg40l0p46agq26yh1ps8lln3wfbnkd5fbd";
       };
-
-      preConfigure = ''
-          export PKG_CONFIG=${pkgconfig}/bin/pkg-config
-          export LIBXML2_CFLAGS="-I ${libxml2}/include/libxml2"
-          export LIBXML2_LIBS="-L${libxml2}/lib -lxml2"
-        '';
-
-      configureFlags = [
-        "--with-vpnc-script=${vpnc}/etc/vpnc/vpnc-script"
-        "--disable-nls"
-        "--without-openssl-version-check"
-      ];
-
-      propagatedBuildInputs = [ vpnc openssl libxml2 ];
-    };
+    })
+    );
 
     ltsa = { stdenv, fetchurl, unzip, jre }:
       stdenv.mkDerivation rec {
@@ -299,7 +280,7 @@ in
 
   ##### System packages #####
   environment.systemPackages = with pkgs; [
-    (callPackage openconnect3x {})
+    openconnect3x # defined in this file
     (callPackage ltsa {})
     (asciidocFull.override {
       enableDitaaFilter = true;
