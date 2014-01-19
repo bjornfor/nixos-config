@@ -345,6 +345,7 @@ in
     nmap
     openocd
     openscad
+    p7zip
     parted
     pavucontrol
     powertop
