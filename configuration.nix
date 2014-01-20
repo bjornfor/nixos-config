@@ -481,9 +481,42 @@ in
       cgit = {
         enable = true;
         configText = ''
+          # HTTP endpoint for git clone is enabled by default
+          #enable-http-clone=1
+
+          # Specify clone URLs using macro expansion
+          clone-url=http://${hostname}/cgit/$CGIT_REPO_URL git@${hostname}:$CGIT_REPO_URL
+
+          # Enable 'stats' page and set big upper range
+          max-stats=year
+
           # Allow download of tar.gz, tar.bz2, tar.xz and zip-files
           snapshots=tar.gz tar.bz2 tar.xz zip
+
+          # Enable caching of up to 1000 output entries
           cache-size=1000
+
+          # about-formatting.sh is impure (doesn't work)
+          #about-filter=${pkgs.cgit}/lib/cgit/filters/about-formatting.sh
+          # Add simple plain-text filter
+          about-filter=${pkgs.writeScript "cgit-about-filter.sh"
+            ''
+              #!${pkgs.stdenv.shell}
+              echo "<pre>"
+              ${pkgs.coreutils}/bin/cat
+              echo "</pre>"
+            ''
+          }
+
+          # Search for these files in the root of the default branch of
+          # repositories for coming up with the about page:
+          readme=:README.asciidoc
+          readme=:README.txt
+          readme=:README
+          readme=:INSTALL.asciidoc
+          readme=:INSTALL.txt
+          readme=:INSTALL
+
           # scan-path must be last so that earlier settings take effect when
           # scanning
           scan-path=/srv/git
