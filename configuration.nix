@@ -379,7 +379,7 @@ in
     vim_configurable
     virtmanager
     vlc
-    #weston   # broken in master, pull #649 makes it build
+    weston
     wget
     wgetpaste
     wpa_supplicant
