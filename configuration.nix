@@ -299,7 +299,7 @@ in
     bc
     bmon
     chromiumWrapper
-    clangUnwrapped   # for libclang, required by clang_complete.vim
+    llvmPackages.clang   # for libclang, required by clang_complete.vim
     cmake
     ctags
     dmidecode
