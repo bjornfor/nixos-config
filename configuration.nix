@@ -646,8 +646,6 @@ in
   systemd.services.lttng-sessiond = {
     description = "LTTng Session Daemon";
     wantedBy = [ "multi-user.target" ];
-    # lttng-sessiond uses modprobe
-    path = [ config.system.sbin.modprobe ];
     serviceConfig = {
       ExecStart = "${pkgs.lttngTools}/bin/lttng-sessiond";
     };
