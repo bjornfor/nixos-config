@@ -341,6 +341,7 @@ in
     nixpkgs-lint
     nix-repl
     nmap
+    openconnect
     openocd
     openscad
     p7zip
