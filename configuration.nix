@@ -164,8 +164,19 @@ in
       description = "Bjørn Forsman";
       uid = 1000;
       extraGroups = [
-        "wheel" "transmission" "networkmanager" "audio" "video" "tty" "adm"
-        "dialout" "systemd-journal" "vboxusers" "plugdev" "libvirtd" "tracing"
+        "adm"
+        "audio"
+        "dialout"
+        "libvirtd"
+        "networkmanager"
+        "plugdev"
+        "systemd-journal"
+        "tracing"
+        "transmission"
+        "tty"
+        "vboxusers"
+        "video"
+        "wheel"
       ];
       group = "users";
       home = "/home/bfo";
