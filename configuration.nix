@@ -12,17 +12,6 @@ let
   # Select Linux version
   linuxPackages = pkgs.linuxPackages;
 
-  # openconnect 4.x and 5.x is incompatible with my work VPN.
-  openconnect3x = with pkgs; lib.overrideDerivation openconnect (
-    attrs: (rec {
-      name = "openconnect-3.18";
-      src = fetchurl {
-        url = "ftp://ftp.infradead.org/pub/openconnect/${name}.tar.gz";
-        sha256 = "1wkszj6cqaqqmfinbjsg40l0p46agq26yh1ps8lln3wfbnkd5fbd";
-      };
-    })
-    );
-
     ltsa = { stdenv, fetchurl, unzip, jre }:
       stdenv.mkDerivation rec {
         name = "ltsa-3.0";
@@ -290,7 +279,6 @@ in
 
   ##### System packages #####
   environment.systemPackages = with pkgs; [
-    openconnect3x # defined in this file
     (callPackage ltsa {})
     (asciidocFull.override {
       enableDitaaFilter = true;
