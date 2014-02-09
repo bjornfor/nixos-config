@@ -169,14 +169,13 @@ in
       ];
       group = "users";
       home = "/home/bfo";
-      isSystemUser = false;
       useDefaultShell = true; # default is false => .../bin/nologin
     };
   };
 
   users.extraGroups = {
-    plugdev = {};
-    tracing = {};
+    plugdev = { gid = 500; };
+    tracing = { gid = 501; };
   };
 
 
