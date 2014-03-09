@@ -359,6 +359,7 @@ in
     #qtcreator
     remmina
     rmlint
+    rtl-sdr
     rubyLibs.taskjuggler
     saleae-logic
     screen
