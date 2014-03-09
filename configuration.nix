@@ -601,6 +601,7 @@ in
 
     mysql = {
       enable = (hostname == myDesktop);
+      package = pkgs.mysql;
       extraOptions = ''
         # This is added in the [mysqld] section in my.cnf
       '';
