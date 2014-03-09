@@ -360,7 +360,7 @@ in
     remmina
     rmlint
     rubyLibs.taskjuggler
-    saleaeLogic
+    saleae-logic
     screen
     skype
     sloccount
