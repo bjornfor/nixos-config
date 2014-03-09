@@ -446,28 +446,9 @@ in
       " 15     01   *            *     *           root /home/bfo/bin/backup.sh > /tmp/backup.log 2>&1"
     ];
 
-    udev.extraRules = ''
-      # udev rules to let users in group "plugdev" access development tools
-
-      # Atmel Corp. STK600 development board
-      SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2106", GROUP="plugdev", MODE="0660"
-      
-      # Atmel Corp. JTAG ICE mkII
-      SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2103", GROUP="plugdev", MODE="0660"
-      
-      # TinCanTools Flyswatter 2
-      SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", GROUP="plugdev", MODE="0660"
-      
-      # Amontec JTAGkey2
-      SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="cff8", GROUP="plugdev", MODE="0660"
-      
-      # STMicroelectronics ST-LINK/V2
-      SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="3748", GROUP="plugdev", MODE="0660"
-      
-      # Saleae Logic Analyzer
-      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="0925", ATTR{idProduct}=="3881", GROUP="plugdev", MODE="0660"
-      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="21a9", ATTR{idProduct}=="1001", GROUP="plugdev", MODE="0660"
-    '';
+    # Provide "MODE=666" or "MODE=664 + GROUP=plugdev" for a bunch of USB
+    # devices, so that we don't have to run as root.
+    udev.packages = with pkgs; [ rtl-sdr saleae-logic openocd ];
 
     lighttpd = {
       enable = (hostname == myDesktop);
