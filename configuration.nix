@@ -311,6 +311,7 @@ in
     gitFull
     gnumake
     gource
+    gqrx
     graphviz
     hdparm
     htop
