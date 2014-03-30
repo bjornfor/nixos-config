@@ -181,7 +181,7 @@ in
 
   ##### Misc stuff (shellInit, powerManagement etc.) #####
   nix = {
-    #useChroot = true;
+    useChroot = true;
     # To not get caught by the '''"nix-collect-garbage -d" makes "nixos-rebuild
     # switch" unusable when nixos.org is down"''' issue:
     extraOptions = ''
