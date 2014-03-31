@@ -270,8 +270,9 @@ in
       fi
     fi
 
-    PS1='\n\[\e[$__prompt_color\]\u@\[\e[$__hostnamecolor\]\]\h \[\e[$__prompt_color\]\w$(__git_ps1 " [git:%s]")\[\e[0m\]\n$ '
+    __red="1;31m"
 
+    PS1='\n$(ret=$?; test $ret -ne 0 && printf "\[\e[$__red\]$ret\[\e[0m\] ")\[\e[$__prompt_color\]\u@\[\e[$__hostnamecolor\]\]\h \[\e[$__prompt_color\]\w$(__git_ps1 " [git:%s]")\[\e[0m\]\n$ '
   '';
 
   programs.bash.enableCompletion = true;
