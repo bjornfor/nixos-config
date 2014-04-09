@@ -208,6 +208,7 @@ in
   # search for "nixpkgs.config"). Also, make sure to read
   # http://nixos.org/nixos/manual/#sec-customising-packages
   nixpkgs.config = {
+    allowUnfree = true;  # allow proprietary packages
     packageOverrides = pkgs: {
       #qtcreator = pkgs.qtcreator.override { qt48 = pkgs.qt48Full; };
       #qemu = pkgs.qemu.override { spiceSupport = true; };
