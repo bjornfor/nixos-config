@@ -163,6 +163,7 @@ in
         "tracing"
         "transmission"
         "tty"
+        "usbtmc"
         "vboxusers"
         "video"
         "wheel"
@@ -176,6 +177,7 @@ in
   users.extraGroups = {
     plugdev = { gid = 500; };
     tracing = { gid = 501; };
+    usbtmc = { gid = 502; };
   };
 
 
@@ -451,6 +453,10 @@ in
     # Provide "MODE=666" or "MODE=664 + GROUP=plugdev" for a bunch of USB
     # devices, so that we don't have to run as root.
     udev.packages = with pkgs; [ rtl-sdr saleae-logic openocd ];
+    udev.extraRules = ''
+      # Rigol oscilloscopes
+      SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="1ab1", ATTRS{idProduct}=="0588", MODE="0660", GROUP="usbtmc"
+    '';
 
     lighttpd = {
       enable = (hostname == myDesktop);
