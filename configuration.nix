@@ -167,6 +167,7 @@ in
         "vboxusers"
         "video"
         "wheel"
+        "wireshark"
       ];
       group = "users";
       home = "/home/bfo";
@@ -178,6 +179,7 @@ in
     plugdev = { gid = 500; };
     tracing = { gid = 501; };
     usbtmc = { gid = 502; };
+    wireshark = { gid = 503; };
   };
 
 
@@ -193,6 +195,19 @@ in
 
   # Select internationalisation properties.
   i18n.consoleKeyMap = "qwerty/no";
+
+  security.setuidOwners = [
+    { # Limit access to dumpcap to root and members of the wireshark group.
+      # Program must already be in the system path for this to work (or use the
+      # 'source' attribute).
+      program = "dumpcap";
+      owner = "root";
+      group = "wireshark";
+      setuid = true;
+      setgid = false;
+      permissions = "u+rx,g+x";
+    }
+  ];
 
   security.sudo = {
     enable = true;
@@ -387,6 +402,7 @@ in
     weston
     wget
     wgetpaste
+    wireshark
     wpa_supplicant
     wpa_supplicant_gui
     xchat
