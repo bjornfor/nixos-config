@@ -395,6 +395,7 @@ in
     tig
     tree
     unoconv
+    unrar
     unzip
     vim_configurable
     virtmanager
