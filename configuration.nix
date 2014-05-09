@@ -328,6 +328,7 @@ in
     firefoxWrapper
     gcc
     gitFull
+    gnome3.dconf  # Required by virt-manager to store settings (dconf-service will be started when needed). NOTE: enabling GNOME 3 desktop auto-enables this.
     gnumake
     gource
     gqrx
