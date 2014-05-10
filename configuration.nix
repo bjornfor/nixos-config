@@ -121,6 +121,7 @@ in
   ##### Networking #####
   networking = {
     hostName = hostname;
+    firewall.enable = false;
     networkmanager.enable = true;
     #networkmanager.packages = [ pkgs.networkmanager_pptp ];
 
