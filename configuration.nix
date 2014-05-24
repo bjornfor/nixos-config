@@ -225,6 +225,8 @@ in
   # http://nixos.org/nixos/manual/#sec-customising-packages
   nixpkgs.config = {
     allowUnfree = true;  # allow proprietary packages
+    #firefox.enableAdobeFlash = true;
+    #chromium.enableAdobeFlash = true;
     packageOverrides = pkgs: {
       #qtcreator = pkgs.qtcreator.override { qt48 = pkgs.qt48Full; };
       #qemu = pkgs.qemu.override { spiceSupport = true; };
