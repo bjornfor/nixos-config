@@ -427,9 +427,12 @@ in
       layout = "no";
       #xkbOptions = "eurosign:e";
 
-      # Enable the KDE Desktop Environment.
-      displayManager.kdm.enable = true;
-      desktopManager.kde4.enable = true;
+      # Enable the GNOME desktop environment.
+      displayManager.lightdm.enable = true;
+      desktopManager.gnome3.enable = true;
+      # or KDE
+      #displayManager.kdm.enable = true;
+      #desktopManager.kde4.enable = true;
       # or the XFCE desktop environment
       #displayManager.slim.enable = true;
       #desktopManager.xfce.enable = true;
