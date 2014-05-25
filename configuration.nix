@@ -378,7 +378,6 @@ in
     pythonPackages.demjson  # has a jsonlint command line tool (alternative: json_pp from perl)
     pythonPackages.ipython
     qemu
-    #qemu_kvm   # qemu-kvm has been merged into qemu (use "qemu-system-x86_64 -enable-kvm")
     qmmp
     #qtcreator
     remmina
