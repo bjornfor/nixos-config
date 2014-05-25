@@ -386,6 +386,7 @@ in
     rubyLibs.taskjuggler
     saleae-logic
     screen
+    silver-searcher
     skype
     sloccount
     smartmontools
