@@ -325,7 +325,7 @@ in
     dmidecode
     dstat
     eagle
-    eclipses.eclipse_cpp_42
+    eclipses.eclipse_cpp_43
     evtest
     file
     firefoxWrapper
