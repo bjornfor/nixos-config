@@ -342,12 +342,12 @@ in
     iotop
     iptables
     iw
-    kde4.ark
-    kde4.bluedevil
-    kde4.gwenview
-    kde4.kdemultimedia  # for volume control applet (kmix), and probably lots more
-    #kde4.networkmanagement
-    kde4.okular
+    #kde4.ark
+    #kde4.bluedevil
+    #kde4.gwenview
+    #kde4.kdemultimedia  # for volume control applet (kmix), and probably lots more
+    ##kde4.networkmanagement
+    #kde4.okular
     lftp
     libreoffice
     lshw
