@@ -481,6 +481,12 @@ in
     udev.extraRules = ''
       # Rigol oscilloscopes
       SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="1ab1", ATTRS{idProduct}=="0588", MODE="0660", GROUP="usbtmc"
+
+      # Atmel Corp. STK600 development board
+      SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2106", GROUP="plugdev", MODE="0660"
+
+      # Atmel Corp. JTAG ICE mkII
+      SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2103", GROUP="plugdev", MODE="0660"
     '';
 
     lighttpd = {
