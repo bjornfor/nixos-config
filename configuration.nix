@@ -487,6 +487,9 @@ in
 
       # Atmel Corp. JTAG ICE mkII
       SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2103", GROUP="plugdev", MODE="0660"
+
+      # Atmel Corp. AVR Dragon
+      SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2107", GROUP="plugdev", MODE="0660"
     '';
 
     lighttpd = {
