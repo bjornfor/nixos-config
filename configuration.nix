@@ -246,11 +246,10 @@ in
   # Restarting nscd fixes it.
   powerManagement.resumeCommands = "systemctl restart nscd";
 
-  # Shell script code called during shell initialization
-  # "xset" makes my Asus UL30A touchpad move quite nicely.
   environment.shellInit = ''
     #export PYTHONPATH=$PYTHONPATH:/run/current-system/sw/lib/python2.7/site-packages/
   '' + pkgs.lib.optionalString (hostname == myLaptop) ''
+    # "xset" makes my Asus UL30A touchpad move quite nicely.
     test -n "$DISPLAY" && xset mouse 10/4 0
   '';
 
