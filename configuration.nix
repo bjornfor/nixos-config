@@ -322,6 +322,7 @@ in
     llvmPackages.clang   # for libclang, required by clang_complete.vim
     cmake
     ctags
+    ddrescue
     dmidecode
     dstat
     eagle
