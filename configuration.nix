@@ -427,16 +427,10 @@ in
       layout = "no";
       #xkbOptions = "eurosign:e";
 
-      # Enable the GNOME desktop environment.
+      # Select display manager (a.k.a. login manager)
       displayManager.lightdm.enable = true;
-      desktopManager.gnome3.enable = true;
-      # or KDE
       #displayManager.kdm.enable = true;
-      #desktopManager.kde4.enable = true;
-      # or the XFCE desktop environment
       #displayManager.slim.enable = true;
-      #desktopManager.xfce.enable = true;
-      #desktopManager.razorqt.enable = true;
 
       # BEGIN JUST_FOR_BUILD_VM: this is just for nixos-rebuild build-vm
       # Auto-login as root.
@@ -448,6 +442,11 @@ in
       #  AutoLoginPass=""
       #'';
       ## END JUST_FOR_BUILD_VM
+
+      # Select desktop environment
+      desktopManager.gnome3.enable = true;
+      #desktopManager.kde4.enable = true;
+      #desktopManager.xfce.enable = true;
 
       # Needed for the touchpad on my Asus UL30A laptop (this was broken for
       # quite some time but started working again when I upgraded to NixOS
