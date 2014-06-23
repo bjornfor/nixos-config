@@ -246,6 +246,9 @@ in
   # Restarting nscd fixes it.
   powerManagement.resumeCommands = "systemctl restart nscd";
 
+  # Default is 3.12
+  environment.gnome3.packageSet = pkgs.gnome3_12;
+
   environment.shellInit = ''
     #export PYTHONPATH=$PYTHONPATH:/run/current-system/sw/lib/python2.7/site-packages/
   '' + pkgs.lib.optionalString (hostname == myLaptop) ''
