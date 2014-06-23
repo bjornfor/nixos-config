@@ -428,9 +428,11 @@ in
       #xkbOptions = "eurosign:e";
 
       # Select display manager (a.k.a. login manager)
-      displayManager.lightdm.enable = true;
+      #displayManager.lightdm.enable = true;
       #displayManager.kdm.enable = true;
       #displayManager.slim.enable = true;
+      displayManager.auto.enable = true;
+      displayManager.auto.user = "bfo";
 
       # BEGIN JUST_FOR_BUILD_VM: this is just for nixos-rebuild build-vm
       # Auto-login as root.
