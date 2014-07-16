@@ -314,10 +314,12 @@ in
       enableDeckjsBackend = true;
       enableOdfBackend = true;
     })
+    arp-scan
     ascii
     aspell
     aspellDicts.en
     aspellDicts.nb
+    babeltrace
     bc
     bmon
     chromiumWrapper
@@ -333,12 +335,14 @@ in
     file
     firefoxWrapper
     gcc
+    gdb
     gitFull
     gnome3.dconf  # Required by virt-manager to store settings (dconf-service will be started when needed). NOTE: enabling GNOME 3 desktop auto-enables this.
     gnumake
     gource
     gqrx
     graphviz
+    gsmartcontrol
     hdparm
     htop
     iftop
@@ -388,6 +392,7 @@ in
     rtl-sdr
     rubyLibs.taskjuggler
     saleae-logic
+    samba
     screen
     silver-searcher
     skype
