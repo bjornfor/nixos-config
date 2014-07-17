@@ -395,7 +395,21 @@ in
     samba
     screen
     silver-searcher
-    skype
+    (if hostname == myLaptop then
+      # My laptop (Asus UL30A) has upside down webcam. Flip it back.
+      let
+        libv4l_i686 = callPackage_i686 <nixpkgs/pkgs/os-specific/linux/v4l-utils> { withQt4 = false; };
+      in
+      lib.overrideDerivation skype (attrs: {
+        installPhase = attrs.installPhase +
+          ''
+            sed -i "2iexport LD_PRELOAD=${libv4l_i686}/lib/v4l1compat.so" "$out/bin/skype"
+          '';
+      })
+    else
+      # Other machines don't need the flip (use plain skype).
+      skype
+    )
     sloccount
     smartmontools
     spice
