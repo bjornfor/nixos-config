@@ -304,16 +304,7 @@ in
   ##### System packages #####
   environment.systemPackages = with pkgs; [
     (callPackage ltsa {})
-    (asciidocFull.override {
-      enableDitaaFilter = true;
-      enableMscgenFilter = true;
-      enableDiagFilter = true;
-      enableQrcodeFilter = true;
-      enableMatplotlibFilter = true;
-      enableAafigureFilter = true;
-      enableDeckjsBackend = true;
-      enableOdfBackend = true;
-    })
+    (asciidocFull.override { enableExtraPlugins = true; })
     arp-scan
     ascii
     aspell
