@@ -318,15 +318,20 @@ in
     cmake
     ctags
     ddrescue
+    dia
+    diffstat
     dmidecode
     dstat
     eagle
     eclipses.eclipse_cpp_43
     evtest
     file
+    filezilla
     firefoxWrapper
+    freecad
     gcc
     gdb
+    gitAndTools.qgit
     gitFull
     gnome3.dconf  # Required by virt-manager to store settings (dconf-service will be started when needed). NOTE: enabling GNOME 3 desktop auto-enables this.
     gnumake
@@ -361,6 +366,7 @@ in
     networkmanagerapplet
     nfsUtils
     nixpkgs-lint
+    nix-generate-from-cpan
     nix-repl
     nmap
     openconnect
@@ -368,7 +374,9 @@ in
     openscad
     p7zip
     parted
+    patchelf
     pavucontrol
+    pencil
     powertop
     psmisc
     pv
@@ -403,6 +411,7 @@ in
     )
     sloccount
     smartmontools
+    solfege
     spice
     spotify
     sqliteInteractive
