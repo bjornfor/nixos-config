@@ -278,6 +278,21 @@ in
     export PYTHONPATH="$(unset _tmp; for profile in $NIX_PROFILES; do _tmp="$profile/lib/python2.7/site-packages''${_tmp:+:}$_tmp"; done; echo "$PYTHONPATH''${PYTHONPATH:+:}$_tmp")"
   '';
 
+  # Make it easier to work with external scripts
+  system.activationScripts.fhsCompat = ''
+    fhscompat=0  # set to 1 or 0
+    if [ "$fhscompat" = 1 ]; then
+        echo "enabling (simple) FHS compatibility"
+        mkdir -p /bin /usr/bin
+        ln -sfv ${pkgs.bash}/bin/sh /bin/bash
+        ln -sfv ${pkgs.perl}/bin/perl /usr/bin/perl
+        ln -sfv ${pkgs.python27Full}/bin/python /usr/bin/python
+    else
+        # clean up
+        find /bin /usr/bin -type l | while read file; do if [ "$file" != "/bin/sh" -a "$file" != "/usr/bin/env" ]; then rm -v "$file"; fi; done
+    fi
+  '';
+
   # Show git info in bash prompt and display a colorful hostname if using ssh.
   programs.bash.promptInit = ''
     export GIT_PS1_SHOWDIRTYSTATE=1
