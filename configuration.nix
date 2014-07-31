@@ -273,6 +273,9 @@ in
     export HISTSIZE=1000000         # big big history
     export HISTFILESIZE=$HISTSIZE
     shopt -s histappend             # append to history, don't overwrite it
+
+    # Append Python site-packages directories to PYTHONPATH (for each nix profile)
+    export PYTHONPATH="$(unset _tmp; for profile in $NIX_PROFILES; do _tmp="$profile/lib/python2.7/site-packages''${_tmp:+:}$_tmp"; done; echo "$PYTHONPATH''${PYTHONPATH:+:}$_tmp")"
   '';
 
   # Show git info in bash prompt and display a colorful hostname if using ssh.
