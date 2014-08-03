@@ -323,6 +323,7 @@ in
   environment.systemPackages = with pkgs; [
     (callPackage ltsa {})
     (asciidocFull.override { enableExtraPlugins = true; })
+    anki  # flash card learning application
     arp-scan
     ascii
     aspell
@@ -354,6 +355,7 @@ in
     gnome3.dconf  # Required by virt-manager to store settings (dconf-service will be started when needed). NOTE: enabling GNOME 3 desktop auto-enables this.
     gnumake
     gource
+    gparted
     gqrx
     graphviz
     gsmartcontrol
@@ -397,6 +399,7 @@ in
     pencil
     powertop
     psmisc
+    pulseview  # sigrok GUI
     pv
     pythonFull
     pythonPackages.demjson  # has a jsonlint command line tool (alternative: json_pp from perl)
@@ -433,6 +436,7 @@ in
     spice
     spotify
     sqliteInteractive
+    srecord
     subversion
     teamviewer
     telnet
