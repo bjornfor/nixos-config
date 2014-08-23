@@ -535,6 +535,10 @@ in
 
       # Atmel Corp. AVR Dragon
       SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2107", GROUP="plugdev", MODE="0660"
+
+      # Access to /dev/bus/usb/* devices. Needed for virt-manager USB
+      # redirection.
+      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", MODE="0664", GROUP="wheel"
     '';
 
     lighttpd = {
