@@ -462,6 +462,8 @@ in
   ##### Services #####
   virtualisation.libvirtd.enable = true;
   services = {
+    fail2ban.enable = true;
+
     openssh.enable = true;
 
     # cups, for printing documents
