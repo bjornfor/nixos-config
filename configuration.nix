@@ -631,7 +631,6 @@ in
         rpc-whitelist = "127.0.0.1,192.168.*.*";
         ratio-limit = 2;
         ratio-limit-enabled = true;
-        umask = 2;
       };
     };
   
