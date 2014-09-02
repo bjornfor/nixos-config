@@ -332,7 +332,7 @@ in
     babeltrace
     bc
     bmon
-    chromiumWrapper
+    chromium
     llvmPackages.clang   # for libclang, required by clang_complete.vim
     cmake
     ctags
