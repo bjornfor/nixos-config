@@ -692,16 +692,6 @@ in
       enable = true;
       extraConfig = "--disable-login";
     };
-
-    vsftpd = {
-      enable = (hostname == myDesktop);
-      #anonymousUploadEnable = true;
-      #anonymousUser = true;
-      #anonymousMkdirEnable = true;
-      #localUsers = true;
-      #userlist = [ "bfo" ];
-      #writeEnable = true;
-    };
   };
 
 
