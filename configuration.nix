@@ -627,7 +627,7 @@ in
         download-dir = "/srv/torrents/";
         incomplete-dir = "/srv/torrents/.incomplete/";
         incomplete-dir-enabled = true;
-        rpc-whitelist = "127.0.0.1,192.168.*.*";
+        rpc-whitelist = "127.0.0.1,192.168.1.*";
         ratio-limit = 2;
         ratio-limit-enabled = true;
       };
