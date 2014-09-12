@@ -657,7 +657,7 @@ in
   
     munin-node.enable = true;
     munin-node.extraConfig = ''
-      allow ^192\.168\.1\..*$
+      cidr_allow 192.168.1.0/24
     '';
     munin-cron = {
       enable = true;
