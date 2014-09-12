@@ -199,8 +199,7 @@ in
 
   security.setuidOwners = [
     { # Limit access to dumpcap to root and members of the wireshark group.
-      # Program must already be in the system path for this to work (or use the
-      # 'source' attribute).
+      source = "${pkgs.wireshark}/bin/dumpcap";
       program = "dumpcap";
       owner = "root";
       group = "wireshark";
