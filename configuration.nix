@@ -464,6 +464,9 @@ in
     fail2ban.enable = true;
 
     openssh.enable = true;
+    openssh.extraConfig = ''
+      AllowUsers bfo
+    '';
 
     # cups, for printing documents
     #printing.enable = true;
