@@ -149,7 +149,7 @@ in
   #users.mutableUsers = false;
   users.extraUsers = {
     bfo = {
-      #password = "changeme";
+      password = "initialpw";
       createHome = true;
       description = "Bjørn Forsman";
       uid = 1000;
