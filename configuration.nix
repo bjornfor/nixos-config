@@ -146,11 +146,9 @@ in
 
 
   ##### Users #####
-  #users.mutableUsers = false;
   users.extraUsers = {
     bfo = {
-      password = "initialpw";
-      createHome = true;
+      #password = "initialpw";
       description = "Bjørn Forsman";
       uid = 1000;
       extraGroups = [
@@ -170,9 +168,7 @@ in
         "wheel"
         "wireshark"
       ];
-      group = "users";
-      home = "/home/bfo";
-      useDefaultShell = true; # default is false => .../bin/nologin
+      isNormalUser = true;
     };
   };
 
