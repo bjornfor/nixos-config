@@ -102,8 +102,10 @@ in
     # handy if you have NixOS installed on a USB stick that gets a different
     # device name when you plug it in different ports or on different machines.
     # Then you install using "/dev/..." and set it to "nodev" afterwards.
-    device = if hostname == myDesktop then "/dev/disk/by-label/240gb" else
-             if hostname == myLaptop  then "/dev/disk/by-label/nixos-ssd" else
+    device = if hostname == myDesktop then
+               "/dev/disk/by-id/ata-KINGSTON_SH103S3240G_50026B722A027195"
+             else if hostname == myLaptop then
+               "/dev/disk/by-id/ata-INTEL_SSDSA2CW160G3_CVPR106000FW160DGN" else
              throw "Missing boot.loader.grub.device setting for hostname \"${hostname}\"";
   };
 
