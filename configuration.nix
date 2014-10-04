@@ -409,6 +409,7 @@ in
     pythonFull
     pythonPackages.demjson  # has a jsonlint command line tool (alternative: json_pp from perl)
     pythonPackages.ipython
+    pythonPackages.sympy
     qemu
     qmmp
     #qtcreator
