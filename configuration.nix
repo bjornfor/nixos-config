@@ -471,8 +471,16 @@ in
     fail2ban.enable = true;
 
     openssh.enable = true;
+    openssh.passwordAuthentication = false;
     openssh.extraConfig = ''
       AllowUsers bfo
+
+      # Allow password authentication (only) from local network
+      Match Address 192.168.1.0/24
+        PasswordAuthentication yes
+        # End the match group so that any remaining options (up to the end
+        # of file) applies globally
+        Match All
     '';
 
     # cups, for printing documents
