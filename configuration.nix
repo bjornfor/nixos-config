@@ -392,6 +392,7 @@ in
     nfsUtils
     nixpkgs-lint
     nix-generate-from-cpan
+    nix-prefetch-scripts
     nix-repl
     nmap
     openconnect
