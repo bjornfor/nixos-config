@@ -117,7 +117,7 @@ in
   boot.kernelPackages = linuxPackages // {
     virtualbox = linuxPackages.virtualbox.override { enableExtensionPack = true; };
   };
-  boot.extraModulePackages = [ linuxPackages.lttngModules ];
+  boot.extraModulePackages = [ linuxPackages.lttng-modules ];
 
 
   ##### Networking #####
@@ -729,6 +729,7 @@ in
   systemd.services.lttng-sessiond = {
     description = "LTTng Session Daemon";
     wantedBy = [ "multi-user.target" ];
+    environment.MODULE_DIR = config.environment.variables.MODULE_DIR;
     serviceConfig = {
       ExecStart = "${pkgs.lttngTools}/bin/lttng-sessiond";
     };
