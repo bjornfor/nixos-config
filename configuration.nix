@@ -566,6 +566,7 @@ in
       enable = (hostname == myDesktop);
       mod_status = true;
       mod_userdir = true;
+      enableModules = [ "mod_alias" ];
       extraConfig = ''
         dir-listing.activate = "enable"
         alias.url += ( "/munin" => "/var/www/munin" )
