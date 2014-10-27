@@ -367,6 +367,7 @@ in
     hdparm
     htop
     iftop
+    ioping
     iotop
     iptables
     iw
