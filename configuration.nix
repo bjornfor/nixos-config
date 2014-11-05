@@ -442,6 +442,7 @@ in
     )
     sloccount
     smartmontools
+    socat
     solfege
     spice
     spotify
