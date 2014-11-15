@@ -345,6 +345,7 @@ in
     dia
     diffstat
     dmidecode
+    dos2unix
     dstat
     eagle
     eclipses.eclipse_cpp_43
