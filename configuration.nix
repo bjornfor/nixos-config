@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 
 let
-  myDesktop = "mini-nixos";   # Runs a webserver, UPS daemon, ...
+  myDesktop = "mini";   # Runs a webserver, UPS daemon, ...
   myLaptop  = "nixos-laptop"; # Similar, but no webserver etc
   hostname  = myDesktop;      # Select between desktop/laptop setup
 
