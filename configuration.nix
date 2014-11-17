@@ -2,7 +2,7 @@
 # the system.  Help is available in the configuration.nix(5) man page
 # or the NixOS manual available on virtual console 8 (Alt+F8).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   myDesktop = "mini";   # Runs a webserver, UPS daemon, ...
@@ -69,7 +69,7 @@ let
 in
 {
 
-  require = [
+  imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     # VirtualBox. WARNING: virtualbox is built with --disable-hardening (a
@@ -256,7 +256,7 @@ in
 
   environment.shellInit = ''
     #export PYTHONPATH=$PYTHONPATH:/run/current-system/sw/lib/python2.7/site-packages/
-  '' + pkgs.lib.optionalString (hostname == myLaptop) ''
+  '' + lib.optionalString (hostname == myLaptop) ''
     # "xset" makes my Asus UL30A touchpad move quite nicely.
     test -n "$DISPLAY" && xset mouse 10/4 0
   '';
@@ -542,7 +542,7 @@ in
     locate.enable = true;
 
     cron.mailto = "root";
-    cron.systemCronJobs = pkgs.lib.optionals (hostname == myDesktop) [
+    cron.systemCronJobs = lib.optionals (hostname == myDesktop) [
       # minute hour day-of-month month day-of-week user command
       " 15     01   *            *     *           root /home/bfo/bin/backup.sh > /tmp/backup.log 2>&1"
     ];
@@ -690,10 +690,10 @@ in
       hosts = ''
         [${config.networking.hostName}]
         address localhost
-      '' + pkgs.lib.optionalString (hostname == myLaptop) ''
+      '' + lib.optionalString (hostname == myLaptop) ''
         [${myDesktop}]
         address ${myDesktop}.local
-      '' + pkgs.lib.optionalString (hostname == myDesktop) ''
+      '' + lib.optionalString (hostname == myDesktop) ''
         [${myLaptop}]
         address ${myLaptop}.local
       '';
