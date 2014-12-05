@@ -72,10 +72,6 @@ in
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    # VirtualBox. WARNING: virtualbox is built with --disable-hardening (a
-    # security issue). That's why it isn't as easy to enable (you shouldn't use
-    # it!).
-    <nixos/modules/programs/virtualbox.nix>
   ];
 
 
@@ -698,6 +694,8 @@ in
         address ${myLaptop}.local
       '';
     };
+
+    virtualboxHost.enable = true;
 
     mysql = {
       enable = (hostname == myDesktop);
