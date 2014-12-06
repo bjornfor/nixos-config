@@ -323,7 +323,7 @@ in
   ##### System packages #####
   environment.systemPackages = with pkgs; [
     (callPackage ltsa {})
-    (asciidocFull.override { enableExtraPlugins = true; })
+    (asciidoc-full.override { enableExtraPlugins = true; })
     anki  # flash card learning application
     arp-scan
     ascii
@@ -379,7 +379,7 @@ in
     linssid
     lshw
     lsof
-    lttngTools
+    lttng-tools
     manpages # for "man 2 fork" etc.
     meld
     mercurial
@@ -389,7 +389,7 @@ in
     ncdu
     networkmanager
     networkmanagerapplet
-    nfsUtils
+    nfs-utils
     nixpkgs-lint
     nix-generate-from-cpan
     nix-prefetch-scripts
@@ -445,7 +445,7 @@ in
     solfege
     spice
     spotify
-    sqliteInteractive
+    sqlite-interactive
     srecord
     stdmanpages
     subversion
