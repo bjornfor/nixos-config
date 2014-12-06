@@ -376,10 +376,12 @@ in
     #kde4.okular
     lftp
     libreoffice
+    linssid
     lshw
     lsof
     lttngTools
     manpages # for "man 2 fork" etc.
+    meld
     mercurial
     minicom
     mosh
