@@ -146,7 +146,6 @@ in
   ##### Users #####
   users.extraUsers = {
     bfo = {
-      #password = "initialpw";
       description = "Bjørn Forsman";
       uid = 1000;
       extraGroups = [
@@ -167,6 +166,7 @@ in
         "wireshark"
       ];
       isNormalUser = true;
+      initialPassword = "initialpw";
     };
   };
 
