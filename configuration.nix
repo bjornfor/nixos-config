@@ -375,6 +375,7 @@ in
     ##kde4.networkmanagement
     #kde4.okular
     lftp
+    libfaketime
     libreoffice
     linssid
     lshw
