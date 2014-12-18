@@ -699,6 +699,7 @@ in
     };
 
     virtualboxHost.enable = true;
+    virtualboxHost.enableHardening = true;
 
     mysql = {
       enable = (hostname == myDesktop);
