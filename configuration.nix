@@ -347,6 +347,7 @@ in
     dstat
     eagle
     eclipses.eclipse_cpp_43
+    elinks
     evtest
     file
     filezilla
@@ -383,6 +384,7 @@ in
     lshw
     lsof
     lttng-tools
+    lynx
     manpages # for "man 2 fork" etc.
     meld
     mercurial
@@ -469,6 +471,7 @@ in
     wireshark
     wpa_supplicant
     wpa_supplicant_gui
+    w3m
     xchat
     youtubeDL
   ];
