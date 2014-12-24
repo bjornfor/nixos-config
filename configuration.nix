@@ -474,6 +474,7 @@ in
     wget
     wgetpaste
     which
+    wine
     wireshark
     wpa_supplicant
     wpa_supplicant_gui
