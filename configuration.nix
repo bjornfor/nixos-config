@@ -472,6 +472,7 @@ in
     weston
     wget
     wgetpaste
+    which
     wireshark
     wpa_supplicant
     wpa_supplicant_gui
