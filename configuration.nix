@@ -339,6 +339,7 @@ in
     llvmPackages.clang   # for libclang, required by clang_complete.vim
     cmake
     ctags
+    dash
     ddrescue
     dhex
     dia
