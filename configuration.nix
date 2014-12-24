@@ -371,6 +371,7 @@ in
     ioping
     iotop
     iptables
+    irssi
     iw
     #kde4.ark
     #kde4.bluedevil
