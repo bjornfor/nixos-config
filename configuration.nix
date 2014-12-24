@@ -461,6 +461,7 @@ in
     unzip
     vim_configurable
     virtmanager
+    virtviewer
     vlc
     weston
     wget
