@@ -424,6 +424,7 @@ in
     qemu
     qmmp
     #qtcreator
+    remake
     remmina
     rmlint
     rtl-sdr
