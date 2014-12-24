@@ -679,6 +679,27 @@ in
         read only = no
         guest ok = yes
         force user = transmission
+      '' else "")
+      + (if hostname == myDesktop then ''
+        [music]
+        path = /data/pub/music
+        read only = yes
+        guest ok = yes
+
+        [videos]
+        path = /data/pub/videos
+        read only = yes
+        guest ok = yes
+
+        [pictures]
+        path = /data/archive/pictures/
+        read only = yes
+        guest ok = yes
+
+        [backups]
+        path = /media/3tb/backups/
+        read only = yes
+        guest ok = yes
       '' else "");
     };
   
