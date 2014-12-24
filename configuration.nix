@@ -338,7 +338,7 @@ in
     bmon
     chromium
     llvmPackages.clang   # for libclang, required by clang_complete.vim
-    cmake
+    cmakeWithGui
     ctags
     dash
     ddrescue
