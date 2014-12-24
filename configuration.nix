@@ -327,6 +327,7 @@ in
     (callPackage ltsa {})
     (asciidoc-full.override { enableExtraPlugins = true; })
     anki  # flash card learning application
+    apg
     arp-scan
     ascii
     aspell
@@ -417,6 +418,7 @@ in
     pthreadmanpages
     pulseview  # sigrok GUI
     pv
+    pwgen
     pythonFull
     pythonPackages.demjson  # has a jsonlint command line tool (alternative: json_pp from perl)
     pythonPackages.ipython
