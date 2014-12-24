@@ -340,6 +340,7 @@ in
     cmake
     ctags
     ddrescue
+    dhex
     dia
     diffstat
     dmidecode
