@@ -385,6 +385,7 @@ in
     libfaketime
     libreoffice
     linssid
+    linuxPackages.perf
     lshw
     lsof
     lttng-tools
