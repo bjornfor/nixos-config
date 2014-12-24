@@ -433,6 +433,7 @@ in
     samba
     screen
     silver-searcher
+    simplescreenrecorder
     (if hostname == myLaptop then
       # My laptop (Asus UL30A) has upside down webcam. Flip it back.
       let
