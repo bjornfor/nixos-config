@@ -375,6 +375,7 @@ in
     iptables
     irssi
     iw
+    kalibrate-rtl
     #kde4.ark
     #kde4.bluedevil
     #kde4.gwenview
