@@ -463,6 +463,7 @@ in
     srecord
     stdmanpages
     subversion
+    tcpdump
     teamviewer
     telnet
     tig
