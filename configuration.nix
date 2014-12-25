@@ -404,7 +404,7 @@ in
     nix-generate-from-cpan
     nix-prefetch-scripts
     nix-repl
-    nmap
+    nmap_graphical
     openconnect
     openocd
     openscad
