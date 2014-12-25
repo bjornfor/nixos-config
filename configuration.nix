@@ -465,6 +465,7 @@ in
     srecord
     stdmanpages
     subversion
+    surfraw
     tcpdump
     teamviewer
     telnet
