@@ -471,6 +471,7 @@ in
     unoconv
     unrar
     unzip
+    vifm
     vim_configurable
     virtmanager
     virtviewer
