@@ -413,6 +413,7 @@ in
     patchelf
     pavucontrol
     pencil
+    poppler
     posix_man_pages
     powertop
     psmisc
