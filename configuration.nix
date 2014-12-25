@@ -478,6 +478,7 @@ in
     wgetpaste
     which
     wine
+    winpdb
     wireshark
     wpa_supplicant
     wpa_supplicant_gui
