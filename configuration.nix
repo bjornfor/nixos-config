@@ -389,6 +389,7 @@ in
     linuxPackages.perf
     lshw
     lsof
+    ltrace
     lttng-tools
     lynx
     manpages # for "man 2 fork" etc.
