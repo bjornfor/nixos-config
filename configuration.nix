@@ -203,6 +203,15 @@ in
       setgid = false;
       permissions = "u+rx,g+x";
     }
+    { # Limit access to smartctl to root and members of the munin group.
+      source = "${pkgs.smartmontools}/bin/smartctl";
+      program = "smartctl";
+      owner = "root";
+      group = "munin";
+      setuid = true;
+      setgid = false;
+      permissions = "u+rx,g+x";
+    }
   ];
 
   security.sudo = {
