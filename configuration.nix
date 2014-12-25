@@ -467,6 +467,7 @@ in
     stdmanpages
     subversion
     surfraw
+    sweethome3d.application
     tcpdump
     teamviewer
     telnet
