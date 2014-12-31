@@ -217,6 +217,10 @@ in
   security.sudo = {
     enable = true;
     wheelNeedsPassword = false;
+    extraConfig = ''
+      # Keep MODULE_DIR so modprobe doesn't forget where modules are.
+      Defaults env_keep+=MODULE_DIR
+    '';
   };
 
   security.pam.loginLimits = [
