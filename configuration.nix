@@ -452,6 +452,7 @@ in
     saleae-logic
     samba
     screen
+    sigrok-cli
     silver-searcher
     simplescreenrecorder
     (if hostname == myLaptop then
