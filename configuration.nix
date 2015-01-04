@@ -254,7 +254,6 @@ in
   # Restarting nscd fixes it.
   powerManagement.resumeCommands = "systemctl restart nscd";
 
-  # Default is 3.10
   environment.gnome3.packageSet = pkgs.gnome3_12;
 
   environment.shellAliases = {
