@@ -498,7 +498,7 @@ in
     wget
     wgetpaste
     which
-    wine
+    wineUnstable
     winpdb
     wireshark
     wpa_supplicant
