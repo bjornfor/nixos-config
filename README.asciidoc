@@ -1,4 +1,4 @@
 nixos-config
 ============
 
-Configuration files for my http://nixos.org/nixos/[NixOS] machines.
+Configuration files for my http://nixos.org/[NixOS] machines.
