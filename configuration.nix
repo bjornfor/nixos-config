@@ -485,6 +485,7 @@ in
     teamviewer
     telnet
     tig
+    traceroute
     tree
     unoconv
     unrar
