@@ -187,6 +187,7 @@ in
     # switch" unusable when nixos.org is down"''' issue:
     extraOptions = ''
       gc-keep-outputs = true
+      log-servers = http://hydra.nixos.org/log
     '';
   };
 
