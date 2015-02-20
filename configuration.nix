@@ -483,6 +483,7 @@ in
     subversion
     surfraw
     sweethome3d.application
+    taskwarrior
     tcpdump
     teamviewer
     telnet
