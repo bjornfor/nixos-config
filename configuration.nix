@@ -346,6 +346,7 @@ in
     aspell
     aspellDicts.en
     aspellDicts.nb
+    attic
     babeltrace
     bc
     bmon
