@@ -421,6 +421,7 @@ in
     nix-prefetch-scripts
     nix-repl
     nmap_graphical
+    offlineimap
     openconnect
     openocd
     openscad
