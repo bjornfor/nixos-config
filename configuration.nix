@@ -349,6 +349,7 @@ in
     attic
     babeltrace
     bc
+    bind
     bmon
     chromium
     llvmPackages.clang   # for libclang, required by clang_complete.vim
