@@ -353,6 +353,7 @@ in
     bmon
     chromium
     llvmPackages.clang   # for libclang, required by clang_complete.vim
+    clangAnalyzer  # a.k.a. scan-build
     cmakeWithGui
     ctags
     dash
