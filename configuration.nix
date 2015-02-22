@@ -351,6 +351,7 @@ in
     bc
     bind
     bmon
+    bridge_utils
     chromium
     llvmPackages.clang   # for libclang, required by clang_complete.vim
     clangAnalyzer  # a.k.a. scan-build
