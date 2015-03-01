@@ -672,16 +672,16 @@ in
     apcupsd = {
       enable = (hostname == myDesktop);
       hooks.doshutdown = ''
-        HOSTNAME=`${pkgs.nettools}/bin/hostname`
-        printf \"Subject: apcupsd: $HOSTNAME is shutting down\\n\" | ${pkgs.msmtp}/bin/msmtp -C /home/bfo/.msmtprc bjorn.forsman@gmail.com
+        HOSTNAME=\$(${pkgs.nettools}/bin/hostname)
+        printf \"Subject: apcupsd: \$HOSTNAME is shutting down\\n\" | ${pkgs.msmtp}/bin/msmtp -C /home/bfo/.msmtprc bjorn.forsman@gmail.com
       '';
       hooks.onbattery = ''
-        HOSTNAME=`${pkgs.nettools}/bin/hostname`
-        printf \"Subject: apcupsd: $HOSTNAME is running on battery\\n\" | ${pkgs.msmtp}/bin/msmtp -C /home/bfo/.msmtprc bjorn.forsman@gmail.com
+        HOSTNAME=\$(${pkgs.nettools}/bin/hostname)
+        printf \"Subject: apcupsd: \$HOSTNAME is running on battery\\n\" | ${pkgs.msmtp}/bin/msmtp -C /home/bfo/.msmtprc bjorn.forsman@gmail.com
       '';
       hooks.offbattery = ''
-        HOSTNAME=`${pkgs.nettools}/bin/hostname`
-        printf \"Subject: apcupsd: $HOSTNAME is running on mains power\\n\" | ${pkgs.msmtp}/bin/msmtp -C /home/bfo/.msmtprc bjorn.forsman@gmail.com
+        HOSTNAME=\$(${pkgs.nettools}/bin/hostname)
+        printf \"Subject: apcupsd: \$HOSTNAME is running on mains power\\n\" | ${pkgs.msmtp}/bin/msmtp -C /home/bfo/.msmtprc bjorn.forsman@gmail.com
       '';
       configText = ''
         UPSTYPE usb
