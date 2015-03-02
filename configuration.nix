@@ -586,12 +586,6 @@ in
   
     locate.enable = true;
 
-    cron.mailto = "root";
-    cron.systemCronJobs = lib.optionals (hostname == myDesktop) [
-      # minute hour day-of-month month day-of-week user command
-      " 15     01   *            *     *           root /home/bfo/bin/backup.sh > /tmp/backup.log 2>&1"
-    ];
-
     # Provide "MODE=666" or "MODE=664 + GROUP=plugdev" for a bunch of USB
     # devices, so that we don't have to run as root.
     udev.packages = with pkgs; [ rtl-sdr saleae-logic openocd ];
@@ -809,6 +803,14 @@ in
     serviceConfig = {
       ExecStart = "${pkgs.lttngTools}/bin/lttng-sessiond";
     };
+  };
+
+  systemd.services.my-backup = {
+    enable = hostname == myDesktop;
+    description = "My Backup";
+    startAt = "*-*-* 01:15:00";  # see systemd.time(7)
+    path = with pkgs; [ bash rsync openssh utillinux gawk nettools time ];
+    serviceConfig.ExecStart = /home/bfo/bin/backup.sh;
   };
 
 }
