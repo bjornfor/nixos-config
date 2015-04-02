@@ -719,18 +719,13 @@ in
         force user = transmission
       '' else "")
       + (if hostname == myDesktop then ''
-        [music]
-        path = /data/pub/music
-        read only = yes
-        guest ok = yes
-
-        [videos]
-        path = /data/pub/videos
+        [media]
+        path = /data/media
         read only = yes
         guest ok = yes
 
         [pictures]
-        path = /data/archive/pictures/
+        path = /data/pictures/
         read only = yes
         guest ok = yes
 
