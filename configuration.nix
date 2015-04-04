@@ -550,17 +550,6 @@ in
       displayManager.auto.enable = true;
       displayManager.auto.user = "bfo";
 
-      # BEGIN JUST_FOR_BUILD_VM: this is just for nixos-rebuild build-vm
-      # Auto-login as root.
-      #displayManager.kdm.extraConfig = ''
-      #  [X-*-Core]
-      #  AllowRootLogin=true
-      #  AutoLoginEnable=true
-      #  AutoLoginUser=root
-      #  AutoLoginPass=""
-      #'';
-      ## END JUST_FOR_BUILD_VM
-
       # Select desktop environment
       desktopManager.gnome3.enable = true;
       #desktopManager.kde4.enable = true;
