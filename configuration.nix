@@ -569,10 +569,10 @@ in
         accelFactor = "0.001";
       };
     };
-  
+
     # Enable avahi/mdns
     avahi = { enable = true; nssmdns = true; };
-  
+
     locate.enable = true;
 
     # Provide "MODE=666" or "MODE=664 + GROUP=plugdev" for a bunch of USB
@@ -687,7 +687,7 @@ in
         #TIMEOUT 10  # for debugging, shutdown after N seconds on batteries
       '';
     };
-  
+
     transmission = {
       enable = (hostname == myDesktop);
       settings = {
@@ -699,7 +699,7 @@ in
         ratio-limit-enabled = true;
       };
     };
-  
+
     samba = {
       enable = true;
       nsswins = true;
@@ -737,7 +737,7 @@ in
         guest ok = yes
       '' else "");
     };
-  
+
     munin-node.enable = true;
     munin-node.extraConfig = ''
       cidr_allow 192.168.1.0/24
