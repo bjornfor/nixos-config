@@ -600,10 +600,23 @@ in
       enable = (hostname == myDesktop);
       mod_status = true;
       mod_userdir = true;
-      enableModules = [ "mod_alias" ];
+      enableModules = [ "mod_alias" "mod_proxy" ];
       extraConfig = ''
         dir-listing.activate = "enable"
         alias.url += ( "/munin" => "/var/www/munin" )
+
+        # Reverse proxy for transmission bittorrent client
+        proxy.server = (
+          "/transmission" => ( "transmission" => (
+                               "host" => "127.0.0.1",
+                               "port" => 9091
+                             ) )
+        )
+        # Fix transmission URL corner case: get error 409 if URL is
+        # /transmission/ or /transmission/web. Redirect those URLs to
+        # /transmission (no trailing slash).
+        url.redirect = ( "^/transmission/(web)?$" => "/transmission" )
+
       '';
       gitweb.enable = true;
       cgit = {
