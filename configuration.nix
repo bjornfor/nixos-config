@@ -757,7 +757,7 @@ in
       '';
     };
 
-    virtualboxHost.enable = true;
+    virtualboxHost.enable = (hostname == myDesktop);
     virtualboxHost.enableHardening = true;
 
     mysql = {
