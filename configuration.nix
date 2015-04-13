@@ -601,7 +601,7 @@ in
       enable = (hostname == myDesktop);
       mod_status = true;
       mod_userdir = true;
-      enableModules = [ "mod_alias" "mod_proxy" ];
+      enableModules = [ "mod_alias" "mod_proxy" "mod_access" ];
       extraConfig = ''
         dir-listing.activate = "enable"
         alias.url += ( "/munin" => "/var/www/munin" )
@@ -618,6 +618,16 @@ in
         # /transmission (no trailing slash).
         url.redirect = ( "^/transmission/(web)?$" => "/transmission" )
 
+        # Block access to certain URLs if remote IP is not on LAN
+        $HTTP["remoteip"] != "192.168.1.0/24" {
+            $HTTP["url"] =~ "^/transmission/.*" {
+                url.access-deny = ( "" )
+            }
+            # Hide lighttpd stats and config pages
+            $HTTP["url"] =~ "^/server-.*" {
+                url.access-deny = ( "" )
+            }
+        }
       '';
       gitweb.enable = true;
       cgit = {
