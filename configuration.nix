@@ -415,6 +415,7 @@ in
     minicom
     mosh
     msmtp
+    mutt
     ncdu
     networkmanager
     networkmanagerapplet
