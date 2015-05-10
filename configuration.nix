@@ -294,6 +294,14 @@ in
     export PYTHONPATH="$(unset _tmp; for profile in $NIX_PROFILES; do _tmp="$profile/lib/python2.7/site-packages''${_tmp:+:}$_tmp"; done; echo "$PYTHONPATH''${PYTHONPATH:+:}$_tmp")"
   '';
 
+  # Block advertisement domains (see
+  # http://winhelp2002.mvps.org/hosts.htm)
+  environment.etc."hosts".source =
+    pkgs.fetchurl {
+      url = "http://winhelp2002.mvps.org/hosts.txt";
+      sha256 = "18as5cm295yyrns4i2hzxlb1h52x68gbnb1b3yksvzqs283pvbfi";
+    };
+
   # Make it easier to work with external scripts
   system.activationScripts.fhsCompat = ''
     fhscompat=0  # set to 1 or 0
