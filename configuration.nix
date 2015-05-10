@@ -751,6 +751,11 @@ in
         read only = yes
         guest ok = yes
 
+        [programs]
+        path = /data/programs/
+        read only = yes
+        guest ok = yes
+
         [backups]
         path = /media/3tb/backups/
         read only = yes
