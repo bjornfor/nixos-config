@@ -605,6 +605,12 @@ in
       SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", MODE="0664", GROUP="wheel"
     '';
 
+    postfix = {
+      enable = (hostname == myDesktop);
+      domain = "bforsman.name";
+      hostname = "bforsman.name";
+    };
+
     lighttpd = {
       enable = (hostname == myDesktop);
       mod_status = true;
