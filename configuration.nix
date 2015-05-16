@@ -671,7 +671,7 @@ in
           #enable-http-clone=1
 
           # Specify clone URLs using macro expansion
-          clone-url=http://${hostname}/cgit/$CGIT_REPO_URL git@${hostname}:$CGIT_REPO_URL
+          clone-url=http://bforsman.name/cgit/$CGIT_REPO_URL git@bforsman.name:$CGIT_REPO_URL
 
           # Enable 'stats' page and set big upper range
           max-stats=year
