@@ -705,6 +705,9 @@ in
           readme=:INSTALL.txt
           readme=:INSTALL
 
+          # Group repositories on the index page by sub-directory name
+          section-from-path=1
+
           # scan-path must be last so that earlier settings take effect when
           # scanning
           scan-path=/srv/git
