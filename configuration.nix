@@ -541,6 +541,7 @@ in
   virtualisation.lxc.usernetConfig = ''
     bfo veth lxcbr0 10
   '';
+  virtualisation.docker.enable = true;
   services = {
     fail2ban.enable = true;
 
