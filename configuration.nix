@@ -632,6 +632,15 @@ in
         # /transmission (no trailing slash).
         url.redirect = ( "^/transmission/(web)?$" => "/transmission" )
 
+        # Enable HTTPS
+        # See documentation: http://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL
+        $SERVER["socket"] == ":443" {
+          ssl.engine = "enable"
+          #ssl.pemfile = "/etc/lighttpd/certs/lighttpd.pem"  # my self-signed cert
+          ssl.pemfile = "/etc/lighttpd/certs/bforsman.name.pem"  # my cert
+          ssl.ca-file = "/etc/lighttpd/certs/intermediate_and_root_ca.pem"
+        }
+
         # Block access to certain URLs if remote IP is not on LAN
         $HTTP["remoteip"] != "192.168.1.0/24" {
             $HTTP["url"] =~ "^/transmission/.*" {
