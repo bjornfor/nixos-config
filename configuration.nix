@@ -643,7 +643,7 @@ in
 
         # Block access to certain URLs if remote IP is not on LAN
         $HTTP["remoteip"] != "192.168.1.0/24" {
-            $HTTP["url"] =~ "(^/transmission/.*|^/server-.*)" {
+            $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*)" {
                 url.access-deny = ( "" )
             }
         }
