@@ -169,6 +169,16 @@ in
       ];
       isNormalUser = true;
       initialPassword = "initialpw";
+      # Subordinate user ids that user is allowed to use. They are set into
+      # /etc/subuid and are used by newuidmap for user namespaces. (Needed for
+      # LXC.)
+      subUidRanges = [
+        { startUid = 100000; count = 65536; }
+      ];
+      subGidRanges = [
+        { startGid = 100000; count = 65536; }
+      ];
+
     };
   };
 
@@ -528,6 +538,10 @@ in
 
   ##### Services #####
   virtualisation.libvirtd.enable = true;
+  virtualisation.lxc.enable = true;
+  virtualisation.lxc.usernetConfig = ''
+    bfo veth lxcbr0 10
+  '';
   services = {
     fail2ban.enable = true;
 
