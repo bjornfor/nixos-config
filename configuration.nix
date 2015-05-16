@@ -472,7 +472,6 @@ in
     remmina
     rmlint
     rtl-sdr
-    rubyLibs.taskjuggler
     saleae-logic
     samba
     screen
