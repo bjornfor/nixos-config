@@ -154,6 +154,7 @@ in
         "adm"
         "audio"
         "dialout"
+        "docker"
         "libvirtd"
         "networkmanager"
         "plugdev"
