@@ -643,11 +643,7 @@ in
 
         # Block access to certain URLs if remote IP is not on LAN
         $HTTP["remoteip"] != "192.168.1.0/24" {
-            $HTTP["url"] =~ "^/transmission/.*" {
-                url.access-deny = ( "" )
-            }
-            # Hide lighttpd stats and config pages
-            $HTTP["url"] =~ "^/server-.*" {
+            $HTTP["url"] =~ "(^/transmission/.*|^/server-.*)" {
                 url.access-deny = ( "" )
             }
         }
