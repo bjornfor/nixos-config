@@ -9,6 +9,8 @@ let
   myLaptop  = "nixos-laptop"; # Similar, but no webserver etc
   hostname  = myDesktop;      # Select between desktop/laptop setup
 
+  myDomain = "bforsman.name";
+
   # Select Linux version
   linuxPackages = pkgs.linuxPackages;
 
@@ -622,8 +624,8 @@ in
 
     postfix = {
       enable = (hostname == myDesktop);
-      domain = "bforsman.name";
-      hostname = "bforsman.name";
+      domain = myDomain;
+      hostname = myDomain;
     };
 
     lighttpd = {
@@ -671,7 +673,7 @@ in
           #enable-http-clone=1
 
           # Specify clone URLs using macro expansion
-          clone-url=http://bforsman.name/cgit/$CGIT_REPO_URL git@bforsman.name:$CGIT_REPO_URL
+          clone-url=http://${myDomain}/cgit/$CGIT_REPO_URL git@${myDomain}:$CGIT_REPO_URL
 
           # Enable 'stats' page and set big upper range
           max-stats=year
