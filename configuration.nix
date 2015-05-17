@@ -68,6 +68,8 @@ let
         };
       };
 
+    phpSockName1 = "/run/phpfpm/pool1.sock";
+
 in
 {
 
@@ -632,8 +634,32 @@ in
       enable = (hostname == myDesktop);
       mod_status = true;
       mod_userdir = true;
-      enableModules = [ "mod_alias" "mod_proxy" "mod_access" ];
-      extraConfig = ''
+      enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" ];
+      extraConfig =
+        let
+          collectd-graph-panel =
+            pkgs.stdenv.mkDerivation rec {
+              name = "collectd-graph-panel-${version}";
+              version = "0.4.1";
+              src = pkgs.fetchzip {
+                name = "${name}-src";
+                url = "https://github.com/pommi/CGP/archive/v${version}.tar.gz";
+                sha256 = "14jm7jidp4z0vcd9rcblrqkp6mfbmvc548biwrjylm6yvdjgqb9l";
+              };
+              buildCommand = ''
+                mkdir -p "$out"
+                cp -r "$src"/. "$out"
+                chmod +w "$out"/conf
+                cat > "$out"/conf/config.local.php << EOF
+                <?php
+                \$CONFIG['datadir'] = '/var/lib/collectd';
+                \$CONFIG['rrdtool'] = '${pkgs.rrdtool}/bin/rrdtool';
+                \$CONFIG['graph_type'] = 'canvas';
+                ?>
+                EOF
+              '';
+            };
+        in ''
         dir-listing.activate = "enable"
         alias.url += ( "/munin" => "/var/www/munin" )
 
@@ -649,6 +675,18 @@ in
         # /transmission (no trailing slash).
         url.redirect = ( "^/transmission/(web)?$" => "/transmission" )
 
+        alias.url += ( "/collectd" => "${collectd-graph-panel}" )
+        $HTTP["url"] =~ "^/collectd" {
+          index-file.names += ( "index.php" )
+        }
+
+        fastcgi.server = (
+          ".php" => (
+            "localhost" => (
+              "socket" => "${phpSockName1}",
+            ))
+        )
+
         # Enable HTTPS
         # See documentation: http://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL
         $SERVER["socket"] == ":443" {
@@ -660,7 +698,7 @@ in
 
         # Block access to certain URLs if remote IP is not on LAN
         $HTTP["remoteip"] != "192.168.1.0/24" {
-            $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*)" {
+            $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^/collectd.*)" {
                 url.access-deny = ( "" )
             }
         }
@@ -713,6 +751,20 @@ in
           scan-path=/srv/git
         '';
       };
+    };
+
+    phpfpm.poolConfigs = {
+      pool1 = ''
+        listen = ${phpSockName1}
+        listen.group = lighttpd
+        user = nobody
+        pm = dynamic
+        pm.max_children = 75
+        pm.start_servers = 10
+        pm.min_spare_servers = 5
+        pm.max_spare_servers = 20
+        pm.max_requests = 500
+      '';
     };
 
     apcupsd = {
