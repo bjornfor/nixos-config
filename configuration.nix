@@ -831,7 +831,7 @@ in
     nfs.server = {
       enable = (hostname == myDesktop);
       exports = ''
-        /nix/ 192.168.1.0/24(ro)
+        /nix/ 192.168.1.0/24(ro,subtree_check)
       '';
     };
 
