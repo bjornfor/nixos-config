@@ -84,7 +84,7 @@ in
     "/".device = "/dev/disk/by-label/240gb";
     "/data".device = "/dev/disk/by-label/1.5tb";
     # My backup disk:
-    "/media/3tb" = { device = "/dev/disk/by-label/3tb"; options="ro"; };
+    "/backup" = { device = "/dev/disk/by-label/3tb"; options="ro"; };
   } else if hostname == myLaptop then {
     "/".device = "/dev/disk/by-label/nixos-ssd";
   } else throw "Missing fileSystems settings for hostname \"${hostname}\"";
@@ -900,7 +900,7 @@ in
         guest ok = yes
 
         [backups]
-        path = /media/3tb/backups/
+        path = /backup/backups/
         read only = yes
         guest ok = yes
       '' else "");
