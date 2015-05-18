@@ -894,8 +894,8 @@ in
         read only = yes
         guest ok = yes
 
-        [programs]
-        path = /data/programs/
+        [software]
+        path = /data/software/
         read only = yes
         guest ok = yes
 
