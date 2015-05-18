@@ -753,7 +753,7 @@ in
       };
     };
 
-    phpfpm.poolConfigs = {
+    phpfpm.poolConfigs = lib.mkIf config.services.lighttpd.enable {
       pool1 = ''
         listen = ${phpSockName1}
         listen.group = lighttpd
