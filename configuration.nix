@@ -844,13 +844,7 @@ in
         # in the log.
         <Plugin "df">
           MountPoint "/run/media/bfo/wd_apollo"
-          IgnoreSelected true
-        </Plugin>
-        <Plugin "df">
           MountPoint "/var/lib/docker/devicemapper"
-          IgnoreSelected true
-        </Plugin>
-        <Plugin "df">
           FSType "fuse.gvfsd-fuse"
           IgnoreSelected true
         </Plugin>
