@@ -845,7 +845,11 @@ in
         <Plugin "df">
           MountPoint "/run/media/bfo/wd_apollo"
           MountPoint "/var/lib/docker/devicemapper"
+          MountPoint "/nix/store"  # it's just a bind mount, already covered
           FSType "fuse.gvfsd-fuse"
+          FSType "cgroup"
+          FSType "tmpfs"
+          FSType "devtmpfs"
           IgnoreSelected true
         </Plugin>
 
