@@ -841,7 +841,7 @@ in
         </Plugin>
 
         # Ignore some paths/filesystems that cause "Permission denied" spamming
-        # in the log.
+        # in the log and/or are uninteresting or duplicates.
         <Plugin "df">
           MountPoint "/run/media/bfo/wd_apollo"
           MountPoint "/var/lib/docker/devicemapper"
