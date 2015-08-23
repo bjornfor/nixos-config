@@ -203,6 +203,7 @@ in
     extraOptions = ''
       gc-keep-outputs = true
       log-servers = http://hydra.nixos.org/log
+      build-cores = 0  # 0 means auto-detect number of CPUs (and use all)
     '';
   };
 
