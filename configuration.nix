@@ -542,6 +542,10 @@ in
     bfo veth lxcbr0 10
   '';
   virtualisation.docker.enable = true;
+
+  virtualisation.virtualbox.host.enable = (hostname == myDesktop);
+  virtualisation.virtualbox.host.enableHardening = true;
+
   services = {
     fail2ban.enable = true;
 
@@ -921,9 +925,6 @@ in
         address ${myLaptop}.local
       '';
     };
-
-    virtualboxHost.enable = (hostname == myDesktop);
-    virtualboxHost.enableHardening = true;
 
     mysql = {
       enable = (hostname == myDesktop);
