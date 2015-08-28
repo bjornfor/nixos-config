@@ -115,9 +115,9 @@ in
   boot.extraModprobeConfig = " options psmouse proto=imps ";
 
   boot.kernelPackages = linuxPackages // {
-    virtualbox = linuxPackages.virtualbox.override {
-      enableExtensionPack = (hostname == myDesktop);
-    };
+    #virtualbox = linuxPackages.virtualbox.override {
+    #  enableExtensionPack = (hostname == myDesktop);
+    #};
   };
   #boot.extraModulePackages = [ linuxPackages.lttng-modules ];  # fails on linux 3.18+
 
