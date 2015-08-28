@@ -304,6 +304,8 @@ in
     export PYTHONPATH="$(unset _tmp; for profile in $NIX_PROFILES; do _tmp="$profile/lib/python2.7/site-packages''${_tmp:+:}$_tmp"; done; echo "$PYTHONPATH''${PYTHONPATH:+:}$_tmp")"
   '';
 
+  environment.profileRelativeEnvVars.GRC_BLOCKS_PATH = [ "/share/gnuradio/grc/blocks" ];
+
   # Block advertisement domains (see
   # http://winhelp2002.mvps.org/hosts.htm)
   environment.etc."hosts".source =
