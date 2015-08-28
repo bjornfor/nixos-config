@@ -299,12 +299,12 @@ in
     export HISTSIZE=1000000         # big big history
     export HISTFILESIZE=$HISTSIZE
     shopt -s histappend             # append to history, don't overwrite it
-
-    # Append Python site-packages directories to PYTHONPATH (for each nix profile)
-    export PYTHONPATH="$(unset _tmp; for profile in $NIX_PROFILES; do _tmp="$profile/lib/python2.7/site-packages''${_tmp:+:}$_tmp"; done; echo "$PYTHONPATH''${PYTHONPATH:+:}$_tmp")"
   '';
 
-  environment.profileRelativeEnvVars.GRC_BLOCKS_PATH = [ "/share/gnuradio/grc/blocks" ];
+  environment.profileRelativeEnvVars = {
+    GRC_BLOCKS_PATH = [ "/share/gnuradio/grc/blocks" ];
+    PYTHONPATH = [ "/lib/python2.7/site-packages" ];
+  };
 
   # Block advertisement domains (see
   # http://winhelp2002.mvps.org/hosts.htm)
