@@ -267,8 +267,6 @@ in
   # Restarting nscd fixes it.
   powerManagement.resumeCommands = "systemctl restart nscd";
 
-  environment.gnome3.packageSet = pkgs.gnome3_12;
-
   environment.shellAliases = {
     ".." = "cd ..";
     "..." = "cd ../..";
