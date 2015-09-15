@@ -546,6 +546,7 @@ in
     bfo veth lxcbr0 10
   '';
   virtualisation.docker.enable = true;
+  virtualisation.docker.storageDriver = "overlay";
 
   virtualisation.virtualbox.host.enable = (hostname == myDesktop);
   virtualisation.virtualbox.host.enableHardening = true;
