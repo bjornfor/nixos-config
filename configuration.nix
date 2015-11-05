@@ -949,6 +949,11 @@ in
       '';
     };
 
+    tftpd = {
+      enable = hostname == myDesktop;
+      path = "/srv/tftp";
+    };
+
     ntopng = {
       enable = true;
       extraConfig = "--disable-login";
