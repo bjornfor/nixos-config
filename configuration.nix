@@ -127,25 +127,6 @@ in
     hostName = hostname;
     firewall.enable = false;
     networkmanager.enable = true;
-    #networkmanager.packages = [ pkgs.networkmanager_pptp ];
-
-    # Associate with wireless network:
-    # iw dev <devname> connect [-w] <SSID> [<freq in MHz>] [<bssid>] [key 0:abcde d:1:6162636465]
-    #                Join the network with the given SSID (and frequency, BSSID).
-    #                                With -w, wait for the connect to finish or fail.
-    #
-    # wicd allows us to automatically associate with a network (wpa_supplicant
-    # only does the authentication). Without wicd we would have had to run
-    # "iwconfig wlan0 essid <your_ssid>" to associate with network. Run wicd-gtk
-    # for configuration (find your network and check the "Automatically
-    # connect..." button.
-    #wicd.enable = true;
-
-    # Enable wpa_supplicant daemon. It needs to be configured: run
-    # "wpa_passphrase <ssid> <password>" and copy the result to
-    # /etc/wpa_supplicant.conf. Multiple network={} directives can be in that
-    # file.
-    #wireless.enable = true; # XXX: THIS IS THE ONE I COMMENTED OUT
   };
 
 
