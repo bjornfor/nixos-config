@@ -258,9 +258,7 @@ in
     "..4" = "cd ../../../..";
   };
 
-  environment.shellInit = ''
-    #export PYTHONPATH=$PYTHONPATH:/run/current-system/sw/lib/python2.7/site-packages/
-  '' + lib.optionalString (hostname == myLaptop) ''
+  environment.shellInit = lib.optionalString (hostname == myLaptop) ''
     # "xset" makes my Asus UL30A touchpad move quite nicely.
     test -n "$DISPLAY" && xset mouse 10/4 0
   '';
