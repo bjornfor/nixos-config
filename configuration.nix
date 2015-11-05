@@ -456,6 +456,8 @@ in
     patchelf
     pavucontrol
     pencil
+    picocom
+    (pidgin-with-plugins.override { plugins = [ pidginsipe ]; })
     poppler
     posix_man_pages
     powertop
