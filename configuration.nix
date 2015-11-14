@@ -969,4 +969,76 @@ in
     serviceConfig.ExecStart = /home/bfo/bin/backup.sh;
   };
 
+  systemd.services.attic-backup = {
+    # Restore everything:
+    # $ cd /mnt/restore
+    # $ [sudo] attic extract -v /data/myrepo::archive-name
+    #
+    # Manual/interactive restore:
+    # $ attic mount /data/myrepo /mnt/mymountpoint
+    # $ ls -1 /mnt/mymountpoint
+    # my-machine-20150220T234453
+    # my-machine-20150321T114708
+    # $ ### restore files...
+    # $ fusermount -u attic_mnt
+    enable = hostname == myDesktop;
+    description = "Attic Backup Service";
+    startAt = "*-*-* 05:15:00";  # see systemd.time(7)
+    environment = {
+      ATTIC_RELOCATED_REPO_ACCESS_IS_OK = "true";
+    };
+    path = with pkgs; [
+      attic utillinux coreutils
+    ];
+    serviceConfig.ExecStart =
+      let
+        # - The initial backup repo must be created manually:
+        #     attic init $repository
+        # - Use writeScriptBin instead of writeScript, so that argv[0] (logged
+        #   to the journal) doesn't include the long nix store path hash.
+        #   (Prefixing the ExecStart= command with '@' doesn't work because we
+        #   start a shell (new process) that creates a new argv[0].)
+        atticBackup = pkgs.writeScriptBin "attic-backup" ''
+          #!${pkgs.bash}/bin/sh
+          repository="/backup/backups/backup.attic"
+
+          if ! mount -o remount,rw /backup; then
+               echo "Failed to remount /backup read-write"
+               exit 1
+          fi
+
+          echo "Running 'attic create [...]'"
+          attic create \
+                --stats \
+                --verbose \
+                --do-not-cross-mountpoints \
+                --exclude-caches \
+                --exclude /nix/store/ \
+                --exclude /tmp/ \
+                --exclude /var/tmp/ \
+                "$repository::${config.networking.hostName}-$(date +%Y%m%dT%H%M%S)" \
+                / /data
+          create_ret=$?
+
+          echo "Running 'attic prune [...]'"
+          attic prune --stats --verbose \
+              --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
+              "$repository"
+          prune_ret=$?
+
+          if ! mount -o remount,ro /backup; then
+               echo "Failed to remount /backup read-only"
+               exit 1
+          fi
+
+          # Exit with error if either command failed
+          if [ $create_ret != 0 -o $prune_ret != 0 ]; then
+              echo "Create and/or prune operation failed."
+              exit 1
+          fi
+        '';
+        atticBackupScript = "${atticBackup}/bin/attic-backup";
+      in
+        atticBackupScript;
+  };
 }
