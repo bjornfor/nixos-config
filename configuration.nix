@@ -441,7 +441,6 @@ in
     posix_man_pages
     powertop
     psmisc
-    pthreadmanpages
     pulseview  # sigrok GUI
     pv
     pwgen
