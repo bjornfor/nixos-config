@@ -532,6 +532,8 @@ in
   virtualisation.virtualbox.host.enableHardening = true;
 
   services = {
+    unclutter.enable = true;
+
     fail2ban.enable = true;
 
     openssh.enable = true;
