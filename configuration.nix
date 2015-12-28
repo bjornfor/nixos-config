@@ -1024,6 +1024,7 @@ in
           echo "Running 'attic prune [...]'"
           attic prune --stats --verbose \
               --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
+              --prefix ${config.networking.hostName} \
               "$repository"
           prune_ret=$?
 
