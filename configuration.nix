@@ -295,6 +295,11 @@ in
       sha256 = "18as5cm295yyrns4i2hzxlb1h52x68gbnb1b3yksvzqs283pvbfi";
     };
 
+  # for "attic mount -o allow_other" to be shareable with samba
+  environment.etc."fuse.conf".text = ''
+    user_allow_other
+  '';
+
   # Make it easier to work with external scripts
   system.activationScripts.fhsCompat = ''
     fhscompat=0  # set to 1 or 0
@@ -887,6 +892,11 @@ in
         path = /backup/backups/
         read only = yes
         guest ok = yes
+
+        [attic-backups]
+        path = /attic-backups-mnt/
+        read only = yes
+        guest ok = yes
       '' else "");
     };
 
@@ -1008,6 +1018,8 @@ in
                exit 1
           fi
 
+          systemctl stop attic-backup-mountpoint
+
           echo "Running 'attic create [...]'"
           attic create \
                 --stats \
@@ -1028,6 +1040,8 @@ in
               "$repository"
           prune_ret=$?
 
+          systemctl start attic-backup-mountpoint
+
           if ! mount -o remount,ro /backup; then
                echo "Failed to remount /backup read-only"
                exit 1
@@ -1042,5 +1056,24 @@ in
         atticBackupScript = "${atticBackup}/bin/attic-backup";
       in
         atticBackupScript;
+  };
+
+  systemd.services.attic-backup-mountpoint = {
+    enable = hostname == myDesktop;
+    description = "Mount Attic Backup Repository";
+    wantedBy = [ "multi-user.target" ];
+    before = [ "samba.target" ];
+    # "attic create" seems to hang forever on wait4(-1, ..) if "attic mount" is
+    # active on the same repo. I tried resolving the conflict with systemd
+    # "Conflicts=" directive but doesn't seem to work; the other unit is not
+    # stopped when this unit is started. Workaround: manually stopping/starting
+    # this unit inside attic-backup.service.
+    serviceConfig.Conflicts = [ "attic-backup.service" ];
+    serviceConfig.ExecStartPre = ''
+      ${pkgs.coreutils}/bin/mkdir -p /attic-backups-mnt
+    '';
+    serviceConfig.ExecStart = ''
+      ${pkgs.attic}/bin/attic mount --foreground -o allow_other /backup/backups/backup.attic /attic-backups-mnt
+    '';
   };
 }
