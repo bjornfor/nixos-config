@@ -465,7 +465,7 @@ in
     (if hostname == myLaptop then
       # My laptop (Asus UL30A) has upside down webcam. Flip it back.
       let
-        libv4l_i686 = callPackage_i686 <nixpkgs/pkgs/os-specific/linux/v4l-utils> { withQt4 = false; };
+        libv4l_i686 = callPackage_i686 <nixpkgs/pkgs/os-specific/linux/v4l-utils> { qt5 = null; };
       in
       lib.overrideDerivation skype (attrs: {
         installPhase = attrs.installPhase +
