@@ -491,7 +491,7 @@ in
     sweethome3d.application
     taskwarrior
     tcpdump
-    teamviewer
+    #teamviewer  # changes hash all the time
     telnet
     tig
     traceroute
