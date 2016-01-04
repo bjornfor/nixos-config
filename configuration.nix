@@ -540,6 +540,9 @@ in
     unclutter.enable = true;
 
     fail2ban.enable = true;
+    fail2ban.jails.ssh-iptables = ''
+      enabled = true
+    '';
 
     openssh.enable = true;
     openssh.passwordAuthentication = false;
