@@ -287,6 +287,10 @@ in
     PYTHONPATH = [ "/lib/python2.7/site-packages" ];
   };
 
+  environment.sessionVariables = {
+    NIX_AUTO_INSTALL = "1";
+  };
+
   # Block advertisement domains (see
   # http://winhelp2002.mvps.org/hosts.htm)
   environment.etc."hosts".source =
