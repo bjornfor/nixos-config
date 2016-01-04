@@ -695,7 +695,7 @@ in
         }
 
         # Block access to certain URLs if remote IP is not on LAN
-        $HTTP["remoteip"] != "192.168.1.0/24" {
+        $HTTP["remoteip"] !~ "^(192\.168\.1|127\.0\.0\.1)" {
             $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^/collectd.*)" {
                 url.access-deny = ( "" )
             }
