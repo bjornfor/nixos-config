@@ -515,7 +515,7 @@ in
     wpa_supplicant_gui
     w3m
     xchat
-    youtubeDL
+    youtube-dl
   ];
 
 
