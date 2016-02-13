@@ -12,7 +12,7 @@ let
   myDomain = "bforsman.name";
 
   # Select Linux version
-  linuxPackages = pkgs.linuxPackages;
+  linuxPackages = pkgs.linuxPackages_4_3;
 
   ltsa = { stdenv, fetchurl, unzip, jre }:
     stdenv.mkDerivation rec {
