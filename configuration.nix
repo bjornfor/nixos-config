@@ -377,7 +377,11 @@ in
     dos2unix
     dstat
     eagle
-    eclipses.eclipse_cpp_45
+    (eclipses.eclipseWithPlugins {
+      eclipse = eclipses.eclipse_cpp_45;
+      plugins = with eclipses.plugins;
+        [ cdt gnuarmeclipse ];
+    })
     elinks
     evtest
     file
