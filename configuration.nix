@@ -377,7 +377,7 @@ in
     dos2unix
     dstat
     eagle
-    eclipses.eclipse_cpp_43
+    eclipses.eclipse_cpp_45
     elinks
     evtest
     file
