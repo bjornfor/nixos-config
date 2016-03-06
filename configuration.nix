@@ -139,6 +139,7 @@ in
       extraGroups = [
         "adm"
         "audio"
+        "cdrom"
         "dialout"
         "docker"
         "libvirtd"
