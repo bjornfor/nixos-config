@@ -110,7 +110,7 @@ in
              throw "Missing boot.loader.grub.device setting for hostname \"${hostname}\"";
   };
 
-  # This fixes the touchpad resoultion and 2-finger scroll on my Asus UL30A
+  # This fixes the touchpad resolution and 2-finger scroll on my Asus UL30A
   # laptop (and it doesn't hurt my desktop settings)
   boot.kernelModules = [ "psmouse" ];
   boot.extraModprobeConfig = " options psmouse proto=imps ";
