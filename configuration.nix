@@ -548,7 +548,8 @@ in
   virtualisation.virtualbox.host.enableHardening = true;
 
   services = {
-    unclutter.enable = true;
+    # TODO: When mouse gets hidden, the element below mouse gets focus (annoying).
+    #unclutter.enable = true;
 
     fail2ban.enable = true;
     fail2ban.jails.ssh-iptables = ''
