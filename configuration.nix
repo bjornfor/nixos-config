@@ -949,7 +949,7 @@ in
       enable = (hostname == myDesktop);
       exports = ''
         /nix/ 192.168.1.0/24(ro,subtree_check)
-        /srv/nfs/wandboard/ 192.168.1.0/24(rw,no_root_squash,no_subtree_check)
+        #/srv/nfs/wandboard/ 192.168.1.0/24(rw,no_root_squash,no_subtree_check)
       '';
     };
 
