@@ -960,7 +960,10 @@ in
     };
 
     ntopng = {
-      enable = true;
+      # It constantly breaks due to geoip database hash changes.
+      # TODO: See if fetching geoip databases can be done with a systemd
+      # service instead of using Nix.
+      #enable = true;
       extraConfig = "--disable-login";
     };
   };
