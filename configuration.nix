@@ -402,6 +402,7 @@ in
     graphviz
     gsmartcontrol
     hdparm
+    hexchat
     htop
     iftop
     ioping
@@ -531,7 +532,6 @@ in
     wpa_supplicant
     wpa_supplicant_gui
     w3m
-    xchat
     youtube-dl
   ];
 
