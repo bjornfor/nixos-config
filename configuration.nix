@@ -552,7 +552,9 @@ in
   virtualisation.virtualbox.host.enableHardening = true;
 
   services = {
-    # TODO: When mouse gets hidden, the element below mouse gets focus (annoying).
+    # TODO: When mouse gets hidden, the element below mouse gets focus
+    # periodically (annoying). Might try the unclutter fork (see Archlinux) or
+    # xbanish.
     #unclutter.enable = true;
 
     fail2ban.enable = true;
