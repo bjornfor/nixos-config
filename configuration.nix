@@ -583,8 +583,9 @@ in
       #displayManager.lightdm.enable = true;
       #displayManager.kdm.enable = true;
       #displayManager.slim.enable = true;
-      displayManager.auto.enable = true;
-      displayManager.auto.user = "bfo";
+      #displayManager.auto.enable = true;
+      #displayManager.auto.user = "bfo";
+      displayManager.gdm.enable = true;
 
       # Select desktop environment
       desktopManager.gnome3.enable = true;
