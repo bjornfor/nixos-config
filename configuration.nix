@@ -571,7 +571,8 @@ in
     '';
 
     # cups, for printing documents
-    #printing.enable = true;
+    printing.enable = true;
+    printing.gutenprint = true; # support Canon printers (option added after NixOS 15.09)
 
     xserver = {
       enable = true;
