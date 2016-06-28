@@ -586,6 +586,8 @@ in
       #displayManager.auto.enable = true;
       #displayManager.auto.user = "bfo";
       displayManager.gdm.enable = true;
+      displayManager.gdm.autoLogin.enable = true;
+      displayManager.gdm.autoLogin.user = "bfo";
 
       # Select desktop environment
       desktopManager.gnome3.enable = true;
