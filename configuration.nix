@@ -120,7 +120,7 @@ in
     #  enableExtensionPack = (hostname == myDesktop);
     #};
   };
-  #boot.extraModulePackages = [ linuxPackages.lttng-modules ];  # fails on linux 3.18+
+  boot.extraModulePackages = [ linuxPackages.lttng-modules ];
 
 
   ##### Networking #####
