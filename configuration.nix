@@ -145,6 +145,7 @@ in
         "libvirtd"
         "networkmanager"
         "plugdev"
+        "scanner"
         "systemd-journal"
         "tracing"
         "transmission"
@@ -238,6 +239,8 @@ in
   };
 
   time.timeZone = "Europe/Oslo";
+
+  hardware.sane.enable = true; # scanner support
 
   hardware.pulseaudio.enable = true;
 
