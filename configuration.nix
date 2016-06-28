@@ -632,7 +632,7 @@ in
     '';
 
     postfix = {
-      enable = false; # incompatible with linux 4.3
+      enable = false;
       domain = myDomain;
       hostname = myDomain;
     };
