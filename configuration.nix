@@ -11,9 +11,6 @@ let
 
   myDomain = "bforsman.name";
 
-  # Select Linux version
-  linuxPackages = pkgs.linuxPackages;
-
   ltsa = { stdenv, fetchurl, unzip, jre }:
     stdenv.mkDerivation rec {
       name = "ltsa-3.0";
@@ -115,8 +112,9 @@ in
   boot.kernelModules = [ "psmouse" ];
   boot.extraModprobeConfig = " options psmouse proto=imps ";
 
-  boot.kernelPackages = linuxPackages;
-  boot.extraModulePackages = [ linuxPackages.lttng-modules ];
+  # Select Linux version
+  boot.kernelPackages = pkgs.linuxPackages;
+  boot.extraModulePackages = [ config.boot.kernelPackages.lttng-modules ];
 
 
   ##### Networking #####
@@ -420,7 +418,7 @@ in
     libfaketime
     libreoffice
     linssid
-    linuxPackages.perf
+    config.boot.kernelPackages.perf
     lshw
     lsof
     ltrace
