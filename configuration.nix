@@ -115,11 +115,7 @@ in
   boot.kernelModules = [ "psmouse" ];
   boot.extraModprobeConfig = " options psmouse proto=imps ";
 
-  boot.kernelPackages = linuxPackages // {
-    #virtualbox = linuxPackages.virtualbox.override {
-    #  enableExtensionPack = (hostname == myDesktop);
-    #};
-  };
+  boot.kernelPackages = linuxPackages;
   boot.extraModulePackages = [ linuxPackages.lttng-modules ];
 
 
@@ -232,6 +228,7 @@ in
     allowUnfree = true;  # allow proprietary packages
     firefox.enableAdobeFlash = true;
     chromium.enablePepperFlash = true;
+    #virtualbox.enableExtensionPack = (hostname == myDesktop);
     packageOverrides = pkgs: {
       #qtcreator = pkgs.qtcreator.override { qt48 = pkgs.qt48Full; };
       #qemu = pkgs.qemu.override { spiceSupport = true; };
