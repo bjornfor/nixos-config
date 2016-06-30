@@ -454,7 +454,7 @@ in
     parted
     patchelf
     pavucontrol
-    pencil
+    #pencil # https://github.com/prikhi/pencil/issues/840
     picocom
     (pidgin-with-plugins.override { plugins = [ pidginsipe ]; })
     poppler
