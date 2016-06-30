@@ -615,7 +615,12 @@ in
     };
 
     # Enable avahi/mdns
-    avahi = { enable = true; nssmdns = true; };
+    avahi = {
+      enable = true;
+      nssmdns = true;
+      publish.enable = true;
+      publish.addresses = true;
+    };
 
     locate.enable = true;
 
