@@ -251,10 +251,6 @@ in
   # KDE displays a warning if this isn't enabled
   powerManagement.enable = true;
 
-  # Hostname lookup doesn't work after system suspend.
-  # Restarting nscd fixes it.
-  powerManagement.resumeCommands = "systemctl restart nscd";
-
   environment.shellAliases = {
     ".." = "cd ..";
     "..." = "cd ../..";
