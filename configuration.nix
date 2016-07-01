@@ -6,7 +6,7 @@
 
 let
   myDesktop = "mini";   # Runs a webserver, UPS daemon, ...
-  myLaptop  = "nixos-laptop"; # Similar, but no webserver etc
+  myLaptop  = "ul30a"; # Similar, but no webserver etc
   hostname  = myDesktop;      # Select between desktop/laptop setup
 
   myDomain = "bforsman.name";
