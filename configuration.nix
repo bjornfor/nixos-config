@@ -533,6 +533,7 @@ in
     wpa_supplicant
     wpa_supplicant_gui
     w3m
+    xpra
     youtube-dl
   ];
 
