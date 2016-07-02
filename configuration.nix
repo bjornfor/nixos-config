@@ -517,6 +517,7 @@ in
     unoconv
     unrar
     unzip
+    usbutils
     vifm
     vim_configurable
     virtmanager
