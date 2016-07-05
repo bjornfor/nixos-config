@@ -242,7 +242,10 @@ in
 
   hardware.sane.enable = true; # scanner support
 
-  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio = {
+    enable = true;
+    package = pkgs.pulseaudioFull;
+  };
 
   hardware.bluetooth.enable = true;
 
