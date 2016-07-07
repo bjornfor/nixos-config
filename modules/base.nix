@@ -1,16 +1,6 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, lib, pkgs, ... }:
 
 let
-  myDesktop = "mini";   # Runs a webserver, UPS daemon, ...
-  myLaptop  = "ul30a"; # Similar, but no webserver etc
-  hostname  = myDesktop;      # Select between desktop/laptop setup
-
-  myDomain = "bforsman.name";
-
   ltsa = { stdenv, fetchurl, unzip, jre }:
     stdenv.mkDerivation rec {
       name = "ltsa-3.0";
@@ -64,28 +54,12 @@ let
         license = "unknown";
       };
     };
-
-  phpSockName1 = "/run/phpfpm/pool1.sock";
-
 in
 {
-
   imports = [
     # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+    ../hardware-configuration.nix
   ];
-
-
-  ##### Filesystems, bootloader and kernel modules #####
-  fileSystems = if hostname == myDesktop then {
-    "/".device = "/dev/disk/by-label/240gb";
-    "/data".device = "/dev/disk/by-label/1.5tb";
-    "/ssd-120".device = "/dev/disk/by-id/ata-KINGSTON_SH103S3120G_50026B722600AA5F-part1";
-    # My backup disk:
-    "/backup" = { device = "/dev/disk/by-label/3tb"; options = [ "ro" ]; };
-  } else if hostname == myLaptop then {
-    "/".device = "/dev/disk/by-label/nixos-ssd";
-  } else throw "Missing fileSystems settings for hostname \"${hostname}\"";
 
   # List swap partitions activated at boot time.
   #swapDevices = [
@@ -100,11 +74,7 @@ in
     # handy if you have NixOS installed on a USB stick that gets a different
     # device name when you plug it in different ports or on different machines.
     # Then you install using "/dev/..." and set it to "nodev" afterwards.
-    device = if hostname == myDesktop then
-               "/dev/disk/by-id/ata-KINGSTON_SH103S3240G_50026B722A027195"
-             else if hostname == myLaptop then
-               "/dev/disk/by-id/ata-INTEL_SSDSA2CW160G3_CVPR106000FW160DGN" else
-             throw "Missing boot.loader.grub.device setting for hostname \"${hostname}\"";
+    #device = /*lib.mkDefault*/ "nodev";
   };
 
   # This fixes the touchpad resolution and 2-finger scroll on my Asus UL30A
@@ -116,16 +86,11 @@ in
   boot.kernelPackages = pkgs.linuxPackages;
   boot.extraModulePackages = [ config.boot.kernelPackages.lttng-modules ];
 
-
-  ##### Networking #####
   networking = {
-    hostName = hostname;
     firewall.enable = false;
     networkmanager.enable = true;
   };
 
-
-  ##### Users #####
   users.extraUsers = {
     bfo = {
       description = "Bjørn Forsman";
@@ -172,8 +137,6 @@ in
     wireshark = { gid = 503; };
   };
 
-
-  ##### Misc stuff (shellInit, powerManagement etc.) #####
   nix = {
     useChroot = true;
     # To not get caught by the '''"nix-collect-garbage -d" makes "nixos-rebuild
@@ -226,7 +189,6 @@ in
     allowUnfree = true;  # allow proprietary packages
     firefox.enableAdobeFlash = true;
     chromium.enablePepperFlash = true;
-    #virtualbox.enableExtensionPack = (hostname == myDesktop);
     packageOverrides = pkgs: {
       #qtcreator = pkgs.qtcreator.override { qt48 = pkgs.qt48Full; };
       #qemu = pkgs.qemu.override { spiceSupport = true; };
@@ -256,11 +218,6 @@ in
     "..3" = "cd ../../..";
     "..4" = "cd ../../../..";
   };
-
-  environment.shellInit = lib.optionalString (hostname == myLaptop) ''
-    # "xset" makes my Asus UL30A touchpad move quite nicely.
-    test -n "$DISPLAY" && xset mouse 10/4 0
-  '';
 
   environment.interactiveShellInit = ''
     # A nix query helper function
@@ -343,8 +300,6 @@ in
 
   programs.bash.enableCompletion = true;
 
-
-  ##### System packages #####
   environment.systemPackages = with pkgs; [
     (callPackage ltsa {})
     (asciidoc-full.override { enableExtraPlugins = true; })
@@ -478,21 +433,7 @@ in
     sigrok-cli
     silver-searcher
     simplescreenrecorder
-    (if hostname == myLaptop then
-      # My laptop (Asus UL30A) has upside down webcam. Flip it back.
-      let
-        libv4l_i686 = callPackage_i686 <nixpkgs/pkgs/os-specific/linux/v4l-utils> { qt5 = null; };
-      in
-      lib.overrideDerivation skype (attrs: {
-        installPhase = attrs.installPhase +
-          ''
-            sed -i "2iexport LD_PRELOAD=${libv4l_i686}/lib/v4l1compat.so" "$out/bin/skype"
-          '';
-      })
-    else
-      # Other machines don't need the flip (use plain skype).
-      skype
-    )
+    skype
     sloccount
     smartmontools
     socat
@@ -536,8 +477,6 @@ in
     youtube-dl
   ];
 
-
-  ##### Services #####
   virtualisation.libvirtd.enable = true;
   virtualisation.lxc.enable = true;
   virtualisation.lxc.usernetConfig = ''
@@ -546,7 +485,7 @@ in
   virtualisation.docker.enable = true;
   virtualisation.docker.storageDriver = "overlay";
 
-  virtualisation.virtualbox.host.enable = (hostname == myDesktop);
+  #virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.enableHardening = true;
 
   services = {
@@ -643,151 +582,8 @@ in
       SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", MODE="0664", GROUP="wheel"
     '';
 
-    postfix = {
-      enable = false;
-      domain = myDomain;
-      hostname = myDomain;
-    };
-
-    lighttpd = {
-      enable = (hostname == myDesktop);
-      mod_status = true;
-      mod_userdir = true;
-      enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" ];
-      extraConfig =
-        let
-          collectd-graph-panel =
-            pkgs.stdenv.mkDerivation rec {
-              name = "collectd-graph-panel-${version}";
-              version = "0.4.1";
-              src = pkgs.fetchzip {
-                name = "${name}-src";
-                url = "https://github.com/pommi/CGP/archive/v${version}.tar.gz";
-                sha256 = "14jm7jidp4z0vcd9rcblrqkp6mfbmvc548biwrjylm6yvdjgqb9l";
-              };
-              buildCommand = ''
-                mkdir -p "$out"
-                cp -r "$src"/. "$out"
-                chmod +w "$out"/conf
-                cat > "$out"/conf/config.local.php << EOF
-                <?php
-                \$CONFIG['datadir'] = '/var/lib/collectd';
-                \$CONFIG['rrdtool'] = '${pkgs.rrdtool}/bin/rrdtool';
-                \$CONFIG['graph_type'] = 'canvas';
-                ?>
-                EOF
-              '';
-            };
-        in ''
-        dir-listing.activate = "enable"
-        alias.url += ( "/munin" => "/var/www/munin" )
-
-        # Reverse proxy for transmission bittorrent client
-        proxy.server = (
-          "/transmission" => ( "transmission" => (
-                               "host" => "127.0.0.1",
-                               "port" => 9091
-                             ) )
-        )
-        # Fix transmission URL corner case: get error 409 if URL is
-        # /transmission/ or /transmission/web. Redirect those URLs to
-        # /transmission (no trailing slash).
-        url.redirect = ( "^/transmission/(web)?$" => "/transmission" )
-
-        alias.url += ( "/collectd" => "${collectd-graph-panel}" )
-        $HTTP["url"] =~ "^/collectd" {
-          index-file.names += ( "index.php" )
-        }
-
-        fastcgi.server = (
-          ".php" => (
-            "localhost" => (
-              "socket" => "${phpSockName1}",
-            ))
-        )
-
-        # Enable HTTPS
-        # See documentation: http://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL
-        $SERVER["socket"] == ":443" {
-          ssl.engine = "enable"
-          #ssl.pemfile = "/etc/lighttpd/certs/lighttpd.pem"  # my self-signed cert
-          ssl.pemfile = "/etc/lighttpd/certs/bforsman.name.pem"  # my cert
-          ssl.ca-file = "/etc/lighttpd/certs/intermediate_and_root_ca.pem"
-        }
-
-        # Block access to certain URLs if remote IP is not on LAN
-        $HTTP["remoteip"] !~ "^(192\.168\.1|127\.0\.0\.1)" {
-            $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^/collectd.*)" {
-                url.access-deny = ( "" )
-            }
-        }
-      '';
-      gitweb.enable = true;
-      cgit = {
-        enable = true;
-        configText = ''
-          # HTTP endpoint for git clone is enabled by default
-          #enable-http-clone=1
-
-          # Specify clone URLs using macro expansion
-          clone-url=http://${myDomain}/cgit/$CGIT_REPO_URL https://${myDomain}/cgit/$CGIT_REPO_URL git@${myDomain}:$CGIT_REPO_URL
-
-          # Enable 'stats' page and set big upper range
-          max-stats=year
-
-          # Allow download of tar.gz, tar.bz2, tar.xz and zip-files
-          snapshots=tar.gz tar.bz2 tar.xz zip
-
-          # Enable caching of up to 1000 output entries
-          cache-size=1000
-
-          # about-formatting.sh is impure (doesn't work)
-          #about-filter=${pkgs.cgit}/lib/cgit/filters/about-formatting.sh
-          # Add simple plain-text filter
-          about-filter=${pkgs.writeScript "cgit-about-filter.sh"
-            ''
-              #!${pkgs.stdenv.shell}
-              echo "<pre>"
-              ${pkgs.coreutils}/bin/cat
-              echo "</pre>"
-            ''
-          }
-
-          # Search for these files in the root of the default branch of
-          # repositories for coming up with the about page:
-          readme=:README.asciidoc
-          readme=:README.txt
-          readme=:README
-          readme=:INSTALL.asciidoc
-          readme=:INSTALL.txt
-          readme=:INSTALL
-
-          # Group repositories on the index page by sub-directory name
-          section-from-path=1
-
-          # scan-path must be last so that earlier settings take effect when
-          # scanning
-          scan-path=/srv/git
-        '';
-      };
-    };
-
-    phpfpm.poolConfigs = lib.mkIf config.services.lighttpd.enable {
-      pool1 = ''
-        listen = ${phpSockName1}
-        listen.group = lighttpd
-        user = nobody
-        pm = dynamic
-        pm.max_children = 75
-        pm.start_servers = 10
-        pm.min_spare_servers = 5
-        pm.max_spare_servers = 20
-        pm.max_requests = 500
-      '';
-    };
-
     apcupsd = {
-      enable = (hostname == myDesktop);
+      #enable = true;
       hooks.doshutdown = ''
         HOSTNAME=\$(${pkgs.nettools}/bin/hostname)
         printf \"Subject: apcupsd: \$HOSTNAME is shutting down\\n\" | ${pkgs.msmtp}/bin/msmtp -C /home/bfo/.msmtprc bjorn.forsman@gmail.com
@@ -810,7 +606,7 @@ in
     };
 
     transmission = {
-      enable = (hostname == myDesktop);
+      #enable = true;
       settings = {
         download-dir = "/srv/torrents/";
         incomplete-dir = "/srv/torrents/.incomplete/";
@@ -827,7 +623,7 @@ in
     # The NixOS service currently only sets perms *once*, so I've manually
     # loosened it up for now, to allow lighttpd to read RRD files.
     collectd = {
-      enable = hostname == myDesktop;
+      #enable = true;
       extraConfig = ''
         # Interval at which to query values. Can be overwritten on per plugin
         # with the 'Interval' option.
@@ -881,7 +677,7 @@ in
     };
 
     samba = {
-      enable = true;
+      #enable = true;
       nsswins = true;
       extraConfig = ''
         workgroup = WORKGROUP
@@ -892,45 +688,7 @@ in
         read only = no
         guest ok = yes
         force user = bfo
-      ''
-      + (if config.services.transmission.enable then ''
-        [torrents]
-        path = /srv/torrents
-        read only = no
-        guest ok = yes
-        force user = transmission
-      '' else "")
-      + (if hostname == myDesktop then ''
-        [media]
-        path = /data/media
-        read only = yes
-        guest ok = yes
-
-        [pictures]
-        path = /data/pictures/
-        read only = yes
-        guest ok = yes
-
-        [software]
-        path = /data/software/
-        read only = yes
-        guest ok = yes
-
-        [backups]
-        path = /backup/backups/
-        read only = yes
-        guest ok = yes
-
-        [attic-backups]
-        path = /attic-backups-mnt/
-        read only = yes
-        guest ok = yes
-      '' else "");
-    };
-
-    minidlna = {
-      enable = hostname == myDesktop;
-      mediaDirs = [ "/data/media" ];
+      '';
     };
 
     munin-node.enable = true;
@@ -942,47 +700,11 @@ in
       hosts = ''
         [${config.networking.hostName}]
         address localhost
-      '' + lib.optionalString (hostname == myLaptop) ''
-        [${myDesktop}]
-        address ${myDesktop}.local
-      '' + lib.optionalString (hostname == myDesktop) ''
-        [${myLaptop}]
-        address ${myLaptop}.local
       '';
     };
 
-    mysql = {
-      enable = (hostname == myDesktop);
-      package = pkgs.mysql;
-      extraOptions = ''
-        # This is added in the [mysqld] section in my.cnf
-      '';
-    };
-
-    nfs.server = {
-      enable = (hostname == myDesktop);
-      exports = ''
-        /nix/ 192.168.1.0/24(ro,subtree_check)
-        #/srv/nfs/wandboard/ 192.168.1.0/24(rw,no_root_squash,no_subtree_check)
-      '';
-    };
-
-    tftpd = {
-      enable = hostname == myDesktop;
-      path = "/srv/tftp";
-    };
-
-    ntopng = {
-      # It constantly breaks due to geoip database hash changes.
-      # TODO: See if fetching geoip databases can be done with a systemd
-      # service instead of using Nix.
-      #enable = true;
-      extraConfig = "--disable-login";
-    };
   };
 
-
-  ##### Custom services #####
   systemd.services.helloworld = {
     description = "Hello World Loop";
     #wantedBy = [ "multi-user.target" ];
@@ -1001,110 +723,5 @@ in
     serviceConfig = {
       ExecStart = "${pkgs.lttngTools}/bin/lttng-sessiond";
     };
-  };
-
-  systemd.services.my-backup = {
-    enable = hostname == myDesktop;
-    description = "My Backup";
-    startAt = "*-*-* 01:15:00";  # see systemd.time(7)
-    path = with pkgs; [ bash rsync openssh utillinux gawk nettools time cifs_utils ];
-    serviceConfig.ExecStart = /home/bfo/bin/backup.sh;
-  };
-
-  systemd.services.attic-backup = {
-    # Restore everything:
-    # $ cd /mnt/restore
-    # $ [sudo] attic extract -v /data/myrepo::archive-name
-    #
-    # Manual/interactive restore:
-    # $ attic mount /data/myrepo /mnt/mymountpoint
-    # $ ls -1 /mnt/mymountpoint
-    # my-machine-20150220T234453
-    # my-machine-20150321T114708
-    # $ ### restore files...
-    # $ fusermount -u attic_mnt
-    enable = hostname == myDesktop;
-    description = "Attic Backup Service";
-    startAt = "*-*-* 05:15:00";  # see systemd.time(7)
-    environment = {
-      ATTIC_RELOCATED_REPO_ACCESS_IS_OK = "true";
-    };
-    path = with pkgs; [
-      attic utillinux coreutils
-    ];
-    serviceConfig.ExecStart =
-      let
-        # - The initial backup repo must be created manually:
-        #     attic init $repository
-        # - Use writeScriptBin instead of writeScript, so that argv[0] (logged
-        #   to the journal) doesn't include the long nix store path hash.
-        #   (Prefixing the ExecStart= command with '@' doesn't work because we
-        #   start a shell (new process) that creates a new argv[0].)
-        atticBackup = pkgs.writeScriptBin "attic-backup" ''
-          #!${pkgs.bash}/bin/sh
-          repository="/backup/backups/backup.attic"
-
-          if ! mount -o remount,rw /backup; then
-               echo "Failed to remount /backup read-write"
-               exit 1
-          fi
-
-          systemctl stop attic-backup-mountpoint
-
-          echo "Running 'attic create [...]'"
-          attic create \
-                --stats \
-                --verbose \
-                --do-not-cross-mountpoints \
-                --exclude-caches \
-                --exclude /nix/store/ \
-                --exclude /tmp/ \
-                --exclude /var/tmp/ \
-                "$repository::${config.networking.hostName}-$(date +%Y%m%dT%H%M%S)" \
-                / /data
-          create_ret=$?
-
-          echo "Running 'attic prune [...]'"
-          attic prune --stats --verbose \
-              --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
-              --prefix ${config.networking.hostName} \
-              "$repository"
-          prune_ret=$?
-
-          systemctl start attic-backup-mountpoint
-
-          if ! mount -o remount,ro /backup; then
-               echo "Failed to remount /backup read-only"
-               exit 1
-          fi
-
-          # Exit with error if either command failed
-          if [ $create_ret != 0 -o $prune_ret != 0 ]; then
-              echo "Create and/or prune operation failed."
-              exit 1
-          fi
-        '';
-        atticBackupScript = "${atticBackup}/bin/attic-backup";
-      in
-        atticBackupScript;
-  };
-
-  systemd.services.attic-backup-mountpoint = {
-    enable = hostname == myDesktop;
-    description = "Mount Attic Backup Repository";
-    wantedBy = [ "multi-user.target" ];
-    before = [ "samba.target" ];
-    # "attic create" seems to hang forever on wait4(-1, ..) if "attic mount" is
-    # active on the same repo. I tried resolving the conflict with systemd
-    # "Conflicts=" directive but doesn't seem to work; the other unit is not
-    # stopped when this unit is started. Workaround: manually stopping/starting
-    # this unit inside attic-backup.service.
-    serviceConfig.Conflicts = [ "attic-backup.service" ];
-    serviceConfig.ExecStartPre = ''
-      ${pkgs.coreutils}/bin/mkdir -p /attic-backups-mnt
-    '';
-    serviceConfig.ExecStart = ''
-      ${pkgs.attic}/bin/attic mount --foreground -o allow_other /backup/backups/backup.attic /attic-backups-mnt
-    '';
   };
 }
