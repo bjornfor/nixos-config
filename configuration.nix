@@ -85,7 +85,7 @@ in
     "/data".device = "/dev/disk/by-label/1.5tb";
     "/ssd-120".device = "/dev/disk/by-id/ata-KINGSTON_SH103S3120G_50026B722600AA5F-part1";
     # My backup disk:
-    "/backup" = { device = "/dev/disk/by-label/3tb"; options="ro"; };
+    "/backup" = { device = "/dev/disk/by-label/3tb"; options = [ "ro" ]; };
   } else if hostname == myLaptop then {
     "/".device = "/dev/disk/by-label/nixos-ssd";
   } else throw "Missing fileSystems settings for hostname \"${hostname}\"";
