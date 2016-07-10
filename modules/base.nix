@@ -532,15 +532,6 @@ in
       #desktopManager.xfce.enable = true;
 
       libinput.enable = true;
-
-      # This also works, but the mouse has low resolution and accelsettings seems
-      # to be ignored (use 'synclient' to read/write settings).
-      synaptics = {
-        #enable = true;
-        twoFingerScroll = true;
-        maxSpeed = "5.0";
-        accelFactor = "0.001";
-      };
     };
 
     # Enable avahi/mdns
