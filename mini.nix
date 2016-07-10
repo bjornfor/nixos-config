@@ -239,7 +239,7 @@ in
 
     samba = {
       enable = true;
-      extraConfig = lib.mkAfter (''
+      extraConfig = ''
         [media]
         path = /data/media
         read only = yes
@@ -270,7 +270,7 @@ in
         read only = no
         guest ok = yes
         force user = transmission
-      '' else ""));
+      '' else "");
     };
 
     minidlna = {
