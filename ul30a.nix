@@ -14,11 +14,6 @@
 
   networking.hostName = "ul30a";
 
-  environment.shellInit = ''
-    # "xset" makes my Asus UL30A touchpad move quite nicely.
-    test -n "$DISPLAY" && xset mouse 10/4 0
-  '';
-
   nixpkgs.config = {
     packageOverrides = pkgs: {
       skype = # Skype sees the Asus UL30A camera as upside down. Flip it back.

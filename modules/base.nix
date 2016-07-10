@@ -77,11 +77,6 @@ in
     #device = /*lib.mkDefault*/ "nodev";
   };
 
-  # This fixes the touchpad resolution and 2-finger scroll on my Asus UL30A
-  # laptop (and it doesn't hurt my desktop settings)
-  boot.kernelModules = [ "psmouse" ];
-  boot.extraModprobeConfig = " options psmouse proto=imps ";
-
   # Select Linux version
   boot.kernelPackages = pkgs.linuxPackages;
   boot.extraModulePackages = [ config.boot.kernelPackages.lttng-modules ];
@@ -536,10 +531,7 @@ in
       #desktopManager.kde4.enable = true;
       #desktopManager.xfce.enable = true;
 
-      # Needed for the touchpad on my Asus UL30A laptop (this was broken for
-      # quite some time but started working again when I upgraded to NixOS
-      # 0.2pre4476_a5e4432-b076ab9)
-      multitouch.enable = true;
+      libinput.enable = true;
 
       # This also works, but the mouse has low resolution and accelsettings seems
       # to be ignored (use 'synclient' to read/write settings).
