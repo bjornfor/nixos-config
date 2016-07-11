@@ -105,9 +105,6 @@
 
   hardware.opengl.driSupport32Bit = true;
 
-  # KDE displays a warning if this isn't enabled
-  powerManagement.enable = true;
-
   environment.shellAliases = {
     ".." = "cd ..";
     "..." = "cd ../..";
