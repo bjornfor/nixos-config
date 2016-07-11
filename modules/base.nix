@@ -225,9 +225,6 @@
   virtualisation.docker.enable = true;
   virtualisation.docker.storageDriver = "overlay";
 
-  #virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.host.enableHardening = true;
-
   services = {
     # TODO: When mouse gets hidden, the element below mouse gets focus
     # periodically (annoying). Might try the unclutter fork (see Archlinux) or
