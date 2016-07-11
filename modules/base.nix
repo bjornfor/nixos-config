@@ -26,7 +26,6 @@
 
   # Select Linux version
   boot.kernelPackages = pkgs.linuxPackages;
-  boot.extraModulePackages = [ config.boot.kernelPackages.lttng-modules ];
 
   networking = {
     firewall.enable = false;
@@ -442,15 +441,6 @@
       ExecStart = ''
         ${pkgs.stdenv.shell} -c "while true; do echo Hello World; sleep 10; done"
       '';
-    };
-  };
-
-  systemd.services.lttng-sessiond = {
-    description = "LTTng Session Daemon";
-    wantedBy = [ "multi-user.target" ];
-    environment.MODULE_DIR = config.environment.variables.MODULE_DIR;
-    serviceConfig = {
-      ExecStart = "${pkgs.lttngTools}/bin/lttng-sessiond";
     };
   };
 }

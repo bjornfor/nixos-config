@@ -5,6 +5,8 @@
     ./base.nix
   ];
 
+  boot.extraModulePackages = [ config.boot.kernelPackages.lttng-modules ];
+
   environment.systemPackages = with pkgs; [
     (asciidoc-full.override { enableExtraPlugins = true; })
     anki  # flash card learning application
@@ -161,4 +163,13 @@
     wpa_supplicant_gui
     youtube-dl
   ];
+
+  systemd.services.lttng-sessiond = {
+    description = "LTTng Session Daemon";
+    wantedBy = [ "multi-user.target" ];
+    environment.MODULE_DIR = config.environment.variables.MODULE_DIR;
+    serviceConfig = {
+      ExecStart = "${pkgs.lttngTools}/bin/lttng-sessiond";
+    };
+  };
 }
