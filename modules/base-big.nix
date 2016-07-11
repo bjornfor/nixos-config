@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./base.nix
+    ./base-medium.nix
   ];
 
   boot.extraModulePackages = [ config.boot.kernelPackages.lttng-modules ];
