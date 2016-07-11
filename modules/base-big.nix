@@ -87,7 +87,6 @@
     mosh
     msmtp
     mutt
-    ncdu
     networkmanager
     networkmanagerapplet
     nfs-utils

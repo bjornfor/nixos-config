@@ -25,6 +25,7 @@
     htop
     iw
     lshw
+    ncdu
     parted
     patchelf
     pavucontrol
