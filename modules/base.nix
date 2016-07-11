@@ -5,6 +5,7 @@
     # Include the results of the hardware scan.
     ../hardware-configuration.nix
     ./users-and-groups.nix
+    ./custom-packages.nix
   ];
 
   # List swap partitions activated at boot time.
