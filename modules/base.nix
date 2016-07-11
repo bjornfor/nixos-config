@@ -47,7 +47,8 @@
   i18n.consoleKeyMap = "qwerty/no";
 
   security.setuidOwners = [
-    { # Limit access to dumpcap to root and members of the wireshark group.
+    (lib.mkIf (builtins.elem pkgs.wireshark config.environment.systemPackages) {
+      # Limit access to dumpcap to root and members of the wireshark group.
       source = "${pkgs.wireshark}/bin/dumpcap";
       program = "dumpcap";
       owner = "root";
@@ -55,8 +56,9 @@
       setuid = true;
       setgid = false;
       permissions = "u+rx,g+x";
-    }
-    { # Limit access to smartctl to root and members of the munin group.
+    })
+    (lib.mkIf (builtins.elem pkgs.smartmontools config.environment.systemPackages) {
+      # Limit access to smartctl to root and members of the munin group.
       source = "${pkgs.smartmontools}/bin/smartctl";
       program = "smartctl";
       owner = "root";
@@ -64,7 +66,7 @@
       setuid = true;
       setgid = false;
       permissions = "u+rx,g+x";
-    }
+    })
   ];
 
   security.sudo = {
