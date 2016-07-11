@@ -5,7 +5,9 @@
     ./base-medium.nix
   ];
 
-  boot.extraModulePackages = [ config.boot.kernelPackages.lttng-modules ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    lttng-modules sysdig
+  ];
 
   environment.systemPackages = with pkgs; [
     (asciidoc-full.override { enableExtraPlugins = true; })
@@ -141,6 +143,7 @@
     subversion
     surfraw
     sweethome3d.application
+    sysdig
     taskwarrior  # causes grep help text to be printed each time a new terminal is started (bash completion script is buggy)
     tcpdump
     #teamviewer  # changes hash all the time
