@@ -33,7 +33,6 @@
     dhex
     dia
     diffstat
-    dmidecode
     dos2unix
     dstat
     eagle

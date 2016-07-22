@@ -20,6 +20,7 @@
 
   environment.systemPackages = with pkgs; [
     chromium
+    dmidecode
     file
     gitFull
     htop
