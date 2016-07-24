@@ -77,7 +77,6 @@
     linssid
     ltsa
     config.boot.kernelPackages.perf
-    lsof
     ltrace
     lttng-tools
     lynx

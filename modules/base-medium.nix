@@ -26,6 +26,7 @@
     htop
     iw
     lshw
+    lsof
     ncdu
     parted
     patchelf
