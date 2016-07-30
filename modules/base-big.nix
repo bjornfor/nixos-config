@@ -44,6 +44,7 @@
     })
     elinks
     evtest
+    exiv2
     filezilla
     firefoxWrapper
     freecad
