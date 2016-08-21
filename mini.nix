@@ -7,6 +7,7 @@ in
 {
   imports = [
     ./modules/base-big.nix
+    ./modules/nextcloud.nix
   ];
 
   fileSystems = {
@@ -111,6 +112,7 @@ in
             }
         }
       '';
+      nextcloud.enable = true;
       gitweb.enable = true;
       cgit = {
         enable = true;
