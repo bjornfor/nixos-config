@@ -29,7 +29,7 @@ in
       '';
     };
 
-    webPrefix = mkOption {
+    urlPrefix = mkOption {
       type = types.str;
       default = "/nextcloud";
       example = "/";
@@ -71,13 +71,13 @@ in
       enableModules = [ "mod_alias" "mod_fastcgi" "mod_access" ];
       extraConfig = ''
         $HTTP["host"] =~ "${cfg.vhostsPattern}" {
-            alias.url += ( "${cfg.webPrefix}" => "${cfg.installPrefix}/" )
+            alias.url += ( "${cfg.urlPrefix}" => "${cfg.installPrefix}/" )
             # Prevent direct access to the data directory, like nextcloud warns
             # about in its admin interface "Security & setup warnings".
-            $HTTP["url"] =~ "^${cfg.webPrefix}/data" {
+            $HTTP["url"] =~ "^${cfg.urlPrefix}/data" {
                 url.access-deny = ("")
             }
-            $HTTP["url"] =~ "^${cfg.webPrefix}" {
+            $HTTP["url"] =~ "^${cfg.urlPrefix}" {
                 fastcgi.server = (
                     ".php" => (
                         "phpfpm-nextcloud" => (
