@@ -43,7 +43,7 @@ in
       enable = true;
       mod_status = true;
       mod_userdir = true;
-      enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" ];
+      enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" "mod_redirect" ];
       extraConfig =
         let
           collectd-graph-panel =
@@ -96,20 +96,50 @@ in
             ))
         )
 
-        # Enable HTTPS
-        # See documentation: http://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL
-        $SERVER["socket"] == ":443" {
-          ssl.engine = "enable"
-          #ssl.pemfile = "/etc/lighttpd/certs/lighttpd.pem"  # my self-signed cert
-          ssl.pemfile = "/etc/lighttpd/certs/bforsman.name.pem"  # my cert
-          ssl.ca-file = "/etc/lighttpd/certs/intermediate_and_root_ca.pem"
-        }
-
         # Block access to certain URLs if remote IP is not on LAN
         $HTTP["remoteip"] !~ "^(192\.168\.1|127\.0\.0\.1)" {
             $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^/collectd.*)" {
                 url.access-deny = ( "" )
             }
+        }
+
+        # Lighttpd SSL/HTTPS documentation:
+        # http://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL
+
+        $HTTP["host"] == "bforsman.name" {
+          $SERVER["socket"] == ":443" {
+            ssl.engine = "enable"
+            ssl.pemfile = "/etc/lighttpd/certs/bforsman.name.pem"
+            ssl.ca-file = "/etc/lighttpd/certs/1_Intermediate.crt"
+          }
+          $HTTP["scheme"] == "http" {
+            $HTTP["url"] =~ "^/nextcloud" {
+              url.redirect = ("^/.*" => "https://bforsman.name$0")
+            }
+          }
+        }
+
+        $HTTP["host"] == "mariaogbjorn.no" {
+          $SERVER["socket"] == ":443" {
+            ssl.engine = "enable"
+            ssl.pemfile = "/etc/lighttpd/certs/mariaogbjorn.no.pem"
+            ssl.ca-file = "/etc/lighttpd/certs/1_Intermediate.crt"
+          }
+        }
+
+        # TODO: Reduce config duplication between vhosts
+        $HTTP["host"] == "sky.mariaogbjorn.no" {
+          $SERVER["socket"] == ":443" {
+            ssl.engine = "enable"
+            ssl.pemfile = "/etc/lighttpd/certs/sky.mariaogbjorn.no.pem"
+            ssl.ca-file = "/etc/lighttpd/certs/1_Intermediate.crt"
+          }
+          url.redirect += ("^/$" => "/nextcloud/")
+          $HTTP["scheme"] == "http" {
+            $HTTP["url"] =~ "^/nextcloud" {
+              url.redirect = ("^/.*" => "https://sky.mariaogbjorn.no$0")
+            }
+          }
         }
       '';
       nextcloud.enable = true;
