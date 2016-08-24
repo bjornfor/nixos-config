@@ -3,7 +3,7 @@
 let
   myDomain = "bforsman.name";
   phpSockName1 = "/run/phpfpm/pool1.sock";
-  backupDiskMountpoint = "/backup";
+  backupDiskMountpoint = "/mnt/backup-disk";
 in
 {
   imports = [
