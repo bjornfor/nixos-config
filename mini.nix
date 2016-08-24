@@ -348,6 +348,20 @@ in
     };
   };
 
+  systemd.automounts = [
+    { where = "/mnt/maria-pc_seagate_expansion_drive_4tb";
+      wantedBy = [ "multi-user.target" ];
+    }
+  ];
+
+  systemd.mounts = [
+    { what = "//maria-pc/seagate_expansion_drive_4tb";
+      where = "/mnt/maria-pc_seagate_expansion_drive_4tb";
+      type = "cifs";
+      options = "ro,credentials=/root/.credentials.maria-pc,uid=bfo,gid=users,iocharset=utf8";
+    }
+  ];
+
   systemd.services.my-backup = {
     enable = true;
     description = "My Backup";
