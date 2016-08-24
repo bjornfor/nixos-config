@@ -294,7 +294,7 @@ in
         guest ok = yes
 
         [attic-backups]
-        path = /attic-backups-mnt/
+        path = /mnt/attic-backups/
         read only = yes
         guest ok = yes
       '' + (if config.services.transmission.enable then ''
@@ -446,10 +446,10 @@ in
     # this unit inside attic-backup.service.
     serviceConfig.Conflicts = [ "attic-backup.service" ];
     serviceConfig.ExecStartPre = ''
-      ${pkgs.coreutils}/bin/mkdir -p /attic-backups-mnt
+      ${pkgs.coreutils}/bin/mkdir -p /mnt/attic-backups
     '';
     serviceConfig.ExecStart = ''
-      ${pkgs.attic}/bin/attic mount --foreground -o allow_other ${backupDiskMountpoint}/backups/backup.attic /attic-backups-mnt
+      ${pkgs.attic}/bin/attic mount --foreground -o allow_other ${backupDiskMountpoint}/backups/backup.attic /mnt/attic-backups
     '';
   };
 }
