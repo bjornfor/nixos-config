@@ -14,7 +14,7 @@ in
   fileSystems = {
     "/".device = "/dev/disk/by-label/240gb";
     "/data".device = "/dev/disk/by-label/1.5tb";
-    "/ssd-120".device = "/dev/disk/by-id/ata-KINGSTON_SH103S3120G_50026B722600AA5F-part1";
+    "/mnt/ssd-120".device = "/dev/disk/by-id/ata-KINGSTON_SH103S3120G_50026B722600AA5F-part1";
     # My backup disk:
     "${backupDiskMountpoint}" = { device = "/dev/disk/by-label/3tb"; options = [ "ro" ]; };
   };
