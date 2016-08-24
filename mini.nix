@@ -3,6 +3,7 @@
 let
   myDomain = "bforsman.name";
   phpSockName1 = "/run/phpfpm/pool1.sock";
+  backupDiskMountpoint = "/backup";
 in
 {
   imports = [
@@ -15,7 +16,7 @@ in
     "/data".device = "/dev/disk/by-label/1.5tb";
     "/ssd-120".device = "/dev/disk/by-id/ata-KINGSTON_SH103S3120G_50026B722600AA5F-part1";
     # My backup disk:
-    "/backup" = { device = "/dev/disk/by-label/3tb"; options = [ "ro" ]; };
+    "${backupDiskMountpoint}" = { device = "/dev/disk/by-label/3tb"; options = [ "ro" ]; };
   };
 
   boot.loader.grub.device =
@@ -288,7 +289,7 @@ in
         guest ok = yes
 
         [backups]
-        path = /backup/backups/
+        path = ${backupDiskMountpoint}/backups/
         read only = yes
         guest ok = yes
 
@@ -386,10 +387,10 @@ in
         #   start a shell (new process) that creates a new argv[0].)
         atticBackup = pkgs.writeScriptBin "attic-backup" ''
           #!${pkgs.bash}/bin/sh
-          repository="/backup/backups/backup.attic"
+          repository="${backupDiskMountpoint}/backups/backup.attic"
 
-          if ! mount -o remount,rw /backup; then
-               echo "Failed to remount /backup read-write"
+          if ! mount -o remount,rw ${backupDiskMountpoint}; then
+               echo "Failed to remount ${backupDiskMountpoint} read-write"
                exit 1
           fi
 
@@ -417,8 +418,8 @@ in
 
           systemctl start attic-backup-mountpoint
 
-          if ! mount -o remount,ro /backup; then
-               echo "Failed to remount /backup read-only"
+          if ! mount -o remount,ro ${backupDiskMountpoint}; then
+               echo "Failed to remount ${backupDiskMountpoint} read-only"
                exit 1
           fi
 
@@ -448,7 +449,7 @@ in
       ${pkgs.coreutils}/bin/mkdir -p /attic-backups-mnt
     '';
     serviceConfig.ExecStart = ''
-      ${pkgs.attic}/bin/attic mount --foreground -o allow_other /backup/backups/backup.attic /attic-backups-mnt
+      ${pkgs.attic}/bin/attic mount --foreground -o allow_other ${backupDiskMountpoint}/backups/backup.attic /attic-backups-mnt
     '';
   };
 }
