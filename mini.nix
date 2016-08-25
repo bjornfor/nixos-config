@@ -454,11 +454,11 @@ in
     wantedBy = [ "multi-user.target" ];
     before = [ "samba.target" ];
     # "attic create" seems to hang forever on wait4(-1, ..) if "attic mount" is
-    # active on the same repo. I tried resolving the conflict with systemd
-    # "Conflicts=" directive but doesn't seem to work; the other unit is not
-    # stopped when this unit is started. Workaround: manually stopping/starting
-    # this unit inside attic-backup.service.
-    serviceConfig.Conflicts = [ "attic-backup.service" ];
+    # active on the same repo.
+    # The "conflicts" directive doesn't start the conflicted service
+    # afterwards, so we explicitly stop/start this service in
+    # attic-backup.service instead.
+    #conflicts = [ "attic-backup.service" ];
     serviceConfig.ExecStartPre = ''
       ${pkgs.coreutils}/bin/mkdir -p /mnt/attic-backups
     '';
