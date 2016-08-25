@@ -7,6 +7,10 @@
     ./base-small.nix
   ];
 
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    sysdig
+  ];
+
   hardware.sane.enable = true; # scanner support
 
   hardware.pulseaudio = {
@@ -34,6 +38,7 @@
     pavucontrol
     pciutils
     psmisc
+    sysdig
     tig
     unrar
     unzip
