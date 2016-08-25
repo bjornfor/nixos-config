@@ -13,7 +13,7 @@ in
 
   fileSystems = {
     "/".device = "/dev/disk/by-label/240gb";
-    "/data".device = "/dev/disk/by-label/1.5tb";
+    "/mnt/data".device = "/dev/disk/by-label/1.5tb";
     "/mnt/ssd-120".device = "/dev/disk/by-id/ata-KINGSTON_SH103S3120G_50026B722600AA5F-part1";
     # My backup disk:
     "${backupDiskMountpoint}" = { device = "/dev/disk/by-label/3tb"; options = [ "ro" ]; };
@@ -274,17 +274,17 @@ in
       enable = true;
       extraConfig = ''
         [media]
-        path = /data/media
+        path = /mnt/data/media
         read only = yes
         guest ok = yes
 
         [pictures]
-        path = /data/pictures/
+        path = /mnt/data/pictures/
         read only = yes
         guest ok = yes
 
         [software]
-        path = /data/software/
+        path = /mnt/data/software/
         read only = yes
         guest ok = yes
 
@@ -308,7 +308,7 @@ in
 
     minidlna = {
       enable = true;
-      mediaDirs = [ "/data/media" ];
+      mediaDirs = [ "/mnt/data/media" ];
     };
 
     munin-cron = {
@@ -373,10 +373,10 @@ in
   systemd.services.attic-backup = {
     # Restore everything:
     # $ cd /mnt/restore
-    # $ [sudo] attic extract -v /data/myrepo::archive-name
+    # $ [sudo] attic extract -v /mnt/data/myrepo::archive-name
     #
     # Manual/interactive restore:
-    # $ attic mount /data/myrepo /mnt/mymountpoint
+    # $ attic mount /mnt/data/myrepo /mnt/mymountpoint
     # $ ls -1 /mnt/mymountpoint
     # my-machine-20150220T234453
     # my-machine-20150321T114708
@@ -420,7 +420,7 @@ in
                 --exclude /tmp/ \
                 --exclude /var/tmp/ \
                 "$repository::${config.networking.hostName}-$(date +%Y%m%dT%H%M%S)" \
-                / /data
+                / /mnt/data
           create_ret=$?
 
           echo "Running 'attic prune [...]'"
