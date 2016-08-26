@@ -168,7 +168,7 @@
   systemd.services.lttng-sessiond = {
     description = "LTTng Session Daemon";
     wantedBy = [ "multi-user.target" ];
-    environment.MODULE_DIR = config.environment.variables.MODULE_DIR;
+    environment.MODULE_DIR = "/run/current-system/kernel-modules/lib/modules";
     serviceConfig = {
       ExecStart = "${pkgs.lttngTools}/bin/lttng-sessiond";
     };
