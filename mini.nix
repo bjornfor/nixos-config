@@ -17,7 +17,7 @@ in
     "/mnt/ssd-120".device = "/dev/disk/by-id/ata-KINGSTON_SH103S3120G_50026B722600AA5F-part1";
     "/mnt/ssd-120".options = [ "nofail" ];
     # My backup disk:
-    "${backupDiskMountpoint}" = { device = "/dev/disk/by-label/3tb"; options = [ "ro" ]; };
+    "${backupDiskMountpoint}" = { device = "/dev/disk/by-label/3tb"; };
   };
 
   boot.loader.grub.device =
@@ -294,8 +294,8 @@ in
         read only = yes
         guest ok = yes
 
-        [attic-backups]
-        path = /mnt/attic-backups/
+        [borg-backups]
+        path = /mnt/borg-backups/
         read only = yes
         guest ok = yes
       '' + (if config.services.transmission.enable then ''
@@ -371,72 +371,69 @@ in
     serviceConfig.ExecStart = /home/bfo/bin/backup.sh;
   };
 
-  systemd.services.attic-backup = {
+  systemd.services.borg-backup = {
     # Restore everything:
     # $ cd /mnt/restore
-    # $ [sudo] attic extract -v /mnt/data/myrepo::archive-name
+    # $ [sudo] borg extract --list /mnt/backup-disk/repo-name::archive-name
     #
-    # Manual/interactive restore:
-    # $ attic mount /mnt/data/myrepo /mnt/mymountpoint
-    # $ ls -1 /mnt/mymountpoint
+    # Interactive restore (slower than 'borg extract'):
+    # $ borg mount /mnt/backup-disk/repo-name /mnt/fuse-mountpoint
+    # $ ls -1 /mnt/fuse-mountpoint
     # my-machine-20150220T234453
     # my-machine-20150321T114708
-    # $ ### restore files...
-    # $ fusermount -u attic_mnt
+    # ... restore files (cp/rsync) ...
+    # $ fusermount -u /mnt/fuse-mountpoint
     enable = true;
-    description = "Attic Backup Service";
+    description = "Borg Backup Service";
     startAt = "*-*-* 05:15:00";  # see systemd.time(7)
     environment = {
-      ATTIC_RELOCATED_REPO_ACCESS_IS_OK = "true";
+      BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
     };
     path = with pkgs; [
-      attic utillinux coreutils
+      borgbackup utillinux coreutils
     ];
     serviceConfig.ExecStart =
       let
         # - The initial backup repo must be created manually:
-        #     attic init $repository
+        #     $ sudo borg init --encryption none $repository
         # - Use writeScriptBin instead of writeScript, so that argv[0] (logged
         #   to the journal) doesn't include the long nix store path hash.
         #   (Prefixing the ExecStart= command with '@' doesn't work because we
         #   start a shell (new process) that creates a new argv[0].)
-        atticBackup = pkgs.writeScriptBin "attic-backup" ''
+        borgBackup = pkgs.writeScriptBin "borg-backup-script" ''
           #!${pkgs.bash}/bin/sh
-          repository="${backupDiskMountpoint}/backups/backup.attic"
+          repository="${backupDiskMountpoint}/backups/backup.borg"
 
-          if ! mount -o remount,rw ${backupDiskMountpoint}; then
-               echo "Failed to remount ${backupDiskMountpoint} read-write"
-               exit 1
-          fi
+          systemctl stop borg-backup-mountpoint
 
-          systemctl stop attic-backup-mountpoint
-
-          echo "Running 'attic create [...]'"
-          attic create \
-                --stats \
-                --verbose \
-                --do-not-cross-mountpoints \
-                --exclude-caches \
-                --exclude /nix/store/ \
-                --exclude /tmp/ \
-                --exclude /var/tmp/ \
-                "$repository::${config.networking.hostName}-$(date +%Y%m%dT%H%M%S)" \
-                / /mnt/data
+          echo "Running 'borg create [...]'"
+          borg create \
+              --stats \
+              --verbose \
+              --list \
+              --show-rc \
+              --one-file-system \
+              --exclude-caches \
+              --exclude /nix/store/ \
+              --exclude /tmp/ \
+              --exclude /var/tmp/ \
+              --compression lz4 \
+              "$repository::${config.networking.hostName}-$(date +%Y%m%dT%H%M%S)" \
+              / /mnt/data
           create_ret=$?
 
-          echo "Running 'attic prune [...]'"
-          attic prune --stats --verbose \
+          echo "Running 'borg prune [...]'"
+          borg prune \
+              --stats \
+              --verbose \
+              --list \
+              --show-rc \
               --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
               --prefix ${config.networking.hostName} \
               "$repository"
           prune_ret=$?
 
-          systemctl start attic-backup-mountpoint
-
-          if ! mount -o remount,ro ${backupDiskMountpoint}; then
-               echo "Failed to remount ${backupDiskMountpoint} read-only"
-               exit 1
-          fi
+          systemctl start borg-backup-mountpoint
 
           # Exit with error if either command failed
           if [ $create_ret != 0 -o $prune_ret != 0 ]; then
@@ -444,27 +441,33 @@ in
               exit 1
           fi
         '';
-        atticBackupScript = "${atticBackup}/bin/attic-backup";
+        borgBackupScript = "${borgBackup}/bin/borg-backup-script";
       in
-        atticBackupScript;
+        borgBackupScript;
   };
 
-  systemd.services.attic-backup-mountpoint = {
+  systemd.services.borg-backup-mountpoint = {
     enable = true;
-    description = "Mount Attic Backup Repository";
+    description = "Mount Borg Backup Repository";
     wantedBy = [ "multi-user.target" ];
     before = [ "samba.target" ];
-    # "attic create" seems to hang forever on wait4(-1, ..) if "attic mount" is
-    # active on the same repo.
-    # The "conflicts" directive doesn't start the conflicted service
-    # afterwards, so we explicitly stop/start this service in
-    # attic-backup.service instead.
-    #conflicts = [ "attic-backup.service" ];
-    serviceConfig.ExecStartPre = ''
-      ${pkgs.coreutils}/bin/mkdir -p /mnt/attic-backups
+    # "borg create" cannot be used at the same time as "borg mount" is active
+    # on the same repo. (attic hung forever, borg should (AFAIK) exit with
+    # error due to inability to create exclusive lock.) The "conflicts"
+    # directive doesn't start the conflicted service afterwards, so we
+    # explicitly stop/start this service in borg-backup.service instead.
+    #conflicts = [ "borg-backup.service" ];]
+    path = with pkgs; [
+      borgbackup utillinux coreutils
+    ];
+    preStart = ''
+      mkdir -p /mnt/borg-backups
     '';
     serviceConfig.ExecStart = ''
-      ${pkgs.attic}/bin/attic mount --foreground -o allow_other ${backupDiskMountpoint}/backups/backup.attic /mnt/attic-backups
+      ${pkgs.borgbackup}/bin/borg mount --foreground -o allow_other ${backupDiskMountpoint}/backups/backup.borg /mnt/borg-backups
+    '';
+    postStop = ''
+      umount /mnt/borg-backups || true
     '';
   };
 }
