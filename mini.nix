@@ -419,7 +419,7 @@ in
               --exclude /tmp/ \
               --exclude /var/tmp/ \
               --compression lz4 \
-              "$repository::${config.networking.hostName}-$(date +%Y%m%dT%H%M%S)" \
+              "$repository::{hostname}-$(date +%Y%m%dT%H%M%S)" \
               / /mnt/data
           create_ret=$?
 
@@ -430,7 +430,7 @@ in
               --list \
               --show-rc \
               --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
-              --prefix ${config.networking.hostName} \
+              --prefix {hostname}- \
               "$repository"
           prune_ret=$?
 
