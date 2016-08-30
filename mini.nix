@@ -411,6 +411,7 @@ in
               --stats \
               --verbose \
               --list \
+              --filter AME \
               --show-rc \
               --one-file-system \
               --exclude-caches \
