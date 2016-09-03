@@ -436,11 +436,18 @@ in
               "$repository"
           prune_ret=$?
 
+          echo "Running 'borg check [...]'"
+          borg check \
+              --verbose \
+              --show-rc \
+              "$repository"
+          check_ret=$?
+
           systemctl start borg-backup-mountpoint
 
           # Exit with error if either command failed
-          if [ $create_ret != 0 -o $prune_ret != 0 ]; then
-              echo "Create and/or prune operation failed."
+          if [ $create_ret != 0 -o $prune_ret != 0 -o $check_ret != 0 ]; then
+              echo "borg create, prune and/or check operation failed. Exiting with error."
               exit 1
           fi
         '';
