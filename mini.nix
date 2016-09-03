@@ -418,6 +418,8 @@ in
               --exclude /nix/store/ \
               --exclude /tmp/ \
               --exclude /var/tmp/ \
+              --exclude '/home/*/.cache/' \
+              --exclude '/home/*/.thumbnails/' \
               --compression lz4 \
               "$repository::{hostname}-$(date +%Y%m%dT%H%M%S)" \
               / /mnt/data
