@@ -415,7 +415,7 @@ in
               --show-rc \
               --one-file-system \
               --exclude-caches \
-              --exclude /nix/store/ \
+              --exclude /nix/ \
               --exclude /tmp/ \
               --exclude /var/tmp/ \
               --exclude '/home/*/.cache/' \
