@@ -469,7 +469,7 @@ in
     # explicitly stop/start this service in borg-backup.service instead.
     #conflicts = [ "borg-backup.service" ];]
     path = with pkgs; [
-      borgbackup utillinux coreutils
+      borgbackup utillinux coreutils fuse
     ];
     preStart = ''
       mkdir -p /mnt/borg-backups
@@ -478,7 +478,7 @@ in
       ${pkgs.borgbackup}/bin/borg mount --foreground -o allow_other ${backupDiskMountpoint}/backups/backup.borg /mnt/borg-backups
     '';
     postStop = ''
-      umount /mnt/borg-backups || true
+      fusermount -u /mnt/borg-backups || true
     '';
   };
 }
