@@ -420,6 +420,7 @@ in
               --exclude /var/tmp/ \
               --exclude '/home/*/.cache/' \
               --exclude '/home/*/.thumbnails/' \
+              --exclude '/home/*/.nox/' \
               --exclude '*/.Trash*/' \
               --compression lz4 \
               "$repository::{hostname}-$(date +%Y%m%dT%H%M%S)" \
