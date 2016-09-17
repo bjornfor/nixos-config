@@ -117,6 +117,10 @@
       # Access to /dev/bus/usb/* devices. Needed for virt-manager USB
       # redirection.
       SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", MODE="0664", GROUP="wheel"
+
+      # Allow users in group 'usbmon' to do USB tracing, e.g. in Wireshark
+      # (after 'modprobe usbmon').
+      SUBSYSTEM=="usbmon", GROUP="usbmon", MODE="640"
     '';
 
     apcupsd = {

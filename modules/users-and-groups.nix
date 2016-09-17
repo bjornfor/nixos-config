@@ -44,5 +44,6 @@
     tracing = { gid = 501; };
     usbtmc = { gid = 502; };
     wireshark = { gid = 503; };
+    usbmon = { gid = 504; };
   };
 }
