@@ -18,6 +18,7 @@
         "tracing"
         "transmission"
         "tty"
+        "usbmon"
         "usbtmc"
         "vboxusers"
         "video"
