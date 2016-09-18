@@ -71,38 +71,40 @@ in
               '';
             };
         in ''
-        dir-listing.activate = "enable"
-        alias.url += ( "/munin" => "/var/www/munin" )
+        $HTTP["host"] =~ ".*" {
+          dir-listing.activate = "enable"
+          alias.url += ( "/munin" => "/var/www/munin" )
 
-        # Reverse proxy for transmission bittorrent client
-        proxy.server = (
-          "/transmission" => ( "transmission" => (
-                               "host" => "127.0.0.1",
-                               "port" => 9091
-                             ) )
-        )
-        # Fix transmission URL corner case: get error 409 if URL is
-        # /transmission/ or /transmission/web. Redirect those URLs to
-        # /transmission (no trailing slash).
-        url.redirect = ( "^/transmission/(web)?$" => "/transmission" )
+          # Reverse proxy for transmission bittorrent client
+          proxy.server = (
+            "/transmission" => ( "transmission" => (
+                                 "host" => "127.0.0.1",
+                                 "port" => 9091
+                               ) )
+          )
+          # Fix transmission URL corner case: get error 409 if URL is
+          # /transmission/ or /transmission/web. Redirect those URLs to
+          # /transmission (no trailing slash).
+          url.redirect = ( "^/transmission/(web)?$" => "/transmission" )
 
-        alias.url += ( "/collectd" => "${collectd-graph-panel}" )
-        $HTTP["url"] =~ "^/collectd" {
-          index-file.names += ( "index.php" )
-        }
+          alias.url += ( "/collectd" => "${collectd-graph-panel}" )
+          $HTTP["url"] =~ "^/collectd" {
+            index-file.names += ( "index.php" )
+          }
 
-        fastcgi.server = (
-          ".php" => (
-            "localhost" => (
-              "socket" => "${phpSockName1}",
-            ))
-        )
+          fastcgi.server = (
+            ".php" => (
+              "localhost" => (
+                "socket" => "${phpSockName1}",
+              ))
+          )
 
-        # Block access to certain URLs if remote IP is not on LAN
-        $HTTP["remoteip"] !~ "^(192\.168\.1|127\.0\.0\.1)" {
-            $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^/collectd.*)" {
-                url.access-deny = ( "" )
-            }
+          # Block access to certain URLs if remote IP is not on LAN
+          $HTTP["remoteip"] !~ "^(192\.168\.1|127\.0\.0\.1)" {
+              $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^/collectd.*)" {
+                  url.access-deny = ( "" )
+              }
+          }
         }
 
         # Lighttpd SSL/HTTPS documentation:
