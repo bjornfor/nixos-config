@@ -92,6 +92,12 @@ in
                     )
                 )
             }
+            # Recommended setting (Nextcloud warns about this in the admin interface)
+            $HTTP["scheme"] == "https" {
+                setenv.add-response-header += (
+                    "Strict-Transport-Security" => "max-age=15552000; includeSubDomains; preload"
+                )
+            }
         }
       '';
     };
