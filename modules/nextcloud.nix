@@ -14,8 +14,8 @@ in
     package = mkOption {
       type = types.package;
       default = pkgs.fetchzip {
-        url = "https://download.nextcloud.com/server/releases/nextcloud-9.0.53.zip";
-        sha256 = "1270cs8f10ad7jlk7wbw2nf5rvk66q0jbnajiscxp6vdxpmdy48q";
+        url = "https://download.nextcloud.com/server/releases/nextcloud-10.0.0.zip";
+        sha256 = "1zrzi852cpjzgq2h87l3sgfz1mavl2sl4ncm5gzz2kzpckkyl77s";
       };
       description = "Nextcloud package to use.";
     };
@@ -59,10 +59,12 @@ in
 
         mkdir -p "${cfg.installPrefix}/data"
         chown -R lighttpd:lighttpd "${cfg.installPrefix}"
+        chmod 775 "${cfg.installPrefix}"
         chmod 770 "${cfg.installPrefix}/data"
         chmod 770 "${cfg.installPrefix}/apps"
         chmod 770 "${cfg.installPrefix}/config"
         chmod 660 "${cfg.installPrefix}/.user.ini"
+        chmod 660 "${cfg.installPrefix}/.htaccess"
       '';
 
     services.lighttpd = {
