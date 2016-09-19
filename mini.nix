@@ -237,7 +237,7 @@ in
         LoadPlugin ethstat
         LoadPlugin interface
         LoadPlugin irq
-        LoadPlugin libvirt
+        LoadPlugin virt
         LoadPlugin load
         LoadPlugin memory
         LoadPlugin network
@@ -248,7 +248,7 @@ in
         LoadPlugin tcpconns
         LoadPlugin uptime
 
-        <Plugin "libvirt">
+        <Plugin "virt">
           Connection "qemu:///system"
         </Plugin>
 
