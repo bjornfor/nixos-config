@@ -259,6 +259,8 @@ in
           MountPoint "/var/lib/docker/devicemapper"
           MountPoint "/nix/store"  # it's just a bind mount, already covered
           FSType "fuse.gvfsd-fuse"
+          FSType "fuse.sshfs"
+          FSType "cifs"
           FSType "cgroup"
           FSType "tmpfs"
           FSType "devtmpfs"
