@@ -96,7 +96,12 @@
       libinput.enable = true;
     };
 
-    locate.enable = true;
+    locate = {
+      enable = true;
+      extraFlags = [
+        "--prunefs='sshfs'"
+      ];
+    };
 
     # Provide "MODE=666" or "MODE=664 + GROUP=plugdev" for a bunch of USB
     # devices, so that we don't have to run as root.
