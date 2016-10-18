@@ -95,7 +95,6 @@
     nix-generate-from-cpan
     nix-prefetch-scripts
     nix-repl
-    ntfs3g
     nmap_graphical
     offlineimap
     openconnect

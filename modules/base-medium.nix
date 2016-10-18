@@ -33,6 +33,7 @@
     lshw
     lsof
     ncdu
+    ntfs3g
     parted
     patchelf
     pavucontrol
