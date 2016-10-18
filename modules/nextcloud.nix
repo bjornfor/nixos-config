@@ -69,7 +69,6 @@ in
 
     services.lighttpd = {
       enable = true;
-      mod_status = true;
       enableModules = [ "mod_alias" "mod_fastcgi" "mod_access" ];
       extraConfig = ''
         mimetype.assign += (
