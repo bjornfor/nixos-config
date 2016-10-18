@@ -103,6 +103,9 @@
       ];
     };
 
+    # for hamster-time-tracker
+    dbus.packages = with pkgs; [ gnome3.gconf ];
+
     # Provide "MODE=666" or "MODE=664 + GROUP=plugdev" for a bunch of USB
     # devices, so that we don't have to run as root.
     udev.packages = with pkgs; [ rtl-sdr saleae-logic openocd ];
