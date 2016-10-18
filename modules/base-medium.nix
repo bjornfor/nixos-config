@@ -39,6 +39,7 @@
     pavucontrol
     pciutils
     psmisc
+    sshfsFuse
     sysdig
     tig
     unrar
