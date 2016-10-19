@@ -50,7 +50,7 @@ in
 
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf (config.services.lighttpd.enable && cfg.enable) {
 
     systemd.services.lighttpd.preStart =
       ''
@@ -68,7 +68,6 @@ in
       '';
 
     services.lighttpd = {
-      enable = true;
       enableModules = [ "mod_alias" "mod_fastcgi" "mod_access" "mod_setenv" ];
       extraConfig = ''
         mimetype.assign += (
