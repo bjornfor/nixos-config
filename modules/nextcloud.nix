@@ -25,7 +25,7 @@ in
       default = "/var/lib/nextcloud";
       description = ''
         Where to install Nextcloud. By default, user files will be placed in
-        the data/ directory below the <option>installPrefix</option>.
+        the data/ directory below the <option>installPrefix</option> directory.
       '';
     };
 
