@@ -69,7 +69,7 @@ in
 
     services.lighttpd = {
       enable = true;
-      enableModules = [ "mod_alias" "mod_fastcgi" "mod_access" ];
+      enableModules = [ "mod_alias" "mod_fastcgi" "mod_access" "mod_setenv" ];
       extraConfig = ''
         mimetype.assign += (
             ".svg" => "image/svg+xml",
