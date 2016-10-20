@@ -55,7 +55,7 @@ in
     systemd.services.lighttpd.preStart =
       ''
         echo "Setting up Nextcloud in ${cfg.installPrefix}/"
-        ${pkgs.rsync}/bin/rsync -a "${cfg.package}/" "${cfg.installPrefix}/"
+        ${pkgs.rsync}/bin/rsync -a --checksum "${cfg.package}/" "${cfg.installPrefix}/"
 
         mkdir -p "${cfg.installPrefix}/data"
         chown -R lighttpd:lighttpd "${cfg.installPrefix}"
