@@ -151,7 +151,7 @@
         mkdir -p /bin /usr/bin
         ln -sfv ${pkgs.bash}/bin/sh /bin/bash
         ln -sfv ${pkgs.perl}/bin/perl /usr/bin/perl
-        ln -sfv ${pkgs.python27Full}/bin/python /usr/bin/python
+        ln -sfv ${pkgs.python2}/bin/python /usr/bin/python
     else
         # clean up
         find /bin /usr/bin -type l | while read file; do if [ "$file" != "/bin/sh" -a "$file" != "/usr/bin/env" ]; then rm -v "$file"; fi; done
