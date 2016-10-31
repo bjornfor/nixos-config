@@ -23,6 +23,7 @@
   hardware.opengl.driSupport32Bit = true;
 
   environment.systemPackages = with pkgs; [
+    borgbackup
     chromium
     cifs_utils  # for mount.cifs, needed for cifs filesystems in systemd.mounts.
     dmidecode
