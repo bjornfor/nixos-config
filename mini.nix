@@ -252,19 +252,10 @@ in
           Connection "qemu:///system"
         </Plugin>
 
-        # Ignore some paths/filesystems that cause "Permission denied" spamming
-        # in the log and/or are uninteresting or duplicates.
         <Plugin "df">
-          MountPoint "/run/media/bfo/wd_apollo"
-          MountPoint "/var/lib/docker/devicemapper"
-          MountPoint "/nix/store"  # it's just a bind mount, already covered
-          FSType "fuse.gvfsd-fuse"
-          FSType "fuse.sshfs"
-          FSType "cifs"
-          FSType "cgroup"
-          FSType "tmpfs"
-          FSType "devtmpfs"
-          IgnoreSelected true
+          MountPoint "/"
+          MountPoint "/mnt/data/"
+          MountPoint "/mnt/backup-disk/"
         </Plugin>
 
         # Output/write plugin (need at least one, if metrics are to be persisted)
