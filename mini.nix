@@ -399,7 +399,7 @@ in
           #!${pkgs.bash}/bin/sh
           repository="${backupDiskMountpoint}/backups/backup.borg"
 
-          systemctl stop borg-backup-mountpoint
+          #systemctl stop borg-backup-mountpoint
 
           echo "Running 'borg create [...]'"
           borg create \
@@ -440,7 +440,7 @@ in
               "$repository"
           check_ret=$?
 
-          systemctl start borg-backup-mountpoint
+          #systemctl start borg-backup-mountpoint
 
           # Exit with error if either command failed
           if [ $create_ret != 0 -o $prune_ret != 0 -o $check_ret != 0 ]; then
@@ -454,7 +454,8 @@ in
   };
 
   systemd.services.borg-backup-mountpoint = {
-    enable = true;
+    # disabled as it's a constant source of locking issues (preventing backups)
+    enable = false;
     description = "Mount Borg Backup Repository";
     wantedBy = [ "multi-user.target" ];
     before = [ "samba.target" ];
