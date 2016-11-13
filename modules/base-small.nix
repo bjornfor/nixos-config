@@ -27,6 +27,13 @@
   # Select Linux version
   boot.kernelPackages = pkgs.linuxPackages;
 
+  boot.extraModprobeConfig = ''
+    # Disable UAS for Seagate Expansion Drive, because it is unstable. At least
+    # on USB3. The end result is disconnects and filesystem corruption (NTFS).
+    # UPDATE: Doesn't seem to have any effect (disk is still handled by "uas" driver).
+    options usb-storage quirks=0bc2:2322:u
+  '';
+
   networking = {
     firewall.enable = false;
     networkmanager.enable = true;
