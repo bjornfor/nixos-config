@@ -54,12 +54,12 @@
 
   nix = {
     useChroot = true;
+    buildCores = 0;  # 0 means auto-detect number of CPUs (and use all)
     # To not get caught by the '''"nix-collect-garbage -d" makes "nixos-rebuild
     # switch" unusable when nixos.org is down"''' issue:
     extraOptions = ''
       gc-keep-outputs = true
       log-servers = http://hydra.nixos.org/log
-      build-cores = 0  # 0 means auto-detect number of CPUs (and use all)
     '';
   };
 
