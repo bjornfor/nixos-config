@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./modules/base-big.nix
+    ../config/base-big.nix
   ];
 
   fileSystems = {

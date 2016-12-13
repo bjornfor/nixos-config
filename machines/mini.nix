@@ -7,8 +7,8 @@ let
 in
 {
   imports = [
-    ./modules/base-big.nix
-    ./modules/nextcloud.nix
+    ../config/base-big.nix
+    ../options/nextcloud.nix
   ];
 
   fileSystems = {
