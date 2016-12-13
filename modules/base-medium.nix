@@ -62,6 +62,8 @@
   virtualisation.docker.storageDriver = "overlay";
 
   services = {
+    atd.enable = true;
+
     # TODO: When mouse gets hidden, the element below mouse gets focus
     # periodically (annoying). Might try the unclutter fork (see Archlinux) or
     # xbanish.

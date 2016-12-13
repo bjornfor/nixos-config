@@ -6,6 +6,7 @@
       uid = 1000;
       extraGroups = [
         "adm"
+        "atd"
         "audio"
         "cdrom"
         "dialout"
