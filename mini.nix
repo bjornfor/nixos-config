@@ -36,7 +36,7 @@ in
 
   services = {
     postfix = {
-      enable = false;
+      enable = true;
       domain = myDomain;
       hostname = myDomain;
     };
