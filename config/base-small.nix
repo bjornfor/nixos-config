@@ -53,7 +53,7 @@
   };
 
   nix = {
-    useChroot = true;
+    useSandbox = true;
     buildCores = 0;  # 0 means auto-detect number of CPUs (and use all)
     # To not get caught by the '''"nix-collect-garbage -d" makes "nixos-rebuild
     # switch" unusable when nixos.org is down"''' issue:
