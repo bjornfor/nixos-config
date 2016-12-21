@@ -35,6 +35,23 @@ in
   virtualisation.virtualbox.host.enable = true;
 
   services = {
+
+    smartd = {
+      enable = true;
+      autodetect = true;  # monitor all drives found on startup
+      # See smartd.conf(5) man page for details about these options:
+      # "-a": enable all checks
+      # "-o VALUE": enable/disable automatic offline testing on device (on/off)
+      # "-s REGEXP": do a short test every day at 1am and a long test every
+      #              sunday at 1am.
+      defaults.autodetected = "-a -o on -s (S/../.././01|L/../../7/01)";
+      notifications = {
+        mail.enable = true;
+        x11.enable = true;
+        #test = true; # create a notification on service startup, for test
+      };
+    };
+
     postfix = {
       enable = true;
       domain = myDomain;
