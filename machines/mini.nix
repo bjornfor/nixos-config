@@ -39,6 +39,7 @@ in
       enable = true;
       domain = myDomain;
       hostname = myDomain;
+      rootAlias = "bjorn.forsman@gmail.com";
     };
 
     lighttpd = {
