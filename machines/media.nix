@@ -23,6 +23,10 @@
 
   nix.gc.automatic = true;
 
+  nixpkgs.config = {
+    chromium.enableWideVine = true;  # for Netflix, requires full chromium build
+  };
+
   systemd.automounts = [
     { where = "/mnt/maria-pc_seagate_expansion_drive_4tb";
       wantedBy = [ "multi-user.target" ];
