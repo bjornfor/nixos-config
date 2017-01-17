@@ -5,6 +5,7 @@
     # Include the results of the hardware scan.
     ../hardware-configuration.nix
     ./base-small.nix
+    ./desktop-gnome3.nix
   ];
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
@@ -77,29 +78,6 @@
     # cups, for printing documents
     printing.enable = true;
     printing.gutenprint = true; # lots of printer drivers
-
-    xserver = {
-      enable = true;
-      layout = "no";
-      #xkbOptions = "eurosign:e";
-
-      # Select display manager (a.k.a. login manager)
-      #displayManager.lightdm.enable = true;
-      #displayManager.kdm.enable = true;
-      #displayManager.slim.enable = true;
-      #displayManager.auto.enable = true;
-      #displayManager.auto.user = "bfo";
-      displayManager.gdm.enable = true;
-      displayManager.gdm.autoLogin.enable = true;
-      displayManager.gdm.autoLogin.user = "bfo";
-
-      # Select desktop environment
-      desktopManager.gnome3.enable = true;
-      #desktopManager.kde4.enable = true;
-      #desktopManager.xfce.enable = true;
-
-      libinput.enable = true;
-    };
 
     locate = {
       enable = true;
