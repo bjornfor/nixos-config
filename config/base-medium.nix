@@ -43,6 +43,7 @@
     psmisc
     sshfsFuse
     sysdig
+    sysstat
     tig
     unrar
     unzip
