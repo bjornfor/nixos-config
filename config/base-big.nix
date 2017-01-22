@@ -96,6 +96,7 @@
     openscad
     p7zip
     #pencil # https://github.com/prikhi/pencil/issues/840
+    perlPackages.ImageExifTool
     picocom
     (pidgin-with-plugins.override { plugins = [ pidginsipe ]; })
     poppler
