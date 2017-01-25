@@ -65,11 +65,13 @@
     iotop
     iptables
     irssi
+    jq
     kalibrate-rtl
     lftp
     libfaketime
     libreoffice
     linssid
+    lm_sensors
     ltsa
     config.boot.kernelPackages.perf
     ltrace
@@ -85,10 +87,12 @@
     networkmanager
     networkmanagerapplet
     nfs-utils
+    nixops
     nixpkgs-lint
     nix-generate-from-cpan
     nix-prefetch-scripts
     nix-repl
+    nox
     nmap_graphical
     offlineimap
     openconnect
