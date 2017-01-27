@@ -123,7 +123,6 @@
     rtl-sdr
     saleae-logic
     samba
-    screen
     shotwell
     sigrok-cli
     silver-searcher

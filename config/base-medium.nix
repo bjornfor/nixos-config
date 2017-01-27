@@ -41,6 +41,7 @@
     pavucontrol
     pciutils
     psmisc
+    screen
     sshfsFuse
     sysdig
     sysstat
