@@ -74,6 +74,7 @@
         "scanner"
         "transmission"
         "video"
+        "wheel"
       ];
       isNormalUser = true;
       initialPassword = "media";
