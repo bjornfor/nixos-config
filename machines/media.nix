@@ -22,6 +22,8 @@
   };
 
   nix.gc.automatic = true;
+  nix.gc.dates = "03:15";
+  nix.gc.options = "--delete-older-than 14d";
 
   nixpkgs.config = {
     chromium.enableWideVine = true;  # for Netflix, requires full chromium build
