@@ -7,6 +7,8 @@
   chromium.enablePepperFlash = true;
 
   packageOverrides = pkgs: {
+    altera-quartuses = pkgs.callPackage ../packages/altera-quartus { };
+
     ltsa = pkgs.callPackage ../packages/ltsa/default.nix { };
 
     mtdutils-for-swupdate = pkgs.mtdutils.overrideDerivation (args: rec {
