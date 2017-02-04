@@ -118,7 +118,11 @@
           repository="/mnt/backup-disk/backup-maria.borg"
 
           # access the mountpoint now, to trigger automount (why is this needed?)
-          ls -ld /mnt/maria-pc_seagate_expansion_drive_4tb/
+          if ! ls -ld /mnt/maria-pc_seagate_expansion_drive_4tb/; then
+              echo "Failed to mount maria-pc"
+              exit 1
+          fi
+          # Oops! autofs is considered a filesystem, so this check will always pass.
           if ! mountpoint /mnt/maria-pc_seagate_expansion_drive_4tb; then
               exit 1
           fi
