@@ -58,6 +58,9 @@
     vlc
   ];
 
+  services.samba.enable = true; # required for nsswins to work
+  services.samba.nsswins = true;
+
   services.xserver.displayManager.gdm.autoLogin.user = lib.mkForce "media";
   virtualisation.libvirtd.enable = lib.mkForce false;
 
