@@ -129,7 +129,6 @@
     simplescreenrecorder
     skype
     sloccount
-    smartmontools
     socat
     solfege
     spice
