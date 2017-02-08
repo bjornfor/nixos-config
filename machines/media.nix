@@ -166,7 +166,7 @@
         borgBackupScript;
   };
 
-  users.extraUsers.bfo.openssh.authorizedKeys.keys = [
-    ''ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTl8tsKUmHqO5eJoPvAVSu5vm7Ibml9rYxAblTUU/dl+zip7RNfl178qaX4nwUHkI3qsITJ8yQr42iIanvIPpCvM5V4rYjDmD7R4R8wSvzsrxegipG+kXfItlgsmCIuNsYZNCPtxESsLMW6tuJBfFy8L0IGmwYXLNNj7NIsrI4ElOhmWHz+VppZU1R74IghC+ZWJkkqoc9Ayt17ezLfBPYYuoan60H2/KOBtJX5qjfdxGXF5H7Oa7SBE/0zZ5Eaq8MudM/7CClc2nA787xadp8O6aQoF/ZB27dwr3mK2IugYc7w2rDlT67iQHLT27LKMU74CY//xSqkGUZOyGDAN7B bfo@mini''
+  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
+    bfo_at_mini
   ];
 }
