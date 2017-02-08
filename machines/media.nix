@@ -43,16 +43,10 @@
     }
   ];
 
-  # Might have helped with the pipelight issue
-  hardware.opengl.extraPackages = with pkgs; [
-    vaapiIntel libvdpau-va-gl vaapiVdpau
-  ];
-
   environment.systemPackages = with pkgs; [
     firefox
     google-chrome
     kodi
-    pipelight  # for HBO Nordic in Firefox (even google-chrome didn't work)
     spotify
     transmission_gtk
     vlc
