@@ -36,6 +36,11 @@ in
 
   services = {
 
+    clamav = {
+      updater.enable = true;
+      updater.frequency = 1;  # number of checks per day
+    };
+
     smartd = {
       enable = true;
       autodetect = true;  # monitor all drives found on startup
