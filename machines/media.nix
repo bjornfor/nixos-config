@@ -112,14 +112,22 @@
           #!${pkgs.bash}/bin/sh
           repository="/mnt/backup-disk/backup-maria.borg"
 
+          die()
+          {
+              echo "$*"
+              # Allow systemd to associate this message with the unit before
+              # exit. Yep, it's a race.
+              sleep 3
+              exit 1
+          }
+
           # access the mountpoint now, to trigger automount (why is this needed?)
           if ! ls -ld /mnt/maria-pc_seagate_expansion_drive_4tb/; then
-              echo "Failed to mount maria-pc"
-              exit 1
+              die "Failed to mount maria-pc"
           fi
           # Oops! autofs is considered a filesystem, so this check will always pass.
           if ! mountpoint /mnt/maria-pc_seagate_expansion_drive_4tb; then
-              exit 1
+              die "exiting"
           fi
 
           echo "Running 'borg create [...]'"
@@ -158,8 +166,7 @@
 
           # Exit with error if either command failed
           if [ $create_ret != 0 -o $prune_ret != 0 -o $check_ret != 0 ]; then
-              echo "borg create, prune and/or check operation failed. Exiting with error."
-              exit 1
+              die "borg create, prune and/or check operation failed. Exiting with error."
           fi
         '';
         borgBackupScript = "${borgBackup}/bin/borg-backup-script";
