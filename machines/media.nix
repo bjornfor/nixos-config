@@ -99,6 +99,7 @@
     path = with pkgs; [
       borgbackup utillinux coreutils
     ];
+    serviceConfig.RemainAfterExit = "yes";
     serviceConfig.ExecStart =
       let
         # - The initial backup repo must be created manually:
