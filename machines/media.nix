@@ -49,7 +49,6 @@
     kodi
     spotify
     transmission_gtk
-    vlc
   ];
 
   services.samba.enable = true; # required for nsswins to work

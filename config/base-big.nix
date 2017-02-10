@@ -149,7 +149,6 @@
     vifm
     virtmanager
     virtviewer
-    vlc
     weston
     wgetpaste
     wineUnstable

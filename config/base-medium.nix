@@ -51,6 +51,7 @@
     unzip
     usbutils
     vim_configurable
+    vlc
     wget
     which
     w3m
