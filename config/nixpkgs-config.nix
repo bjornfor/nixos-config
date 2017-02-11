@@ -5,8 +5,10 @@
 
   firefox.enableAdobeFlash = true;
   chromium.enablePepperFlash = true;
+
   packageOverrides = pkgs: {
-    #qtcreator = pkgs.qtcreator.override { qt48 = pkgs.qt48Full; };
-    #qemu = pkgs.qemu.override { spiceSupport = true; };
+    ltsa = pkgs.callPackage ../packages/ltsa/default.nix { };
+    spotify-ripper = pkgs.callPackage ../packages/spotify-ripper/default.nix { };
+    winusb = pkgs.callPackage ../packages/winusb/default.nix { };
   };
 }
