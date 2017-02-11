@@ -99,18 +99,7 @@
     { domain = "@audio"; type = "-"; item = "memlock"; value = "500000"; }
   ];
 
-  # Override similar to ~/.nixpkgs/config.nix (see "man configuration.nix" and
-  # search for "nixpkgs.config"). Also, make sure to read
-  # http://nixos.org/nixos/manual/#sec-customising-packages
-  nixpkgs.config = {
-    allowUnfree = true;  # allow proprietary packages
-    firefox.enableAdobeFlash = true;
-    chromium.enablePepperFlash = true;
-    packageOverrides = pkgs: {
-      #qtcreator = pkgs.qtcreator.override { qt48 = pkgs.qt48Full; };
-      #qemu = pkgs.qemu.override { spiceSupport = true; };
-    };
-  };
+  nixpkgs.config = import ./nixpkgs-config.nix;
 
   time.timeZone = "Europe/Oslo";
 
