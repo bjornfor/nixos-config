@@ -505,6 +505,6 @@ in
   users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
     bfo_at_whitetip
     (''command="./bin/restricted-hamster-scp-command",restrict '' + bf_at_work)
-    (''command="/run/current-system7sw/bin/uptime",restrict '' + my_phone)
+    (''command="/run/current-system/sw/bin/uptime",restrict '' + my_phone)
   ];
 }
