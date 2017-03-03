@@ -90,6 +90,8 @@ in
                 \$CONFIG['rrdtool'] = '${pkgs.rrdtool}/bin/rrdtool';
                 \$CONFIG['graph_type'] = 'canvas';
                 \$CONFIG['typesdb'] = '${pkgs.collectd}/share/collectd/types.db';
+                # Plugins to show on the overview page
+                \$CONFIG['overview'] = array('load', 'cpu', 'memory', 'swap', 'sensors', 'uptime');
                 ?>
                 EOF
               '';
