@@ -74,11 +74,11 @@ in
           collectd-graph-panel =
             pkgs.stdenv.mkDerivation rec {
               name = "collectd-graph-panel-${version}";
-              version = "0.4.1";
+              version = "0.4.1-225-g4aef0f7";
               src = pkgs.fetchzip {
                 name = "${name}-src";
-                url = "https://github.com/pommi/CGP/archive/v${version}.tar.gz";
-                sha256 = "14jm7jidp4z0vcd9rcblrqkp6mfbmvc548biwrjylm6yvdjgqb9l";
+                url = "https://github.com/pommi/CGP/archive/4aef0f7e017cdf7e2b92dc9a9f700368506879e9.tar.gz";
+                sha256 = "1m5mqr4zmm57irrp6csri62ylxh7nns4vhrmi4jpnn8jsqx4v4sl";
               };
               buildCommand = ''
                 mkdir -p "$out"
