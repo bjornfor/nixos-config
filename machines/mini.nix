@@ -156,8 +156,8 @@ in
           # Enable 'stats' page and set big upper range
           max-stats=year
 
-          # Allow download of tar.gz, tar.bz2, tar.xz and zip-files
-          snapshots=tar.gz tar.bz2 tar.xz zip
+          # Allow download of archives in the following formats
+          snapshots=tar.xz zip
 
           # Enable caching of up to 1000 output entries
           cache-size=1000
