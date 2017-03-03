@@ -89,6 +89,7 @@ in
                 \$CONFIG['datadir'] = '/var/lib/collectd';
                 \$CONFIG['rrdtool'] = '${pkgs.rrdtool}/bin/rrdtool';
                 \$CONFIG['graph_type'] = 'canvas';
+                \$CONFIG['typesdb'] = '${pkgs.collectd}/share/collectd/types.db';
                 ?>
                 EOF
               '';
