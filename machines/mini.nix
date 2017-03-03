@@ -105,15 +105,15 @@ in
         # Lighttpd SSL/HTTPS documentation:
         # http://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL
 
-        $HTTP["host"] == "bforsman.name" {
+        $HTTP["host"] == "${myDomain}" {
           $SERVER["socket"] == ":443" {
             ssl.engine = "enable"
-            ssl.pemfile = "/etc/lighttpd/certs/bforsman.name.pem"
+            ssl.pemfile = "/etc/lighttpd/certs/${myDomain}.pem"
             ssl.ca-file = "/etc/lighttpd/certs/1_Intermediate.crt"
           }
           $HTTP["scheme"] == "http" {
             $HTTP["url"] =~ "^/nextcloud" {
-              url.redirect = ("^/.*" => "https://bforsman.name$0")
+              url.redirect = ("^/.*" => "https://${myDomain}$0")
             }
           }
         }
