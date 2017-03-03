@@ -9,6 +9,7 @@ in
   imports = [
     ../config/base-big.nix
     ../options/nextcloud.nix
+    ../options/collectd-graph-panel.nix
   ];
 
   fileSystems = {
@@ -69,34 +70,7 @@ in
       #mod_status = true; # don't expose to the public
       mod_userdir = true;
       enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" "mod_redirect" ];
-      extraConfig =
-        let
-          collectd-graph-panel =
-            pkgs.stdenv.mkDerivation rec {
-              name = "collectd-graph-panel-${version}";
-              version = "0.4.1-225-g4aef0f7";
-              src = pkgs.fetchzip {
-                name = "${name}-src";
-                url = "https://github.com/pommi/CGP/archive/4aef0f7e017cdf7e2b92dc9a9f700368506879e9.tar.gz";
-                sha256 = "1m5mqr4zmm57irrp6csri62ylxh7nns4vhrmi4jpnn8jsqx4v4sl";
-              };
-              buildCommand = ''
-                mkdir -p "$out"
-                cp -r "$src"/. "$out"
-                chmod +w "$out"/conf
-                cat > "$out"/conf/config.local.php << EOF
-                <?php
-                \$CONFIG['datadir'] = '/var/lib/collectd';
-                \$CONFIG['rrdtool'] = '${pkgs.rrdtool}/bin/rrdtool';
-                \$CONFIG['graph_type'] = 'canvas';
-                \$CONFIG['typesdb'] = '${pkgs.collectd}/share/collectd/types.db';
-                # Plugins to show on the overview page
-                \$CONFIG['overview'] = array('load', 'cpu', 'memory', 'swap', 'sensors', 'uptime');
-                ?>
-                EOF
-              '';
-            };
-        in ''
+      extraConfig = ''
         $HTTP["host"] =~ ".*" {
           dir-listing.activate = "enable"
           alias.url += ( "/munin" => "/var/www/munin" )
@@ -113,11 +87,6 @@ in
           # /transmission (no trailing slash).
           url.redirect = ( "^/transmission/(web)?$" => "/transmission" )
 
-          alias.url += ( "/collectd" => "${collectd-graph-panel}" )
-          $HTTP["url"] =~ "^/collectd" {
-            index-file.names += ( "index.php" )
-          }
-
           fastcgi.server = (
             ".php" => (
               "localhost" => (
@@ -127,7 +96,7 @@ in
 
           # Block access to certain URLs if remote IP is not on LAN
           $HTTP["remoteip"] !~ "^(192\.168\.1|127\.0\.0\.1)" {
-              $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^/collectd.*)" {
+              $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^${config.services.lighttpd.collectd-graph-panel.urlPrefix}.*)" {
                   url.access-deny = ( "" )
               }
           }
@@ -172,6 +141,7 @@ in
           }
         }
       '';
+      collectd-graph-panel.enable = true;
       nextcloud.enable = true;
       gitweb.enable = true;
       cgit = {
