@@ -7,14 +7,14 @@ let
 
   phpfpmSocketName = "/run/phpfpm/collectd-graph-panel.sock";
 
-  collectd-graph-panel-0_4_1_255 =
+  collectd-graph-panel-1 =
     pkgs.stdenv.mkDerivation rec {
       name = "collectd-graph-panel-${version}";
-      version = "0.4.1-225-g4aef0f7";
+      version = "1";
       src = pkgs.fetchzip {
         name = "${name}-src";
-        url = "https://github.com/pommi/CGP/archive/4aef0f7e017cdf7e2b92dc9a9f700368506879e9.tar.gz";
-        sha256 = "1m5mqr4zmm57irrp6csri62ylxh7nns4vhrmi4jpnn8jsqx4v4sl";
+        url = "https://github.com/pommi/CGP/archive/v${version}.tar.gz";
+        sha256 = "1inifs9rapjyjx43046lcjsz2pvnd0n7dihk07577ld2xw5gydv9";
       };
       buildCommand = ''
         mkdir -p "$out"
@@ -40,8 +40,8 @@ in
 
     package = mkOption {
       type = types.package;
-      default = collectd-graph-panel-0_4_1_255;
-      defaultText = "collectd-graph-panel-0_4_1_255";
+      default = collectd-graph-panel-1;
+      defaultText = "collectd-graph-panel-1";
       description = "Collectd Graph Panel package to use.";
     };
 
