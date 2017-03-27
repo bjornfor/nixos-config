@@ -77,7 +77,6 @@
     ltrace
     lttng-tools
     lynx
-    manpages # for "man 2 fork" etc.
     meld
     mercurial
     minicom
@@ -135,7 +134,6 @@
     spotify
     sqlite-interactive
     srecord
-    stdmanpages
     subversion
     surfraw
     sweethome3d.application

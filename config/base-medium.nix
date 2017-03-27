@@ -34,6 +34,7 @@
     iw
     lshw
     lsof
+    manpages # for "man 2 fork" etc.
     ncdu
     ntfs3g
     parted
@@ -44,6 +45,7 @@
     screen
     smartmontools
     sshfsFuse
+    stdmanpages
     sysdig
     sysstat
     tig
