@@ -232,7 +232,7 @@
       enable = true;
       passwordAuthentication = false;
       extraConfig = ''
-        AllowUsers bfo
+        AllowUsers git bfo
 
         # Doesn't work on NixOS: https://github.com/NixOS/nixpkgs/issues/18503
         ## Allow password authentication (only) from local network
