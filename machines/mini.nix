@@ -8,6 +8,7 @@ in
 {
   imports = [
     ../config/base-big.nix
+    ../config/gitolite.nix
     ../options/nextcloud.nix
     ../options/collectd-graph-panel.nix
   ];
@@ -34,6 +35,8 @@ in
   ];
 
   virtualisation.virtualbox.host.enable = true;
+
+  users.extraUsers."lighttpd".extraGroups = [ "git" ];
 
   services = {
 
@@ -186,9 +189,15 @@ in
           # Group repositories on the index page by sub-directory name
           section-from-path=1
 
+          # Allow using gitweb.* keys
+          enable-git-config=1
+
+          # (Can be) maintained by gitolite
+          project-list=/srv/git/projects.list
+
           # scan-path must be last so that earlier settings take effect when
           # scanning
-          scan-path=/srv/git
+          scan-path=/srv/git/repositories
         '';
       };
     };
