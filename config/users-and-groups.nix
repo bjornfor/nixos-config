@@ -11,6 +11,7 @@
         "cdrom"
         "dialout"
         "docker"
+        "git"
         "libvirtd"
         "networkmanager"
         "plugdev"
