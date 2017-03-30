@@ -74,6 +74,14 @@ in
       mod_userdir = true;
       enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" "mod_redirect" ];
       extraConfig = ''
+        # Uncomment one or more of these in case something doesn't work right
+        #debug.log-request-header = "enable"
+        #debug.log-request-header-on-error = "enable"
+        #debug.log-response-header = "enable"
+        #debug.log-file-not-found = "enable"
+        #debug.log-request-handling = "enable"
+        #debug.log-condition-handling = "enable"
+
         $HTTP["host"] =~ ".*" {
           dir-listing.activate = "enable"
           alias.url += ( "/munin" => "/var/www/munin" )
