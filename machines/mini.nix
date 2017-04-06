@@ -164,6 +164,9 @@ in
           # Specify clone URLs using macro expansion
           clone-url=http://${myDomain}/cgit/$CGIT_REPO_URL https://${myDomain}/cgit/$CGIT_REPO_URL git@${myDomain}:$CGIT_REPO_URL
 
+          # Show pretty commit graph
+          #enable-commit-graph=1
+
           # Show number of affected files per commit on the log pages
           enable-log-filecount=1
 
