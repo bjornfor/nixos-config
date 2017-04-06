@@ -164,6 +164,12 @@ in
           # Specify clone URLs using macro expansion
           clone-url=http://${myDomain}/cgit/$CGIT_REPO_URL https://${myDomain}/cgit/$CGIT_REPO_URL git@${myDomain}:$CGIT_REPO_URL
 
+          # Show number of affected files per commit on the log pages
+          enable-log-filecount=1
+
+          # Show number of added/removed lines per commit on the log pages
+          enable-log-linecount=1
+
           # Enable 'stats' page and set big upper range
           max-stats=year
 
