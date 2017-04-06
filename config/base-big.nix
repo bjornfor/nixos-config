@@ -46,7 +46,7 @@
     evtest
     exiv2
     filezilla
-    firefoxWrapper
+    firefox
     freecad
     gcc
     gdb
