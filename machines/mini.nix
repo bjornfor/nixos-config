@@ -9,6 +9,7 @@ in
   imports = [
     ../config/base-big.nix
     ../config/gitolite.nix
+    ../config/transmission.nix
     ../options/nextcloud.nix
     ../options/collectd-graph-panel.nix
   ];
@@ -234,8 +235,6 @@ in
     };
 
     apcupsd.enable = true;
-
-    transmission.enable = true;
 
     # TODO: Change perms on /var/lib/collectd from 700 to something more
     # permissive, at least group readable?
