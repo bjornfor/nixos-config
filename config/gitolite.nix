@@ -23,6 +23,13 @@ in
     };
   };
 
+  systemd.services.gitolite-init = {
+    serviceConfig.PermissionsStartOnly = true;
+    preStart = ''
+      chmod a+rx /srv
+    '';
+  };
+
   users.extraGroups."${gitoliteGroup}".gid = 505;
   users.extraUsers."${config.services.gitolite.user}".group = gitoliteGroup;
 }
