@@ -140,11 +140,11 @@
 
   # Block advertisement domains (see
   # http://winhelp2002.mvps.org/hosts.htm)
-  environment.etc."hosts".source =
-    pkgs.fetchurl {
-      url = "http://winhelp2002.mvps.org/hosts.txt";
-      sha256 = "18as5cm295yyrns4i2hzxlb1h52x68gbnb1b3yksvzqs283pvbfi";
-    };
+  #environment.etc."hosts".source =
+  #  pkgs.fetchurl {
+  #    url = "http://winhelp2002.mvps.org/hosts.txt";
+  #    sha256 = "18as5cm295yyrns4i2hzxlb1h52x68gbnb1b3yksvzqs283pvbfi";
+  #  };
 
   # for "attic mount -o allow_other" to be shareable with samba
   environment.etc."fuse.conf".text = ''
