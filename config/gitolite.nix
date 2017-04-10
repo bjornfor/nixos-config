@@ -26,6 +26,7 @@ in
   systemd.services.gitolite-init = {
     serviceConfig.PermissionsStartOnly = true;
     preStart = ''
+      mkdir -p /srv
       chmod a+rx /srv
     '';
   };
