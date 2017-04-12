@@ -8,7 +8,8 @@ in
 {
   # Gitolite defaults to UMASK 0077. After the initial setup, open
   # ${dataDir}/.gitolite.rc and make that 0027 for group readability. This is
-  # needed for webserver/cgit.
+  # needed for webserver/cgit. Already created directories and files and can be
+  # made group accessible by running `chmod -R g+rX ...`.
 
   # Tips for cgit + gitolite + lighttpd configuration:
   # https://joel.porquet.org/wiki/hacking/cgit_gitolite_lighttpd_archlinux/
