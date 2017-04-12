@@ -5,6 +5,7 @@
     # Include the results of the hardware scan.
     ../hardware-configuration.nix
     ./base-small.nix
+    ./munin.nix
     ./desktop-gnome3.nix
   ];
 
@@ -155,18 +156,6 @@
         read only = no
         guest ok = yes
         force user = bfo
-      '';
-    };
-
-    munin-node.enable = true;
-    munin-node.extraConfig = ''
-      cidr_allow 192.168.1.0/24
-    '';
-    munin-cron = {
-      enable = true;
-      hosts = ''
-        [${config.networking.hostName}]
-        address localhost
       '';
     };
 
