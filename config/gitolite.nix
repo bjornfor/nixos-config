@@ -24,13 +24,20 @@ in
     };
   };
 
-  systemd.services.gitolite-init = {
-    serviceConfig.PermissionsStartOnly = true;
-    preStart = ''
+  # Creating /srv requires root privileges. The gitolite-init service itself
+  # runs as unprivileged user. Use this helper service to create the needed
+  # directories.
+  systemd.services.gitolite-init-setup-srv = {
+    description = "Create /srv Directory For Gitolite";
+    requiredBy = [ "gitolite-init.service" ];
+    before = [ "gitolite-init.service" ];
+    script = ''
       mkdir -p /srv
       chmod a+rx /srv
     '';
+    serviceConfig.Type = "oneshot";
   };
+
 
   users.extraGroups."${gitoliteGroup}".gid = 505;
   users.extraUsers."${config.services.gitolite.user}".group = gitoliteGroup;
