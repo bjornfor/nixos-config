@@ -8,6 +8,7 @@ in
 {
   imports = [
     ../config/base-big.nix
+    ../config/clamav.nix
     ../config/gitolite.nix
     ../config/transmission.nix
     ../options/nextcloud.nix
@@ -40,11 +41,6 @@ in
   users.extraUsers."lighttpd".extraGroups = [ "git" ];
 
   services = {
-
-    clamav = {
-      updater.enable = true;
-      updater.frequency = 1;  # number of checks per day
-    };
 
     smartd = {
       enable = true;
