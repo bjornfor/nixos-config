@@ -38,6 +38,7 @@
     manpages # for "man 2 fork" etc.
     ncdu
     ntfs3g
+    owncloud-client
     parted
     patchelf
     pavucontrol
