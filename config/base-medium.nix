@@ -25,39 +25,91 @@
   hardware.opengl.driSupport32Bit = true;
 
   environment.systemPackages = with pkgs; [
+    apg
+    arp-scan
+    ascii
+    bc
     borgbackup
+    bridge-utils
     chromium
     cifs_utils  # for mount.cifs, needed for cifs filesystems in systemd.mounts.
+    ctags
+    ddrescue
+    diffstat
     dmidecode
+    dos2unix
+    exiv2
     file
+    firefox
+    gcc
+    gdb
     gitFull
+    gnumake
+    hdparm
     htop
+    iotop
+    iptables
     iw
+    jq
     keepass
+    lm_sensors
     lshw
     lsof
     manpages # for "man 2 fork" etc.
+    minicom
+    mosh
+    msmtp
+    mutt
     ncdu
+    networkmanager
+    networkmanagerapplet
+    nixops
+    nixpkgs-lint
+    nix-generate-from-cpan
+    nix-prefetch-scripts
+    nix-repl
+    nox
     ntfs3g
     owncloud-client
+    p7zip
     parted
     patchelf
     pavucontrol
+    perlPackages.ImageExifTool
     pciutils
+    picocom
+    posix_man_pages
+    powertop
     psmisc
+    pv
+    pythonFull
+    pythonPackages.demjson  # has a jsonlint command line tool (alternative: json_pp from perl)
+    pythonPackages.ipython
+    pythonPackages.sympy
+    python2nix
+    rmlint
+    samba
     screen
+    silver-searcher
     smartmontools
+    sqlite-interactive
     sshfsFuse
     stdmanpages
     sysdig
     sysstat
+    taskwarrior
+    tcpdump
     tig
+    traceroute
+    tree
     unrar
     unzip
     usbutils
+    vifm
     vim_configurable
     vlc
     wget
+    wgetpaste
     which
     w3m
     xpra
