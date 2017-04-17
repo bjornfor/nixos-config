@@ -59,6 +59,9 @@
     extraOptions = ''
       gc-keep-outputs = true
       log-servers = http://hydra.nixos.org/log
+
+      # Number of seconds to wait for binary-cache to accept() our connect()
+      connect-timeout = 15
     '';
     # Automatic garbage collection
     gc.automatic = true;
