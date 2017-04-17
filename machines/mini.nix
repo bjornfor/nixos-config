@@ -152,6 +152,10 @@ in
       collectd-graph-panel.enable = true;
       nextcloud.enable = true;
       gitweb.enable = true;
+      gitweb.projectroot = "/srv/git/repositories";
+      gitweb.extraConfig = ''
+        our $projects_list = '/srv/git/projects.list';
+      '';
       cgit = {
         enable = true;
         configText = ''
