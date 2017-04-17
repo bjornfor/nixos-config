@@ -33,6 +33,7 @@
     gitFull
     htop
     iw
+    keepass
     lshw
     lsof
     manpages # for "man 2 fork" etc.
