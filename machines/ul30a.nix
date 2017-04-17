@@ -17,6 +17,9 @@
   networking.hostName = "ul30a";
 
   services = {
+    munin-node.extraConfig = ''
+      cidr_allow 192.168.1.0/24
+    '';
     munin-cron = {
       hosts = ''
         [mini]
