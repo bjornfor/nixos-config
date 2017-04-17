@@ -111,6 +111,7 @@
     wget
     wgetpaste
     which
+    wireshark
     w3m
     xpra
   ];

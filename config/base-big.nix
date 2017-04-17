@@ -100,7 +100,6 @@
     wineUnstable
     winpdb
     wirelesstools
-    wireshark
     wpa_supplicant
     wpa_supplicant_gui
     youtube-dl
