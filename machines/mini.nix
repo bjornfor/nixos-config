@@ -236,10 +236,6 @@ in
 
     apcupsd.enable = true;
 
-    # TODO: Change perms on /var/lib/collectd from 700 to something more
-    # permissive, at least group readable?
-    # The NixOS service currently only sets perms *once*, so I've manually
-    # loosened it up for now, to allow lighttpd to read RRD files.
     collectd = {
       enable = true;
       extraConfig = ''
