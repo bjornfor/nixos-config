@@ -65,28 +65,31 @@
   # Select internationalisation properties.
   i18n.consoleKeyMap = "qwerty/no";
 
-  security.setuidOwners = [
-    (lib.mkIf (builtins.elem pkgs.wireshark config.environment.systemPackages) {
-      # Limit access to dumpcap to root and members of the wireshark group.
-      source = "${pkgs.wireshark}/bin/dumpcap";
-      program = "dumpcap";
-      owner = "root";
-      group = "wireshark";
-      setuid = true;
-      setgid = false;
-      permissions = "u+rx,g+x";
-    })
-    (lib.mkIf (builtins.elem pkgs.smartmontools config.environment.systemPackages) {
-      # Limit access to smartctl to root and members of the munin group.
-      source = "${pkgs.smartmontools}/bin/smartctl";
-      program = "smartctl";
-      owner = "root";
-      group = "munin";
-      setuid = true;
-      setgid = false;
-      permissions = "u+rx,g+x";
-    })
-  ];
+  security.wrappers = {}
+    // (if (builtins.elem pkgs.wireshark config.environment.systemPackages) then {
+         dumpcap = {
+           # Limit access to dumpcap to root and members of the wireshark group.
+           source = "${pkgs.wireshark}/bin/dumpcap";
+           program = "dumpcap";
+           owner = "root";
+           group = "wireshark";
+           setuid = true;
+           setgid = false;
+           permissions = "u+rx,g+x";
+         };
+       } else {})
+    // (if (builtins.elem pkgs.smartmontools config.environment.systemPackages) then {
+         smartctl = {
+           # Limit access to smartctl to root and members of the munin group.
+           source = "${pkgs.smartmontools}/bin/smartctl";
+           program = "smartctl";
+           owner = "root";
+           group = "munin";
+           setuid = true;
+           setgid = false;
+           permissions = "u+rx,g+x";
+         };
+       } else {});
 
   security.sudo = {
     enable = true;
