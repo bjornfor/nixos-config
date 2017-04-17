@@ -131,6 +131,7 @@
     # they were installed.
     extensions = [
       "cmedhionkhpnakcndndgjdbohmhepckk" # Adblock for Youtube™
+      "bodncoafpihbhpfljcaofnebjkaiaiga" # appear.in screen sharing
       "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
       "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
     ];
