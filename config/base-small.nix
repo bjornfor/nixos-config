@@ -60,6 +60,10 @@
       gc-keep-outputs = true
       log-servers = http://hydra.nixos.org/log
     '';
+    # Automatic garbage collection
+    gc.automatic = true;
+    gc.dates = "03:15";
+    gc.options = "--delete-older-than 14d";
   };
 
   # Select internationalisation properties.
