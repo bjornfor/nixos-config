@@ -137,7 +137,7 @@
     subversion
     surfraw
     sweethome3d.application
-    taskwarrior  # causes grep help text to be printed each time a new terminal is started (bash completion script is buggy)
+    taskwarrior
     tcpdump
     #teamviewer  # changes hash all the time
     telnet
