@@ -124,6 +124,18 @@
   virtualisation.docker.enable = true;
   virtualisation.docker.storageDriver = "overlay";
 
+  programs.chromium = {
+    enable = true;
+    # Imperatively installed extensions will seamlessly merge with these.
+    # Removing extensions here will remove them from chromium, no matter how
+    # they were installed.
+    extensions = [
+      "cmedhionkhpnakcndndgjdbohmhepckk" # Adblock for Youtube™
+      "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
+      "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+    ];
+  };
+
   services = {
     atd.enable = true;
 
