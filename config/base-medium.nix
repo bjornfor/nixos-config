@@ -100,6 +100,7 @@
     taskwarrior
     tcpdump
     tig
+    torbrowser
     traceroute
     tree
     unrar
