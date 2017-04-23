@@ -22,7 +22,9 @@
   };
 
   nixpkgs.config = {
-    chromium.enableWideVine = true;  # for Netflix, requires full chromium build
+    # Disabled because it fails to build.
+    # See https://github.com/NixOS/nixpkgs/issues/22333
+    #chromium.enableWideVine = true;  # for Netflix, requires full chromium build
   };
 
   systemd.automounts = [
