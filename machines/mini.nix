@@ -378,6 +378,21 @@ in
     }
   ];
 
+  systemd.services.update-git-mirrors = {
+    description = "Update Git Mirror Repositories";
+    # Run 6 minutes past ever every hour during the day. (Don't update at night
+    # during backup.) See systemd.time(7) for details about the format.
+    startAt = "*-*-* 7..23:06";
+    script = ''
+      export HOME="${config.services.gitolite.dataDir}"
+      for repo in "$HOME"/repositories/mirrors/*; do
+          test -d "$repo" || { echo "WARNING: No repositories in $HOME"; break; }
+          echo "Updating repo: $repo"
+          (cd "$repo" && "${pkgs.git}/bin/git" remote update --prune) >/dev/null
+      done
+    '';
+  };
+
   systemd.services.my-backup = {
     enable = true;
     description = "My Backup";
