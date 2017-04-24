@@ -38,7 +38,6 @@ in
     serviceConfig.Type = "oneshot";
   };
 
-
   users.extraGroups."${gitoliteGroup}".gid = 505;
   users.extraUsers."${config.services.gitolite.user}".group = gitoliteGroup;
 }
