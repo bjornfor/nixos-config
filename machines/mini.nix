@@ -384,6 +384,7 @@ in
     # during backup.) See systemd.time(7) for details about the format.
     startAt = "*-*-* 7..23:06";
     script = ''
+      # $HOME is needed for git to expand ~ in /etc/gitconfig (or else fail)
       export HOME="${config.services.gitolite.dataDir}"
       for repo in "$HOME"/repositories/mirrors/*; do
           test -d "$repo" || { echo "WARNING: No repositories in $HOME"; break; }
