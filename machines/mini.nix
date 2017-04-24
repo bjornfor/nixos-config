@@ -393,6 +393,7 @@ in
       done
     '';
     serviceConfig.User = config.services.gitolite.user;
+    serviceConfig.UMask = "0027";
   };
 
   systemd.services.my-backup = {
