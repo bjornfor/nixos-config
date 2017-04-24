@@ -13,6 +13,7 @@ in
     ../config/transmission.nix
     ../options/nextcloud.nix
     ../options/collectd-graph-panel.nix
+    ../options/gitolite-mirror.nix
   ];
 
   fileSystems = {
@@ -378,23 +379,14 @@ in
     }
   ];
 
-  systemd.services.update-git-mirrors = {
-    description = "Update Git Mirror Repositories";
-    # Run 6 minutes past ever every hour during the day. (Don't update at night
-    # during backup.) See systemd.time(7) for details about the format.
-    startAt = "*-*-* 7..23:06";
-    script = ''
-      # $HOME is needed for git to expand ~ in /etc/gitconfig (or else fail)
-      export HOME="${config.services.gitolite.dataDir}"
-      for repo in "$HOME"/repositories/mirrors/*; do
-          test -d "$repo" || { echo "WARNING: No repositories in $HOME"; break; }
-          echo "Updating repo: $repo"
-          (cd "$repo" && "${pkgs.git}/bin/git" remote update --prune) >/dev/null
-      done
-    '';
-    serviceConfig.User = config.services.gitolite.user;
-    serviceConfig.UMask = "0027";
-  };
+  services.gitolite-mirror.enable = true;
+  services.gitolite-mirror.repoUrls = [
+    "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
+    "https://github.com/nixos/nix"
+    "https://github.com/nixos/nixpkgs"
+    "https://github.com/nixos/nixops"
+    "https://github.com/nixos/nixpkgs"
+  ];
 
   systemd.services.my-backup = {
     enable = true;
