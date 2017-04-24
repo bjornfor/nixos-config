@@ -391,6 +391,7 @@ in
           (cd "$repo" && "${pkgs.git}/bin/git" remote update --prune) >/dev/null
       done
     '';
+    serviceConfig.User = config.services.gitolite.user;
   };
 
   systemd.services.my-backup = {
