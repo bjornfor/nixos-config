@@ -13,6 +13,7 @@
         "docker"
         "git"
         "libvirtd"
+        "motion"
         "networkmanager"
         "plugdev"
         "scanner"
