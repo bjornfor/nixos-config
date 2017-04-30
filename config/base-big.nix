@@ -88,6 +88,7 @@
     spice
     spotify
     srecord
+    stellarium
     subversion
     surfraw
     sweethome3d.application
