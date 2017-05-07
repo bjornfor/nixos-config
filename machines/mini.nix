@@ -10,6 +10,7 @@ in
     ../config/base-big.nix
     ../config/clamav.nix
     ../config/gitolite.nix
+    ../config/git-daemon.nix
     ../config/transmission.nix
     ../options/nextcloud.nix
     ../options/collectd-graph-panel.nix
@@ -164,7 +165,7 @@ in
           #enable-http-clone=1
 
           # Specify clone URLs using macro expansion
-          clone-url=http://${myDomain}/cgit/$CGIT_REPO_URL https://${myDomain}/cgit/$CGIT_REPO_URL git@${myDomain}:$CGIT_REPO_URL
+          clone-url=http://${myDomain}/cgit/$CGIT_REPO_URL https://${myDomain}/cgit/$CGIT_REPO_URL git://${myDomain}/$CGIT_REPO_URL git@${myDomain}:$CGIT_REPO_URL
 
           # Show pretty commit graph
           #enable-commit-graph=1
