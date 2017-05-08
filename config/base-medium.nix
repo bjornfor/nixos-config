@@ -137,6 +137,8 @@
       "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
     ];
   };
+  # Apply the same programs.chromium settings to google-chrome
+  environment.etc."opt/chrome".source = "/etc/chromium";
 
   services = {
     atd.enable = true;
