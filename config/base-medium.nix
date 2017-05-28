@@ -134,6 +134,7 @@
     extensions = [
       "cmedhionkhpnakcndndgjdbohmhepckk" # Adblock for Youtube™
       "bodncoafpihbhpfljcaofnebjkaiaiga" # appear.in screen sharing
+      "iaalpfgpbocpdfblpnhhgllgbdbchmia" # Asciidoctor.js Live Preview
       "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
       "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
     ];
