@@ -185,9 +185,11 @@ in
           # Search for these files in the root of the default branch of
           # repositories for coming up with the about page:
           readme=:README.asciidoc
+          readme=:README.adoc
           readme=:README.txt
           readme=:README
           readme=:INSTALL.asciidoc
+          readme=:INSTALL.adoc
           readme=:INSTALL.txt
           readme=:INSTALL
 
