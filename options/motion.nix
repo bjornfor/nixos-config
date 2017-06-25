@@ -150,7 +150,7 @@ in
       timerConfig.Persistent = true;
     };
 
-    # Create a target unit to allow easy start stop of all munin instances.
+    # Create a target unit to allow easy start stop of all motion instances.
     systemd.targets.motion = {
       description = "Motion Camera Monitor";
       wantedBy = [ "multi-user.target" ];
