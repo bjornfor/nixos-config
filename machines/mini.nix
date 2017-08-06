@@ -4,6 +4,7 @@ let
   myDomain = "bforsman.name";
   phpSockName1 = "/run/phpfpm/pool1.sock";
   backupDiskMountpoint = "/mnt/backup-disk";
+  acmeChallengesDir = "/var/www/challenges/";
 in
 {
   imports = [
@@ -43,6 +44,21 @@ in
 
   users.extraUsers."lighttpd".extraGroups = [ "git" ];
 
+  security.acme.certs = {
+    "${myDomain}" = {
+      email = "bjorn.forsman@gmail.com";
+      webroot = acmeChallengesDir;
+      extraDomains =
+        { "mariaogbjorn.no" = null;
+          "sky.mariaogbjorn.no" = null;
+        };
+      # TODO: When lighttpd 1.4.46 comes out we can switch from "restart" to "reload"
+      postRun = ''
+        systemctl restart lighttpd
+      '';
+    };
+  };
+
   services = {
 
     postfix = {
@@ -69,6 +85,9 @@ in
         $HTTP["host"] =~ ".*" {
           dir-listing.activate = "enable"
           alias.url += ( "/munin" => "/var/www/munin" )
+
+          # for Let's Encrypt certificates (NixOS security.acme.certs option)
+          alias.url += ( "/.well-known/acme-challenge" => "${acmeChallengesDir}/.well-known/acme-challenge" )
 
           # Reverse proxy for transmission bittorrent client
           proxy.server = (
@@ -103,8 +122,7 @@ in
         $HTTP["host"] == "${myDomain}" {
           $SERVER["socket"] == ":443" {
             ssl.engine = "enable"
-            ssl.pemfile = "/etc/lighttpd/certs/${myDomain}.pem"
-            ssl.ca-file = "/etc/lighttpd/certs/1_Intermediate.crt"
+            ssl.pemfile = "/var/lib/acme/${myDomain}/full.pem"
           }
           $HTTP["scheme"] == "http" {
             $HTTP["url"] =~ "^/nextcloud" {
@@ -116,8 +134,7 @@ in
         $HTTP["host"] == "mariaogbjorn.no" {
           $SERVER["socket"] == ":443" {
             ssl.engine = "enable"
-            ssl.pemfile = "/etc/lighttpd/certs/mariaogbjorn.no.pem"
-            ssl.ca-file = "/etc/lighttpd/certs/1_Intermediate.crt"
+            ssl.pemfile = "/var/lib/acme/${myDomain}/full.pem"
           }
         }
 
@@ -125,8 +142,7 @@ in
         $HTTP["host"] == "sky.mariaogbjorn.no" {
           $SERVER["socket"] == ":443" {
             ssl.engine = "enable"
-            ssl.pemfile = "/etc/lighttpd/certs/sky.mariaogbjorn.no.pem"
-            ssl.ca-file = "/etc/lighttpd/certs/1_Intermediate.crt"
+            ssl.pemfile = "/var/lib/acme/${myDomain}/full.pem"
           }
           url.redirect += ("^/$" => "/nextcloud/")
           $HTTP["scheme"] == "http" {
