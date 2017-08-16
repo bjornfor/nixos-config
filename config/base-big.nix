@@ -28,7 +28,7 @@
     dstat
     eagle
     (eclipses.eclipseWithPlugins {
-      eclipse = eclipses.eclipse-cpp-46;
+      eclipse = eclipses.eclipse-cpp;
       jvmArgs = [ "-Xmx2048m" ];
       plugins = with eclipses.plugins;
         [ cdt gnuarmeclipse ];
