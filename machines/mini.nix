@@ -62,13 +62,8 @@ in
   services = {
 
     postfix = {
-      enable = true;
       domain = myDomain;
       hostname = myDomain;
-      rootAlias = "bjorn.forsman@gmail.com";
-      extraConfig = ''
-        inet_interfaces = loopback-only
-      '';
     };
 
     lighttpd = {

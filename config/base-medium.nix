@@ -170,6 +170,18 @@
     # for hamster-time-tracker
     dbus.packages = with pkgs; [ gnome3.gconf ];
 
+    postfix = {
+      enable = true;
+      # Possibly set "domain" in machine specific configs.
+      # The default "From:" address is
+      #   user@${config.networking.hostName}.localdomain
+      #domain = "server1.example";
+      rootAlias = "bjorn.forsman@gmail.com";
+      extraConfig = ''
+        inet_interfaces = loopback-only
+      '';
+    };
+
     # Provide "MODE=666" or "MODE=664 + GROUP=plugdev" for a bunch of USB
     # devices, so that we don't have to run as root.
     udev.packages = with pkgs; [ rtl-sdr saleae-logic openocd ];
