@@ -14,9 +14,6 @@ in
     ../config/git-daemon.nix
     ../config/smart-daemon.nix
     ../config/transmission.nix
-    ../options/nextcloud.nix
-    ../options/collectd-graph-panel.nix
-    ../options/gitolite-mirror.nix
   ];
 
   fileSystems = {

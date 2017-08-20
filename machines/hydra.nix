@@ -10,9 +10,6 @@
 
       # Build server
       ../config/hydra.nix
-
-      # Monitoring
-      ../options/collectd-graph-panel.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
