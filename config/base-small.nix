@@ -9,6 +9,7 @@
     ../options/collectd-graph-panel.nix
     ../options/gitolite-mirror.nix
     ../options/nextcloud.nix
+    ../options/pia/pia-nm.nix
   ];
 
   # List swap partitions activated at boot time.
