@@ -5,15 +5,15 @@
     xserver = {
       enable = true;
       layout = "no";
-      displayManager.kdm.enable = true;
-      desktopManager.kde5.enable = true;
+      displayManager.sddm.enable = true;
+      desktopManager.plasma5.enable = true;
       libinput.enable = true;
     };
   };
 
   environment.systemPackages = with pkgs; [
-    kde5.ark
-    kde5.gwenview
-    kde5.okular
+    kdeApplications.ark
+    kdeApplications.gwenview
+    kdeApplications.okular
   ];
 }
