@@ -171,9 +171,6 @@
 
     locate = {
       enable = true;
-      extraFlags = [
-        "--prunefs='sshfs'"
-      ];
     };
 
     # for hamster-time-tracker
