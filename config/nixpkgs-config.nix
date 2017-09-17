@@ -9,6 +9,8 @@
   packageOverrides = pkgs: {
     altera-quartuses = pkgs.callPackage ../packages/altera-quartus { };
 
+    keil-uvision-c51 = pkgs.callPackage ../packages/keil-uvision-c51 { };
+
     ltsa = pkgs.callPackage ../packages/ltsa/default.nix { };
 
     mtdutils-for-swupdate = pkgs.mtdutils.overrideDerivation (args: rec {
