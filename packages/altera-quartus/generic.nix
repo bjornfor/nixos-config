@@ -9,6 +9,7 @@
 , prettyName ? baseName
 , version
 , components ? []
+, updateComponents ? []
 
 # Set to true for the old installers that are 32-bit only
 , is32bitPackage ? false
@@ -179,14 +180,12 @@ let
       "${utillinux}/bin/unshare" -r -U -m "${setup-chroot-and-exec}" "$@"
     '';
 
-  componentInstallers =
+  mkInstallersDir = srcs:
     stdenv.mkDerivation rec {
-      name = "${baseName}-installers-${version}";
-      inherit version;
+      name = "${baseName}-installers";
+      inherit srcs version;
       buildCommand =
-        if builtins.length components < 1 then
-          throw "Need at least one installer component (a Quartus*Setup*.run file)"
-        else ''
+        ''
           # The files are copied, not symlinked, because
           #   - We must add execute bit to *.run files
           #   - Quartus*Setup*.run fails to use the *.qdz files if they are symlinks.
@@ -202,19 +201,24 @@ let
               (p: ''
                 cp "${p}" "$out/$(stripHash "${p}")"
               '')
-              components
+              srcs
             )
           }
           chmod +x "$out"/*.run
         '';
     };
 
+  componentInstallers = mkInstallersDir components;
+
+  updateComponentInstallers = mkInstallersDir updateComponents;
+
 in
 
 stdenv.mkDerivation rec {
   name = "${baseName}-${version}";
   inherit version;
-  src = componentInstallers;
+  # srcs is for keeping track of inputs used for the build.
+  srcs = components ++ updateComponents;
   buildInputs = [ file nukeReferences ];
 
   # Prebuilt binaries need special treatment
@@ -249,20 +253,30 @@ stdenv.mkDerivation rec {
   # fail due to LD_LIBRARY_PATH pulling in wrong libraries for it (happens if
   # clicking any URL in Quartus).
   installPhase = ''
+    run_quartus_installer()
+    {
+        installer="$1"
+        if [ ! -x "$installer" ]; then
+            echo "ERROR: \"$installer\" either doesn't exist or is not executable"
+            exit 1
+        fi
+        echo "### ${run-in-fhs-env} $installer --mode unattended --installdir $out"
+        "${run-in-fhs-env}" "$installer" --mode unattended --installdir "$out"
+        echo "...done"
+    }
+
     echo "Running Quartus Setup (in FHS sandbox)..."
-    installer="$(echo "$src"/Quartus*Setup*)"
-    if [ ! -x "$installer" ]; then
-        echo "ERROR: \"$installer\" either doesn't exist or is not executable"
-        exit 1
-    fi
-    echo "### ${run-in-fhs-env} $installer --mode unattended --installdir $out"
-    "${run-in-fhs-env}" "$installer" --mode unattended --installdir "$out"
-    echo "...done"
+    run_quartus_installer "$(echo "${componentInstallers}"/Quartus*Setup*)"
+
+    ${stdenv.lib.optionalString (updateComponents != []) ''
+      echo "Running Quartus Update (in FHS sandbox)..."
+      run_quartus_installer "$(echo "${updateComponentInstallers}"/Quartus*Setup*)"
+    ''}
 
     echo "Removing unneeded \"uninstall\" binaries (saves $(du -sh "$out"/uninstall | cut -f1))"
     rm -rf "$out"/uninstall
 
-    echo "Prevent retaining a runtime dependency on the installer binaries (saves $(du -sh "${src}" | cut -f1))"
+    echo "Prevent retaining a runtime dependency on the installer binaries (saves $(du -sh "${componentInstallers}" | cut -f1) + $(du -sh "${updateComponentInstallers}" | cut -f1))"
     nuke-refs "$out/logs/"*
 
     echo "Fixing ELF interpreter paths with patchelf"
