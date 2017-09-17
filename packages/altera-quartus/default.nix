@@ -20,9 +20,13 @@ let
 
   mkCommonQuartus = srcAttrs:
     buildQuartus {
-      inherit (srcAttrs) baseName prettyName version is32bitPackage;
+      inherit (srcAttrs) baseName prettyName is32bitPackage;
+      version = srcAttrs.updates.version;
       components = with srcAttrs.components; [
         quartus cyclonev
+      ];
+      updateComponents = with srcAttrs.updates.components; [
+        quartus
       ];
     };
 
