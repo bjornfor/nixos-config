@@ -45,7 +45,7 @@ rec {
       recurseForDerivations = true;
       baseName = "altera-quartus-ii-web";
       prettyName = "Quartus II Web Edition";
-      inherit version is32bitPackage;
+      inherit version is32bitPackage updates;
       components = {
         recurseForDerivations = true;
         quartus = fetchurl {
@@ -85,7 +85,7 @@ rec {
       recurseForDerivations = true;
       baseName = "altera-quartus-ii-subscription";
       prettyName = "Quartus II Subscription Edition";
-      inherit version is32bitPackage;
+      inherit version is32bitPackage updates;
       components = {
         recurseForDerivations = true;
         quartus = fetchurl {
@@ -141,6 +141,22 @@ rec {
       };
     };
 
+    # Updates are shared between editions. I.e. this update can be applied to
+    # either web or subscription editions.
+    updates = rec {
+      recurseForDerivations = true;
+      version = "13.1.4.182";
+      updateBaseUrl = "http://download.altera.com/akdlm/software/acdsinst/13.1.4/182/update";
+      components = {
+        recurseForDerivations = true;
+        quartus = fetchurl {
+          # Size: 1.1 GB MD5: 172C8CD0EB631B988516F1182054F976
+          url = "${updateBaseUrl}/QuartusSetup-${version}.run";
+          sha256 = "0rs8dzr39nqzlvb6lizm803vyp5iqfx4axavrfd05d55ka1vbjnr";
+        };
+      };
+    };
+
   };
 
   v14 = rec {
@@ -153,7 +169,7 @@ rec {
       recurseForDerivations = true;
       baseName = "altera-quartus-ii-web";
       prettyName = "Quartus II Web Edition";
-      inherit version is32bitPackage;
+      inherit version is32bitPackage updates;
       components = {
         recurseForDerivations = true;
         quartus = fetchurl {
@@ -198,7 +214,7 @@ rec {
       recurseForDerivations = true;
       baseName = "altera-quartus-ii-subscription";
       prettyName = "Quartus II Subscription Edition";
-      inherit version is32bitPackage;
+      inherit version is32bitPackage updates;
       components = {
         recurseForDerivations = true;
         quartus = fetchurl {
@@ -264,6 +280,22 @@ rec {
       };
     };
 
+    # Updates are shared between editions. I.e. this update can be applied to
+    # either web or subscription editions.
+    updates = rec {
+      recurseForDerivations = true;
+      version = "14.1.1.190";
+      updateBaseUrl = "http://download.altera.com/akdlm/software/acdsinst/14.1.1/190/update";
+      components = {
+        recurseForDerivations = true;
+        quartus = fetchurl {
+          # Size: 1.2 GB MD5: AA1623894DE38069635913DA2DE33167
+          url = "${updateBaseUrl}/QuartusSetup-${version}-linux.run";
+          sha256 = "11c1mss09v7sd6mm8sfy4vsxjssdk8xw6cwipnpsg2rrxvaz1v1i";
+        };
+      };
+    };
+
   };
 
   v15 = rec {
@@ -276,7 +308,7 @@ rec {
       recurseForDerivations = true;
       baseName = "altera-quartus-prime-lite";
       prettyName = "Quartus Prime Lite Edition";
-      inherit version is32bitPackage;
+      inherit version is32bitPackage updates;
       components = {
         recurseForDerivations = true;
         quartus = fetchurl {
@@ -321,7 +353,7 @@ rec {
       recurseForDerivations = true;
       baseName = "altera-quartus-prime-standard";
       prettyName = "Quartus Prime Standard Edition";
-      inherit version is32bitPackage;
+      inherit version is32bitPackage updates;
       components = {
         recurseForDerivations = true;
         quartus = fetchurl {
@@ -397,6 +429,22 @@ rec {
       };
     };
 
+    # Updates are shared between editions. I.e. this update can be applied to
+    # either lite or standard editions.
+    updates = rec {
+      recurseForDerivations = true;
+      version = "15.1.2.193";
+      updateBaseUrl = "http://download.altera.com/akdlm/software/acdsinst/15.1.2/193/update";
+      components = {
+        recurseForDerivations = true;
+        quartus = fetchurl {
+          # Size: 4.1 GB MD5: EECCEF76A26E98E8022C59C7491FC215
+          url = "${updateBaseUrl}/QuartusSetup-${version}-linux.run";
+          sha256 = "0vv2ijjxyj0a7pqxqsjs1bvi6aq44bn0ml7inxcg1lrba095cmdl";
+        };
+      };
+    };
+
   };
 
   v16 = rec {
@@ -409,7 +457,7 @@ rec {
       recurseForDerivations = true;
       baseName = "altera-quartus-prime-lite";
       prettyName = "Quartus Prime Lite Edition";
-      inherit version is32bitPackage;
+      inherit version is32bitPackage updates;
       components = {
         recurseForDerivations = true;
         quartus = fetchurl {
@@ -454,7 +502,7 @@ rec {
       recurseForDerivations = true;
       baseName = "altera-quartus-prime-standard";
       prettyName = "Quartus Prime Standard Edition";
-      inherit version is32bitPackage;
+      inherit version is32bitPackage updates;
       components = {
         recurseForDerivations = true;
         quartus = fetchurl {
@@ -526,6 +574,22 @@ rec {
           # Size: 2.9 GB MD5: C3E7C3569214D412B4E19BE58C89A194
           url = "${baseUrl}/stratixv-${version}.qdz";
           sha256 = "0ibzdb8fhzf0b9jxvqxgmb319gjxc7jplghakqznz6144nshjq44";
+        };
+      };
+    };
+
+    # Updates are shared between editions. I.e. this update can be applied to
+    # either lite or standard editions.
+    updates = rec {
+      recurseForDerivations = true;
+      version = "16.1.2.203";
+      updateBaseUrl = "http://download.altera.com/akdlm/software/acdsinst/16.1.2/203/update";
+      components = {
+        recurseForDerivations = true;
+        quartus = fetchurl {
+          # Size: 2.4 GB MD5: 607E5CBFF6B674034413E675655DDA32
+          url = "${updateBaseUrl}/QuartusSetup-${version}-linux.run";
+          sha256 = "020ind25j4z060cr37gf8344aadqfwvpik1wkmrbrdja3aixn1g8";
         };
       };
     };
