@@ -59,6 +59,7 @@
   nix = {
     useSandbox = true;
     buildCores = 0;  # 0 means auto-detect number of CPUs (and use all)
+    trustedUsers = [ "root" "@wheel" ];
 
     extraOptions = ''
       # To not get caught by the '''"nix-collect-garbage -d" makes
