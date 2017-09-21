@@ -79,7 +79,10 @@ in
 
             # Update existing repos
             echo "Updating repo: $url"
-            (cd "$local_repo" && "${pkgs.git}/bin/git" remote update --prune) >/dev/null
+            (cd "$local_repo" \
+             && "${pkgs.git}/bin/git" remote update --prune \
+             && "${pkgs.git}/bin/git" gc \
+            ) >/dev/null
         done
 
         # Is this needed?
