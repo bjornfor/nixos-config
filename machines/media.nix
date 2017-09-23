@@ -77,7 +77,10 @@
   systemd.services.borg-backup = {
     # Restore everything:
     # $ cd /mnt/restore
-    # $ [sudo] borg extract --list /mnt/backup-disk/repo-name::archive-name
+    # $ [sudo] borg extract -v --list --numeric-owner /mnt/backup-disk/repo-name::archive-name
+    #
+    # Restore from remote repository:
+    # $ [sudo BORG_RSH='ssh -i /home/bfo/.ssh/id_rsa'] borg extract -v --list --numeric-owner --remote-path="sudo borg" ssh://bfo@server/mnt/backup-disk/repo-name::archive-name
     #
     # Interactive restore (slower than 'borg extract'):
     # $ borg mount /mnt/backup-disk/repo-name /mnt/fuse-mountpoint
@@ -85,7 +88,7 @@
     # my-machine-20150220T234453
     # my-machine-20150321T114708
     # ... restore files (cp/rsync) ...
-    # $ fusermount -u /mnt/fuse-mountpoint
+    # $ borg umount /mnt/fuse-mountpoint
     enable = true;
     description = "Borg Backup Service";
     startAt = "*-*-* 01:15:00";  # see systemd.time(7)
