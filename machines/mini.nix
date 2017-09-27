@@ -396,94 +396,17 @@ in
     serviceConfig.ExecStart = /home/bfo/bin/backup.sh;
   };
 
-  systemd.services.borg-backup = {
-    # Restore everything:
-    # $ cd /mnt/restore
-    # $ [sudo] borg extract -v --list --numeric-owner /mnt/backup-disk/repo-name::archive-name
-    #
-    # Restore from remote repository:
-    # $ [sudo BORG_RSH='ssh -i /home/bfo/.ssh/id_rsa'] borg extract -v --list --numeric-owner --remote-path="sudo borg" ssh://bfo@server/mnt/backup-disk/repo-name::archive-name
-    #
-    # Interactive restore (slower than 'borg extract'):
-    # $ borg mount /mnt/backup-disk/repo-name /mnt/fuse-mountpoint
-    # $ ls -1 /mnt/fuse-mountpoint
-    # my-machine-20150220T234453
-    # my-machine-20150321T114708
-    # ... restore files (cp/rsync) ...
-    # $ borg umount /mnt/fuse-mountpoint
+  services.borg-backup = {
     enable = true;
-    description = "Borg Backup Service";
-    startAt = "*-*-* 05:15:00";  # see systemd.time(7)
-    environment = {
-      BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
-    };
-    path = with pkgs; [
-      borgbackup utillinux coreutils
-    ];
-    serviceConfig.ExecStart =
-      let
-        # - The initial backup repo must be created manually:
-        #     $ sudo borg init --encryption none $repository
-        # - Use writeScriptBin instead of writeScript, so that argv[0] (logged
-        #   to the journal) doesn't include the long nix store path hash.
-        #   (Prefixing the ExecStart= command with '@' doesn't work because we
-        #   start a shell (new process) that creates a new argv[0].)
-        borgBackup = pkgs.writeScriptBin "borg-backup-script" ''
-          #!${pkgs.bash}/bin/sh
-          repository="${backupDiskMountpoint}/backups/backup.borg"
-
-          #systemctl stop borg-backup-mountpoint
-
-          echo "Running 'borg create [...]'"
-          borg create \
-              --stats \
-              --verbose \
-              --list \
-              --filter AME \
-              --show-rc \
-              --one-file-system \
-              --exclude-caches \
-              --exclude /nix/ \
-              --exclude /tmp/ \
-              --exclude /var/tmp/ \
-              --exclude '/home/*/.cache/' \
-              --exclude '/home/*/.thumbnails/' \
-              --exclude '/home/*/.nox/' \
-              --exclude '*/.Trash*/' \
-              --compression lz4 \
-              "$repository::{hostname}-$(date +%Y%m%dT%H%M%S)" \
-              / /mnt/data
-          create_ret=$?
-
-          echo "Running 'borg prune [...]'"
-          borg prune \
-              --stats \
-              --verbose \
-              --list \
-              --show-rc \
-              --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
-              --prefix {hostname}- \
-              "$repository"
-          prune_ret=$?
-
-          echo "Running 'borg check [...]'"
-          borg check \
-              --verbose \
-              --show-rc \
-              "$repository"
-          check_ret=$?
-
-          #systemctl start borg-backup-mountpoint
-
-          # Exit with error if either command failed
-          if [ $create_ret != 0 -o $prune_ret != 0 -o $check_ret != 0 ]; then
-              echo "borg create, prune and/or check operation failed. Exiting with error."
-              exit 1
-          fi
-        '';
-        borgBackupScript = "${borgBackup}/bin/borg-backup-script";
-      in
-        borgBackupScript;
+    repository = "${backupDiskMountpoint}/backups/backup.borg";
+    archiveBaseName = "{hostname}";
+    pathsToBackup = [ "/" "/mnt/data" ];
+    preHook = ''
+      #systemctl stop borg-backup-mountpoint
+    '';
+    postHook = ''
+      #systemctl start borg-backup-mountpoint
+    '';
   };
 
   systemd.services.borg-backup-mountpoint = {

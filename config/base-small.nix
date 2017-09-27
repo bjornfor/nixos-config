@@ -6,6 +6,7 @@
     ../hardware-configuration.nix
     ./users-and-groups.nix
 
+    ../options/borg-backup.nix
     ../options/collectd-graph-panel.nix
     ../options/gitolite-mirror.nix
     ../options/nextcloud.nix

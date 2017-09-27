@@ -74,102 +74,21 @@
     };
   };
 
-  systemd.services.borg-backup = {
-    # Restore everything:
-    # $ cd /mnt/restore
-    # $ [sudo] borg extract -v --list --numeric-owner /mnt/backup-disk/repo-name::archive-name
-    #
-    # Restore from remote repository:
-    # $ [sudo BORG_RSH='ssh -i /home/bfo/.ssh/id_rsa'] borg extract -v --list --numeric-owner --remote-path="sudo borg" ssh://bfo@server/mnt/backup-disk/repo-name::archive-name
-    #
-    # Interactive restore (slower than 'borg extract'):
-    # $ borg mount /mnt/backup-disk/repo-name /mnt/fuse-mountpoint
-    # $ ls -1 /mnt/fuse-mountpoint
-    # my-machine-20150220T234453
-    # my-machine-20150321T114708
-    # ... restore files (cp/rsync) ...
-    # $ borg umount /mnt/fuse-mountpoint
+  services.borg-backup = rec {
     enable = true;
-    description = "Borg Backup Service";
-    startAt = "*-*-* 01:15:00";  # see systemd.time(7)
-    environment = {
-      BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
-    };
-    path = with pkgs; [
-      borgbackup utillinux coreutils
-    ];
-    serviceConfig.ExecStart =
-      let
-        # - The initial backup repo must be created manually:
-        #     $ sudo borg init --encryption none $repository
-        # - Use writeScriptBin instead of writeScript, so that argv[0] (logged
-        #   to the journal) doesn't include the long Nix store path hash.
-        #   (Prefixing the ExecStart= command with '@' doesn't work because we
-        #   start a shell (new process) that creates a new argv[0].)
-        borgBackup = pkgs.writeScriptBin "borg-backup-script" ''
-          #!${pkgs.bash}/bin/sh
-          repository="/mnt/backup-disk/backup-maria.borg"
-
-          die()
-          {
-              echo "$*"
-              # Allow systemd to associate this message with the unit before
-              # exit. Yep, it's a race.
-              sleep 3
-              exit 1
-          }
-
-          # access the mountpoint now, to trigger automount (why is this needed?)
-          if ! ls -ld /mnt/maria-pc_seagate_expansion_drive_4tb/; then
-              die "Failed to mount maria-pc"
-          fi
-          # Oops! autofs is considered a filesystem, so this check will always pass.
-          if ! mountpoint /mnt/maria-pc_seagate_expansion_drive_4tb; then
-              die "exiting"
-          fi
-
-          echo "Running 'borg create [...]'"
-          borg create \
-              --stats \
-              --verbose \
-              --list \
-              --filter AME \
-              --show-rc \
-              --one-file-system \
-              --exclude-caches \
-              --exclude '*/$RECYCLE.BIN' \
-              --exclude '*/System Volume Information' \
-              --compression lz4 \
-              "$repository::maria-pc_seagate_expansion_drive_4tb-$(date +%Y%m%dT%H%M%S)" \
-              /mnt/maria-pc_seagate_expansion_drive_4tb/
-          create_ret=$?
-
-          echo "Running 'borg prune [...]'"
-          borg prune \
-              --stats \
-              --verbose \
-              --list \
-              --show-rc \
-              --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
-              --prefix maria-pc_seagate_expansion_drive_4tb- \
-              "$repository"
-          prune_ret=$?
-
-          echo "Running 'borg check [...]'"
-          borg check \
-              --verbose \
-              --show-rc \
-              "$repository"
-          check_ret=$?
-
-          # Exit with error if either command failed
-          if [ $create_ret != 0 -o $prune_ret != 0 -o $check_ret != 0 ]; then
-              die "borg create, prune and/or check operation failed. Exiting with error."
-          fi
-        '';
-        borgBackupScript = "${borgBackup}/bin/borg-backup-script";
-      in
-        borgBackupScript;
+    repository = "/mnt/backup-disk/backup-maria.borg";
+    archiveBaseName = "maria-pc_seagate_expansion_drive_4tb";
+    pathsToBackup = [ "/mnt/${archiveBaseName}" ];
+    preHook = ''
+      # access the mountpoint now, to trigger automount (why is this needed?)
+      if ! ls -ld /mnt/${archiveBaseName}; then
+          die "Failed to mount maria-pc"
+      fi
+      # Oops! autofs is considered a filesystem, so this check will always pass.
+      if ! mountpoint /mnt/${archiveBaseName}; then
+          die "exiting"
+      fi
+    '';
   };
 
   users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
