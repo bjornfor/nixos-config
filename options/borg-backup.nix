@@ -121,6 +121,7 @@ in
                 --show-rc \
                 --one-file-system \
                 --exclude-caches \
+                --exclude /etc/nix/nix.conf \
                 --exclude /nix/ \
                 --exclude /tmp/ \
                 --exclude /var/tmp/ \
