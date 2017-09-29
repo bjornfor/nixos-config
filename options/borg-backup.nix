@@ -80,6 +80,35 @@ in
       # my-machine-20150321T114708
       # ... restore files (cp/rsync) ...
       # $ borg umount /mnt/fuse-mountpoint
+      #
+      #
+      # == Disaster recovery
+      #
+      # 1. Boot NixOS live CD/USB
+      #
+      # 2. Partition, format and mount disk(s) on /mnt.
+      #    If booting in EFI mode, remember that the FAT32 formatted EFI System
+      #    Partition must be mounted on /mnt/boot. (If booting in BIOS mode you
+      #    don't _have_ to make a separate boot partition, as long as your
+      #    root filesystem is supported by GRUB.)
+      #
+      # 3. Install borg (`nix-env -iA nixos.borgbackup`) and set $BORG_REPO:
+      #    export BORG_REPO=ssh://user@server/mnt/backup-disk/repo-name
+      #    (Make sure the root user in the live CD/USB environment has SSH keys
+      #    to log onto 'user@server'.)
+      #
+      # 4. List available archives, chose one to restore from.
+      #    borg list --remote-path="sudo borg" $BORG_REPO
+      #
+      # 5. Restore files:
+      #    cd /mnt && borg extract -v --list --numeric-owner --remote-path="sudo borg" $BORG_REPO::archive-name
+      #
+      # 6. Check that bootloader and filesystem(s) is set up correctly in
+      #    NixOS configuration (which disk LABEL/UUID to use etc.). If
+      #    restoring on new HW, pay attention when updating
+      #    hardware-configuration.nix (`nixos-generate-config --dir /tmp`).
+      #
+      # 7. nixos-install
       enable = true;
       description = "Borg Backup Service";
       startAt = "*-*-* 01:15:00";  # see systemd.time(7)
