@@ -84,31 +84,61 @@ in
       #
       # == Disaster recovery
       #
-      # 1. Boot NixOS live CD/USB
+      # 1. Boot NixOS Live CD/USB installer.
+      #    (If doing full system restore, the PC must boot in the same firmware
+      #    mode (BIOS/MBR v. EFI) as the old system.)
       #
-      # 2. Partition, format and mount disk(s) on /mnt.
-      #    If booting in EFI mode, remember that the FAT32 formatted EFI System
-      #    Partition must be mounted on /mnt/boot. (If booting in BIOS mode you
-      #    don't _have_ to make a separate boot partition, as long as your
-      #    root filesystem is supported by GRUB.)
+      # 2. Install BorgBackup:
+      #    $ nix-env -iA nixos.borgbackup
       #
-      # 3. Install borg (`nix-env -iA nixos.borgbackup`) and set $BORG_REPO:
-      #    export BORG_REPO=ssh://user@server/mnt/backup-disk/repo-name
-      #    (Make sure the root user in the live CD/USB environment has SSH keys
-      #    to log onto 'user@server'.)
+      # 3. Make the backup available to borg.
+      #    Here, an SSH example:
+      #    $ export BORG_REMOTE_PATH="sudo borg"
+      #    $ export BORG_REPO=ssh://user@server/backups/repo.borg
+      #    (Remember to add SSH keys for the root user to be able to login to
+      #    server as user.)
       #
-      # 4. List available archives, chose one to restore from.
-      #    borg list --remote-path="sudo borg" $BORG_REPO
+      # 4. List available archives, choose one to restore from:
+      #    $ borg list
+      #    $ export ARCHIVE_NAME=some-archive-name-from-above
       #
-      # 5. Restore files:
-      #    cd /mnt && borg extract -v --list --numeric-owner --remote-path="sudo borg" $BORG_REPO::archive-name
+      # 5. Partition, format and mount disk(s) on /mnt.
+      #    - If doing full system restore, the partitions must have the same
+      #      filesystem labels and/or uuids like the old system. Hint:
+      #      $ mkdir etc_bak && cd etc_bak && borg extract ::$ARCHIVE_NAME etc
+      #      $ # get label and uuid values from etc/nixos/*.nix files
+      #      $ mkfs.ext4 -L $label -U $uuid /dev/my-disk-partition
+      #    - If booting in EFI mode, the FAT32 formatted EFI System Partition
+      #      must be mounted on /mnt/boot. (If booting in BIOS/MBR mode you
+      #      don't _have_ to make a separate boot partition, as long as your
+      #      root filesystem is supported by GRUB.)
       #
-      # 6. Check that bootloader and filesystem(s) is set up correctly in
-      #    NixOS configuration (which disk LABEL/UUID to use etc.). If
-      #    restoring on new HW, pay attention when updating
-      #    hardware-configuration.nix (`nixos-generate-config --dir /tmp`).
+      # 6. Restore files:
+      #    $ cd /mnt && borg extract -v --list --numeric-owner ::$ARCHIVE_NAME
+      #    (If the backup includes the Nix store but you want to do a
+      #    re-install anyway (e.g. to redo disk partitioning or migrating from
+      #    BIOS/MBR to EFI), add `--exclude /nix` to the borg command.)
       #
-      # 7. nixos-install
+      # 7. Make the system bootable.
+      #    Alternative 1, the backup includes the Nix store. The disk just
+      #    needs to be made bootable:
+      #      For BIOS/MBR:
+      #        $ grub-install --boot-director=/mnt/boot /dev/sdX
+      #      For EFI:
+      #        TODO: "bootctl --path=/mnt/boot update"?
+      #
+      #    Alternative 2, the backup does NOT include the Nix store. Must
+      #    perform NixOS install. However, this allows changing between
+      #    BIOS/MBR and EFI booting, as well as completely redesigning
+      #    partitions/filesystems.
+      #    - Check that bootloader and filesystem(s) is set up to your liking
+      #      in NixOS configuration (which disk label/uuid to use etc.). If
+      #      restoring onto new HW, pay attention when updating
+      #      hardware-configuration.nix (`nixos-generate-config --dir /tmp`,
+      #      then manually merge with /mnt/etc/nixos).
+      #    - nixos-install
+      #
+      # 8. Reboot into your new old system :-)
       enable = true;
       description = "Borg Backup Service";
       startAt = "*-*-* 01:15:00";  # see systemd.time(7)
