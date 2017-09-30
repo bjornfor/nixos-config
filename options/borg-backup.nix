@@ -40,7 +40,7 @@ in
       type = types.lines;
       default = "";
       description = ''
-        Shell commands to run before backing up. Abort backup if 'exit 1'.
+        Shell commands to run before backing up. Abort backup if 'exit N'.
       '';
     };
 
