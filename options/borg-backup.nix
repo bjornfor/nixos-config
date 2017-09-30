@@ -126,7 +126,7 @@ in
           #   to the journal) doesn't include the long Nix store path hash.
           #   (Prefixing the ExecStart= command with '@' doesn't work because we
           #   start a shell (new process) that creates a new argv[0].)
-          borgBackup = pkgs.writeScriptBin "borg-backup-script" ''
+          borgBackup = pkgs.writeScriptBin "borg-backup" ''
             #!${pkgs.bash}/bin/sh
             repository="${cfg.repository}"
 
