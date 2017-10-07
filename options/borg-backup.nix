@@ -80,6 +80,11 @@ in
       }
     ];
 
+    # for convenience
+    environment.sessionVariables = {
+      BORG_REPO = "${cfg.repository}";
+    };
+
     systemd.services.borg-backup = {
       # Restore everything:
       # $ cd /mnt/restore
