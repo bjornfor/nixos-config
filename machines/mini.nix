@@ -388,14 +388,6 @@ in
     "https://github.com/nixos/nixpkgs"
   ];
 
-  systemd.services.my-backup = {
-    enable = true;
-    description = "My Backup";
-    startAt = "*-*-* 01:15:00";  # see systemd.time(7)
-    path = with pkgs; [ bash rsync openssh utillinux gawk nettools time cifs_utils ];
-    serviceConfig.ExecStart = /home/bfo/bin/backup.sh;
-  };
-
   services.borg-backup = {
     enable = true;
     repository = "${backupDiskMountpoint}/backups/backup.borg";
