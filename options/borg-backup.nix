@@ -198,6 +198,7 @@ in
                 '' else ''\''}
                 --exclude /tmp/ \
                 --exclude /var/tmp/ \
+                --exclude /var/swapfile \
                 --exclude '/home/*/.cache/' \
                 --exclude '/home/*/.thumbnails/' \
                 --exclude '/home/*/.nox/' \
