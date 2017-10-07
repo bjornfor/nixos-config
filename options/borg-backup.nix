@@ -42,10 +42,12 @@ in
 
     pathsToBackup = mkOption {
       type = types.listOf types.str;
-      default = [ "/" ];
+      default = [ "/" "/boot" ];
       example = [ "/home" "/srv" ];
       description = ''
-        List of paths to backup.
+        List of paths to backup. The backup does not cross filesystem
+        boundaries, so each filesystem (mountpoint) you want to have backed up
+        must be listed here.
       '';
     };
 
