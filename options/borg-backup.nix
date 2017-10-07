@@ -148,15 +148,12 @@ in
       path = with pkgs; [
         borgbackup utillinux coreutils
       ];
+      serviceConfig.SyslogIdentifier = "borg-backup"; # else HASH-borg-backup
       serviceConfig.ExecStart =
         let
           # - The initial backup repo must be created manually:
           #     $ sudo borg init --encryption none $repository
-          # - Use writeScriptBin instead of writeScript, so that argv[0] (logged
-          #   to the journal) doesn't include the long Nix store path hash.
-          #   (Prefixing the ExecStart= command with '@' doesn't work because we
-          #   start a shell (new process) that creates a new argv[0].)
-          borgBackup = pkgs.writeScriptBin "borg-backup" ''
+          borgBackup = pkgs.writeScript "borg-backup" ''
             #!${pkgs.bash}/bin/sh
             repository="${cfg.repository}"
 
@@ -220,9 +217,8 @@ in
                 die "borg create, prune and/or check operation failed. Exiting with error."
             fi
           '';
-          borgBackupScript = "${borgBackup}/bin/borg-backup-script";
         in
-          borgBackupScript;
+          borgBackup;
     };
 
   };
