@@ -27,6 +27,19 @@ in
       '';
     };
 
+    excludeNix = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Whether to exclude /nix/ (and the generated file /etc/nix/nix.conf)
+        from the backup. Set it to false if you want to be able to do full
+        system restore from your backup. Set it to true if you want to save
+        some disk space and are okay with having to recover your system by
+        running nixos-install. A prerequisite for this option is that
+        pathsToBackup includes the Nix store.
+      '';
+    };
+
     pathsToBackup = mkOption {
       type = types.listOf types.str;
       default = [ "/" ];
@@ -177,8 +190,10 @@ in
                 --show-rc \
                 --one-file-system \
                 --exclude-caches \
-                --exclude /etc/nix/nix.conf \
-                --exclude /nix/ \
+                ${if cfg.excludeNix then ''
+                  --exclude /etc/nix/nix.conf \
+                  --exclude /nix/ \
+                '' else ''\''}
                 --exclude /tmp/ \
                 --exclude /var/tmp/ \
                 --exclude '/home/*/.cache/' \
