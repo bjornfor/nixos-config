@@ -2,7 +2,7 @@ nixos-config
 ============
 Bjørn Forsman <bjorn.forsman@gmail.com>
 
-Configuration files for my http://nixos.org/[NixOS] machines.
+Configuration files for my https://nixos.org/[NixOS] machines.
 
 Installation:
 
