@@ -234,12 +234,20 @@ in
                 "$repository"
             prune_ret=$?
 
-            echo "Running 'borg check [...]'"
-            borg check \
-                --verbose \
-                --show-rc \
-                "$repository"
-            check_ret=$?
+            # Run repository check once a week
+            check_day=Sunday
+            this_day=$(date +%A)
+            if [ "$this_day" = "$check_day" ];  then
+                echo "Running 'borg check [...]' (since today is $this_day)"
+                borg check \
+                    --verbose \
+                    --show-rc \
+                    "$repository"
+                check_ret=$?
+            else
+                echo "Skipping 'borg check' since today is not $check_day (it's $this_day))"
+                check_ret=0
+            fi
 
             ${cfg.postHook}
 
