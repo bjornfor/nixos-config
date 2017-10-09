@@ -67,6 +67,14 @@ in
       '';
     };
 
+    startAt = mkOption {
+      type = types.str;
+      default = "*-*-* 01:15:00";
+      description = ''
+        When to run the backup, in systemd.time(7) format.
+      '';
+    };
+
   };
 
   config = mkIf cfg.enable {
@@ -161,7 +169,7 @@ in
       # 8. Reboot into your new old system :-)
       enable = true;
       description = "Borg Backup Service";
-      startAt = "*-*-* 01:15:00";  # see systemd.time(7)
+      startAt = cfg.startAt;
       environment = {
         BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
       };
