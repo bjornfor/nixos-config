@@ -143,7 +143,7 @@ in
       #    Alternative 1, the backup includes the Nix store. The disk just
       #    needs to be made bootable:
       #      For BIOS/MBR:
-      #        $ grub-install --boot-director=/mnt/boot /dev/sdX
+      #        $ grub-install --boot-directory=/mnt/boot /dev/sdX
       #      For EFI:
       #        TODO: "bootctl --path=/mnt/boot update"?
       #
