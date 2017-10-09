@@ -69,6 +69,7 @@
     nix-generate-from-cpan
     nix-prefetch-scripts
     nix-repl
+    nix-serve
     nox
     ntfs3g
     owncloud-client
