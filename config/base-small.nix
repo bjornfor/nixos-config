@@ -76,7 +76,7 @@
 
     # Automatic garbage collection
     gc.automatic = true;
-    gc.dates = "03:15";
+    gc.dates = "00:15";
     gc.options = "--delete-older-than 14d";
   };
 
