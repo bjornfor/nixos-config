@@ -88,6 +88,9 @@
       if ! mountpoint /mnt/${archiveBaseName}; then
           die "exiting"
       fi
+      if [ $(ls /mnt/${archiveBaseName} | wc -l) -lt 1 ]; then
+          die "/mnt/${archiveBaseName} has no files, assuming mount failure"
+      fi
     '';
   };
 
