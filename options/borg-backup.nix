@@ -188,6 +188,9 @@ in
             die()
             {
                 echo "$*"
+                if type dieHook | grep -q function 2>/dev/null; then
+                    dieHook
+                fi
                 # Allow systemd to associate this message with the unit before
                 # exit. Yep, it's a race.
                 sleep 3
