@@ -120,12 +120,9 @@
     xpra
   ];
 
-  # In a secret module, add this option:
-  #   networking.networkmanager.pia-vpn.username = "myuser";
-  # and optionally this (if not set, the OS keyring will be used):
-  #   networking.networkmanager.pia-vpn.password = "mypassword";
-  networking.networkmanager.pia-vpn.enable =
-    lib.mkIf (config.networking.networkmanager.pia-vpn.username != "") true;
+  networking.networkmanager.pia-vpn.enable = true;
+  networking.networkmanager.pia-vpn.usernameFile = "/etc/pia-vpn.username";
+  networking.networkmanager.pia-vpn.passwordFile = "/etc/pia-vpn.password";
   networking.networkmanager.pia-vpn.serverList =
     [ "denmark" "fi" "nl" "no" "sweden" "uk-london" "us-newyorkcity" ];
 
