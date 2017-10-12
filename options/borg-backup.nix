@@ -132,10 +132,16 @@ in
       #
       # 5. Partition, format and mount disk(s) on /mnt.
       #    - If doing full system restore, the partitions must have the same
-      #      filesystem labels and/or uuids like the old system. Hint:
-      #      $ mkdir etc_bak && cd etc_bak && borg extract ::$ARCHIVE_NAME etc
-      #      $ # get label and uuid values from etc/nixos/*.nix files
+      #      filesystem labels and/or uuids like the old system.
+      #      Hint:
+      #      $ mkdir etc_nixos && cd etc_nixos && borg extract ::$ARCHIVE_NAME etc/nixos
+      #      Get label and uuid values from etc/nixos/*.nix files. If your
+      #      config contains direct refs like /dev/sda3 (bad idea!) you might
+      #      have to do nixos-install.
       #      $ mkfs.ext4 -L $label -U $uuid /dev/my-disk-partition
+      #      For mkfs.vfat the $uuid from the config needs to have the dash
+      #      ('-') removed, or else it complains "Volume ID must be a hexadecimal number".
+      #      $ mkfs.vfat -F32 -n $label -i $uuid /dev/my-disk-partition
       #    - If booting in EFI mode, the FAT32 formatted EFI System Partition
       #      must be mounted on /mnt/boot. (If booting in BIOS/MBR mode you
       #      don't _have_ to make a separate boot partition, as long as your
@@ -153,7 +159,13 @@ in
       #      For BIOS/MBR:
       #        $ grub-install --boot-directory=/mnt/boot /dev/sdX
       #      For EFI:
-      #        TODO: "bootctl --path=/mnt/boot update"?
+      #        Nothing really needs to be done. The system will be bootable
+      #        because there is /EFI/BOOT/BOOTX64.EFI in the EFI System
+      #        Partition. If you want to add/update EFI variables, here are
+      #        some tips:
+      #        $ efibootmgr  # see current entries (and HEX_VAL identifier)
+      #        $ efibootmgr --delete-bootnum --bootnum HEX_VAL
+      #        $ efibootmgr --verbose --create --disk /dev/sda --part 1 --loader /EFI/BOOT/BOOTX64.EFI --label "NixOS"
       #
       #    Alternative 2, the backup does NOT include the Nix store. Must
       #    perform NixOS install. However, this allows changing between
