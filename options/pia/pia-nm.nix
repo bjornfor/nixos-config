@@ -194,24 +194,28 @@ in
     system.activationScripts.pia-nm-usernameFile = lib.mkIf (cfg.usernameFile != null) (stringAfter [ "etc" "specialfs" "var" ]
       ''
         if [ -f "${cfg.usernameFile}" ]; then
-          echo "INFO: loading networking.networkmanager.pia-vpn.usernameFile from ${cfg.usernameFile}"
+          ${pkgs.systemd}/bin/systemd-cat -t nixos echo "<6>loading networking.networkmanager.pia-vpn.usernameFile from ${cfg.usernameFile}"
           ${lib.concatMapStringsSep "\n"
             (f: "${pkgs.gnused}/bin/sed -ie \"s/@USERNAME@/$(< ${cfg.usernameFile})/\" ${f}")
             (map (s: "/etc/${serverEntryToEtcFilename s}") filteredServers)}
         else
-            echo "WARNING: networking.networkmanager.pia-vpn.usernameFile (${cfg.usernameFile}) does not exist."
+            msg="WARNING: networking.networkmanager.pia-vpn.usernameFile (${cfg.usernameFile}) does not exist."
+            echo "$msg"
+            ${pkgs.systemd}/bin/systemd-cat -t nixos echo "<4>$msg"
         fi
       '');
 
     system.activationScripts.pia-nm-passwordFile = lib.mkIf (cfg.passwordFile != null) (stringAfter [ "etc" "specialfs" "var" ]
       ''
         if [ -f "${cfg.passwordFile}" ]; then
-          echo "INFO: loading networking.networkmanager.pia-vpn.passwordFile from ${cfg.passwordFile}"
+          ${pkgs.systemd}/bin/systemd-cat -t nixos echo "<6>loading networking.networkmanager.pia-vpn.passwordFile from ${cfg.passwordFile}"
           ${lib.concatMapStringsSep "\n"
             (f: "${pkgs.gnused}/bin/sed -ie \"s/@PASSWORD@/$(< ${cfg.passwordFile})/\" ${f}")
             (map (s: "/etc/${serverEntryToEtcFilename s}") filteredServers)}
         else
-            echo "WARNING: networking.networkmanager.pia-vpn.passwordFile (${cfg.passwordFile}) does not exist."
+            msg="WARNING: networking.networkmanager.pia-vpn.passwordFile (${cfg.passwordFile}) does not exist."
+            echo "$msg"
+            ${pkgs.systemd}/bin/systemd-cat -t nixos echo "<4>$msg"
         fi
       '');
   };
