@@ -16,21 +16,19 @@ let
         url = "https://github.com/pommi/CGP/archive/v${version}.tar.gz";
         sha256 = "1inifs9rapjyjx43046lcjsz2pvnd0n7dihk07577ld2xw5gydv9";
       };
-      cfgFile = pkgs.writeText "config.local.php" ''
-        <?php
-        $CONFIG['datadir'] = '/var/lib/collectd';
-        $CONFIG['rrdtool'] = '${pkgs.rrdtool}/bin/rrdtool';
-        $CONFIG['graph_type'] = 'canvas';
-        $CONFIG['typesdb'] = '${pkgs.collectd}/share/collectd/types.db';
-        # Plugins to show on the overview page
-        $CONFIG['overview'] = array('load', 'cpu', 'memory', 'swap', 'sensors', 'uptime');
-        ?>
+      appendConf = pkgs.writeText "config.php.append" ''
+
+        # loading configuration passed in environment variable
+        $local_config_file = getenv('LOCAL_CONFIG_FILE');
+        if ($local_config_file != 'FALSE' && file_exists($local_config_file))
+          include_once $local_config_file;
       '';
       buildCommand = ''
         mkdir -p "$out"
         cp -r "$src"/. "$out"
         chmod +w "$out"/conf
-        cp "${cfgFile}" "$out"/conf/config.local.php
+        mv "$out"/conf/config.php config.php.orig
+        cat config.php.orig "${appendConf}" >"$out"/conf/config.php
       '';
     };
 in
@@ -44,6 +42,24 @@ in
       default = collectd-graph-panel-1;
       defaultText = "collectd-graph-panel-1";
       description = "Collectd Graph Panel package to use.";
+    };
+
+    configText = mkOption {
+      type = types.lines;
+      default = ''
+        <?php
+        $CONFIG['datadir'] = '/var/lib/collectd';
+        $CONFIG['rrdtool'] = '${pkgs.rrdtool}/bin/rrdtool';
+        $CONFIG['graph_type'] = 'canvas';
+        $CONFIG['typesdb'] = '${pkgs.collectd}/share/collectd/types.db';
+        # Plugins to show on the overview page
+        $CONFIG['overview'] = array('load', 'cpu', 'memory', 'swap', 'sensors', 'uptime');
+        ?>
+      '';
+      description = ''
+        Contents of config.local.php, a file that is included by CGP, to
+        override/customize its default configuration.
+      '';
     };
 
     urlPrefix = mkOption {
@@ -70,7 +86,7 @@ in
   config = mkIf (config.services.lighttpd.enable && cfg.enable) {
 
     services.lighttpd = {
-      enableModules = [ "mod_alias" "mod_fastcgi" ];
+      enableModules = [ "mod_alias" "mod_fastcgi" "mod_setenv" ];
       extraConfig = ''
         $HTTP["host"] =~ "${cfg.vhostsPattern}" {
             alias.url += ( "${cfg.urlPrefix}" => "${cfg.package}/" )
@@ -82,6 +98,11 @@ in
                             "socket" => "${phpfpmSocketName}",
                         )
                     )
+                )
+                setenv.add-environment = (
+                    "LOCAL_CONFIG_FILE" =>
+                        "${pkgs.writeText "collectd-graph-panel-local-conf.php"
+                         cfg.configText}"
                 )
             }
         }
