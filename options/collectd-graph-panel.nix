@@ -16,20 +16,21 @@ let
         url = "https://github.com/pommi/CGP/archive/v${version}.tar.gz";
         sha256 = "1inifs9rapjyjx43046lcjsz2pvnd0n7dihk07577ld2xw5gydv9";
       };
+      cfgFile = pkgs.writeText "config.local.php" ''
+        <?php
+        $CONFIG['datadir'] = '/var/lib/collectd';
+        $CONFIG['rrdtool'] = '${pkgs.rrdtool}/bin/rrdtool';
+        $CONFIG['graph_type'] = 'canvas';
+        $CONFIG['typesdb'] = '${pkgs.collectd}/share/collectd/types.db';
+        # Plugins to show on the overview page
+        $CONFIG['overview'] = array('load', 'cpu', 'memory', 'swap', 'sensors', 'uptime');
+        ?>
+      '';
       buildCommand = ''
         mkdir -p "$out"
         cp -r "$src"/. "$out"
         chmod +w "$out"/conf
-        cat > "$out"/conf/config.local.php << EOF
-        <?php
-        \$CONFIG['datadir'] = '/var/lib/collectd';
-        \$CONFIG['rrdtool'] = '${pkgs.rrdtool}/bin/rrdtool';
-        \$CONFIG['graph_type'] = 'canvas';
-        \$CONFIG['typesdb'] = '${pkgs.collectd}/share/collectd/types.db';
-        # Plugins to show on the overview page
-        \$CONFIG['overview'] = array('load', 'cpu', 'memory', 'swap', 'sensors', 'uptime');
-        ?>
-        EOF
+        cp "${cfgFile}" "$out"/conf/config.local.php
       '';
     };
 in
