@@ -7,6 +7,7 @@
     ./base-small.nix
     ./munin.nix
     ./desktop-gnome3.nix
+    ./virtualisation.nix
   ];
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
@@ -125,14 +126,6 @@
   networking.networkmanager.pia-vpn.passwordFile = "/etc/pia-vpn.password";
   networking.networkmanager.pia-vpn.serverList =
     [ "denmark" "fi" "nl" "no" "sweden" "uk-london" "us-newyorkcity" ];
-
-  virtualisation.libvirtd.enable = true;
-  virtualisation.lxc.enable = true;
-  virtualisation.lxc.usernetConfig = ''
-    bfo veth lxcbr0 10
-  '';
-  virtualisation.docker.enable = true;
-  virtualisation.docker.storageDriver = "overlay";
 
   programs.chromium = {
     enable = true;
