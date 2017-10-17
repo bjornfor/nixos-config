@@ -7,9 +7,9 @@
       extraGroups = [
         "audio"
         "cdrom"
-        "dialout"
+        "dialout"  # for access to /dev/ttyUSBx
         "docker"
-        "git"
+        "git"  # for read-only access to gitolite repos on the filesystem
         "libvirtd"
         "motion"
         "networkmanager"
@@ -23,7 +23,7 @@
         "usbtmc"
         "vboxusers"
         "video"
-        "wheel"
+        "wheel"  # admin rights
         "wireshark"
       ];
       isNormalUser = true;
