@@ -31,9 +31,6 @@
     #device = /*lib.mkDefault*/ "nodev";
   };
 
-  # Select Linux version
-  boot.kernelPackages = pkgs.linuxPackages;
-
   boot.extraModprobeConfig = ''
     # Disable UAS for Seagate Expansion Drive, because it is unstable. At least
     # on USB3. The end result is disconnects and filesystem corruption (NTFS).
