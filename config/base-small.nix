@@ -4,6 +4,7 @@
   imports = [
     # Include the results of the hardware scan.
     ../hardware-configuration.nix
+    ./avahi.nix
     ./shell.nix
     ./users-and-groups.nix
 
@@ -200,14 +201,6 @@
         #  # of file) applies globally
         #  Match All
       '';
-    };
-
-    avahi = {
-      enable = true;
-      nssmdns = true;
-      publish.enable = true;
-      publish.addresses = true;
-      publish.workstation = true;
     };
   };
 }
