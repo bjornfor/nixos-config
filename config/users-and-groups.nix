@@ -5,7 +5,6 @@
       description = "Bjørn Forsman";
       uid = 1000;
       extraGroups = [
-        "adm"
         "audio"
         "cdrom"
         "dialout"
