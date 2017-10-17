@@ -178,6 +178,7 @@
       #    unprivileged users).
       locate = pkgs.mlocate;
       localuser = null;  # needed so mlocate can run as root (TODO: improve NixOS module)
+      interval = "02:15";
     };
 
     # for hamster-time-tracker
