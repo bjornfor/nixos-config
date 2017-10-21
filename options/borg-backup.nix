@@ -260,7 +260,7 @@ in
                     "$repository"
                 check_ret=$?
             else
-                echo "Skipping 'borg check' since today is not $check_day (it's $this_day))"
+                echo "Skipping 'borg check' since today is not $check_day (it's $this_day)"
                 check_ret=0
             fi
 
