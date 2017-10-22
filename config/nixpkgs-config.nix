@@ -7,11 +7,11 @@
   chromium.enablePepperFlash = true;
 
   packageOverrides = pkgs: {
-    altera-quartuses = pkgs.callPackage ../packages/altera-quartus { };
+    altera-quartuses = pkgs.callPackage ../pkgs/altera-quartus { };
 
-    keil-uvision-c51 = pkgs.callPackage ../packages/keil-uvision-c51 { };
+    keil-uvision-c51 = pkgs.callPackage ../pkgs/keil-uvision-c51 { };
 
-    ltsa = pkgs.callPackage ../packages/ltsa/default.nix { };
+    ltsa = pkgs.callPackage ../pkgs/ltsa/default.nix { };
 
     mtdutils-for-swupdate = pkgs.mtdutils.overrideDerivation (args: rec {
       # Copied from the .bbappend file from meta-swupdate.
@@ -26,8 +26,8 @@
       '';
     });
 
-    spotify-ripper = pkgs.callPackage ../packages/spotify-ripper/default.nix { };
+    spotify-ripper = pkgs.callPackage ../pkgs/spotify-ripper/default.nix { };
 
-    winusb = pkgs.callPackage ../packages/winusb/default.nix { };
+    winusb = pkgs.callPackage ../pkgs/winusb/default.nix { };
   };
 }
