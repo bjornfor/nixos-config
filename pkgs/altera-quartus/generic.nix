@@ -105,17 +105,17 @@ let
       sha256 = "1lxmprg9gm73gvafxd503x70z32phwjzcy74i0adfi6ixzla7m4r";
     };
   };
+
+  # Filter out patches that do not apply on 2.24 (and we can live without).
+  glibcPatchFilter = builtins.filter
+    (x: ((builtins.match ".*fix-i686-memchr.patch" (builtins.toString x)) == null)
+     && ((builtins.match ".*2.25-49.patch.gz" (builtins.toString x)) == null));
+
   glibc_lib_for_installer = glibc_lib.overrideAttrs (oldAttrs:
-    commonGlibcAttrs224
+    commonGlibcAttrs224 // { patches = glibcPatchFilter (oldAttrs.patches or []); }
   );
   glibc_lib32_for_installer = glibc_lib32.overrideAttrs (oldAttrs:
-    let
-      # Remove the "fix-i686-memchr.patch", which was written for glibc-2.25
-      # and doesn't apply here.
-      myFilter = builtins.filter
-        (x: (builtins.match ".*fix-i686-memchr.patch" (builtins.toString x)) == null);
-    in
-      commonGlibcAttrs224 // { patches = myFilter (oldAttrs.patches or []); }
+    commonGlibcAttrs224 // { patches = glibcPatchFilter (oldAttrs.patches or []); }
   );
 
   # Keep in sync with runtimeLibPath64
