@@ -70,10 +70,6 @@ in
     services.lighttpd = {
       enableModules = [ "mod_alias" "mod_fastcgi" "mod_access" "mod_setenv" ];
       extraConfig = ''
-        mimetype.assign += (
-            ".svg" => "image/svg+xml",
-        )
-
         $HTTP["host"] =~ "${cfg.vhostsPattern}" {
             alias.url += ( "${cfg.urlPrefix}" => "${cfg.installPrefix}/" )
             # Prevent direct access to the data directory, like nextcloud warns

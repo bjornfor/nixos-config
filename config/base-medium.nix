@@ -164,7 +164,7 @@
 
     # cups, for printing documents
     printing.enable = true;
-    printing.gutenprint = true; # lots of printer drivers
+    printing.drivers = with pkgs; [ gutenprint ];
 
     locate = {
       enable = true;
