@@ -59,14 +59,8 @@
       description = "Media user";
       uid = 1001;
       extraGroups = [
-        "audio"
         "cdrom"
-        "dialout"
-        "networkmanager"
-        "plugdev"
-        "scanner"
         "transmission"
-        "video"
         "wheel"
       ];
       isNormalUser = true;
