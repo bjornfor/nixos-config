@@ -18,7 +18,7 @@
   system.autoUpgrade = {
     enable = true;
     dates = "04:40";
-    channel = "https://nixos.org/channels/nixos-17.03";
+    channel = "https://nixos.org/channels/nixos-17.09";
   };
 
   nixpkgs.config = {
