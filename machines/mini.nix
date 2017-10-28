@@ -328,12 +328,6 @@ in
     munin-node.extraConfig = ''
       cidr_allow 192.168.1.0/24
     '';
-    munin-cron = {
-      hosts = ''
-        [ul30a]
-        address ul30a.local
-      '';
-    };
 
     mysql = {
       enable = true;
