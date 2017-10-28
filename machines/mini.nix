@@ -426,4 +426,7 @@ in
     (''command="./bin/restricted-hamster-scp-command",restrict '' + bf_at_work)
     (''command="/run/current-system/sw/bin/uptime",restrict '' + my_phone)
   ];
+
+  # The NixOS release to be compatible with for stateful data such as databases.
+  system.stateVersion = "17.03";
 }
