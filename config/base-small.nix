@@ -186,6 +186,7 @@
   services = {
     openssh = {
       enable = true;
+      forwardX11 = true;
       passwordAuthentication = false;
       extraConfig = ''
         AllowUsers git bfo
