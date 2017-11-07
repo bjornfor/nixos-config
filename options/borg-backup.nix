@@ -136,6 +136,25 @@ in
       '';
     };
 
+    excludes = mkOption {
+      type = types.listOf types.str;
+      default = [
+        "/tmp/"
+        "/var/tmp/"
+        "/var/swapfile"
+        "'/home/*/.cache/'"
+        "'/home/*/.thumbnails/'"
+        "'/home/*/.nox/'"
+        "'*/.Trash*/'"
+        "'*/$RECYCLE.BIN'"
+        "'*/System'"
+      ];
+      description = ''
+        List of files/directories/patterns to exclude from the backup. Each
+        element will be passed to borg as "--exclude elem".
+      '';
+    };
+
     pathsToBackup = mkOption {
       type = types.listOf types.str;
       default = [ "/" "/boot" ];
@@ -235,15 +254,7 @@ in
                   --exclude /etc/nix/nix.conf \
                   --exclude /nix/ \
                 '' else ''\''}
-                --exclude /tmp/ \
-                --exclude /var/tmp/ \
-                --exclude /var/swapfile \
-                --exclude '/home/*/.cache/' \
-                --exclude '/home/*/.thumbnails/' \
-                --exclude '/home/*/.nox/' \
-                --exclude '*/.Trash*/' \
-                --exclude '*/$RECYCLE.BIN' \
-                --exclude '*/System Volume Information' \
+                ${lib.concatMapStringsSep "\n" (x: "--exclude ${x} \\") cfg.excludes}
                 --compression lz4 \
                 "$repository::${cfg.archiveBaseName}-$(date +%Y%m%dT%H%M%S)" \
                 ${lib.concatStringsSep " " cfg.pathsToBackup}
