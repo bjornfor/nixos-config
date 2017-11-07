@@ -1,5 +1,5 @@
 { stdenv, fetchurl, utillinux, file, bash, glibc, pkgsi686Linux, writeScript
-, nukeReferences
+, nukeReferences, glibcLocales
 # Runtime dependencies
 , zlib, glib, libpng12, freetype, libSM, libICE, libXrender, fontconfig
 , libXext, libX11, libXtst, gtk2, bzip2, libelf
@@ -221,6 +221,11 @@ stdenv.mkDerivation rec {
   srcs = components ++ updateComponents;
   buildInputs = [ file nukeReferences ];
 
+  # Fix this:
+  # /nix/store/...-altera-quartus-ii-web-13.1.4.182/quartus/adm/qenv.sh: line 83: \
+  #  warning: setlocale: LC_CTYPE: cannot change locale (en_US.UTF-8): No such file or directory
+  LOCALE_ARCHIVE = "${glibcLocales}/lib/locale/locale-archive";
+
   # Prebuilt binaries need special treatment
   dontStrip = true;
   dontPatchELF = true;
@@ -375,6 +380,11 @@ stdenv.mkDerivation rec {
     ${stdenv.lib.optionalString wrapWithLdLibraryPath ''
       export LD_LIBRARY_PATH=${runtimeLibPath}
     ''}
+
+    # Fix this:
+    # /nix/store/...-altera-quartus-ii-web-13.1.4.182/quartus/adm/qenv.sh: line 83: \
+    #  warning: setlocale: LC_CTYPE: cannot change locale (en_US.UTF-8): No such file or directory
+    export LOCALE_ARCHIVE="${glibcLocales}/lib/locale/locale-archive"
 
     exec "$1" "\$@"
     EOF
