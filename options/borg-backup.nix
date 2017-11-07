@@ -125,6 +125,10 @@ in
       #    $ export BORG_REPO=ssh://user@server/backups/repo.borg
       #    (Remember to add SSH keys for the root user to be able to login to
       #    server as user.)
+      #    Here, a CIFS example:
+      #    $ mkdir /backups
+      #    $ mount.cifs //server/backups /backups -o rw,username=$YOUR_USER
+      #    $ export BORG_REPO=/backups/backup.borg
       #
       # 4. List available archives, choose one to restore from:
       #    $ borg list
