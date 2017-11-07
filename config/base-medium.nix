@@ -54,6 +54,7 @@
     iw
     jq
     keepass
+    keepassx-community
     lm_sensors
     lshw
     lsof
