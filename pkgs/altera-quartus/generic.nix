@@ -378,7 +378,11 @@ stdenv.mkDerivation rec {
     export PYTHONDONTWRITEBYTECODE=1
 
     ${stdenv.lib.optionalString wrapWithLdLibraryPath ''
-      export LD_LIBRARY_PATH=${runtimeLibPath}
+      if [ "x\$LD_LIBRARY_PATH" != x ]; then
+          export LD_LIBRARY_PATH="${runtimeLibPath}:\$LD_LIBRARY_PATH"
+      else
+          export LD_LIBRARY_PATH="${runtimeLibPath}"
+      fi
     ''}
 
     # Fix this:
