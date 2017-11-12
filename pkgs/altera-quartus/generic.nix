@@ -1,5 +1,5 @@
 { stdenv, fetchurl, utillinux, file, bash, glibc, pkgsi686Linux, writeScript
-, nukeReferences, glibcLocales
+, nukeReferences, glibcLocales, libfaketime
 # Runtime dependencies
 , zlib, glib, libpng12, freetype, libSM, libICE, libXrender, fontconfig
 , libXext, libX11, libXtst, gtk2, bzip2, libelf
@@ -384,6 +384,28 @@ stdenv.mkDerivation rec {
           export LD_LIBRARY_PATH="${runtimeLibPath}"
       fi
     ''}
+
+    # Implement the SOURCE_DATE_EPOCH specification, for reproducible builds:
+    # https://reproducible-builds.org/specs/source-date-epoch
+    if [ "x\$SOURCE_DATE_EPOCH" != x ]; then
+        # Prepare LD_LIBRARY_PATH, LD_PRELOAD
+        if [ "x\$LD_LIBRARY_PATH" != x ]; then
+            export LD_LIBRARY_PATH="${libfaketime}/lib:\$LD_LIBRARY_PATH"
+        else
+            export LD_LIBRARY_PATH="${libfaketime}/lib"
+        fi
+        if [ "x${toString is32bitPackage}" = "x${toString true}" ]; then
+            export LD_LIBRARY_PATH="${pkgsi686Linux.libfaketime}/lib:\$LD_LIBRARY_PATH"
+        fi
+        if [ "x\$LD_PRELOAD" != x ]; then
+            export LD_PRELOAD="libfaketime.so.1:\$LD_PRELOAD"
+        else
+            export LD_PRELOAD=libfaketime.so.1
+        fi
+        # Set the time to SOURCE_DATE_EPOCH
+        export FAKETIME_FMT="%s"
+        export FAKETIME=\$(date +%s -d @\$SOURCE_DATE_EPOCH)
+    fi
 
     # Fix this:
     # /nix/store/...-altera-quartus-ii-web-13.1.4.182/quartus/adm/qenv.sh: line 83: \

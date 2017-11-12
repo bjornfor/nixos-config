@@ -1,5 +1,5 @@
 { stdenv, fetchurl, utillinux, file, bash, glibc, pkgsi686Linux, writeScript
-, nukeReferences, glibcLocales
+, nukeReferences, glibcLocales, libfaketime
 # Runtime libraries:
 , zlib, glib, libpng12, freetype, libSM, libICE, libXrender, fontconfig
 , libXext, libX11, libXtst, gtk2, bzip2, libelf
@@ -12,7 +12,7 @@ let
   buildQuartus = import ./generic.nix {
     inherit
       stdenv fetchurl utillinux file bash glibc pkgsi686Linux writeScript
-      nukeReferences glibcLocales
+      nukeReferences glibcLocales libfaketime
       # Runtime libraries:
       zlib glib libpng12 freetype libSM libICE libXrender fontconfig
       libXext libX11 libXtst gtk2 bzip2 libelf;
