@@ -11,6 +11,16 @@
 
     keil-uvision-c51 = pkgs.callPackage ../pkgs/keil-uvision-c51 { };
 
+    # Upcoming release fixes segfault when run with Altera Quartus
+    libfaketime = pkgs.libfaketime.overrideAttrs (oldAttrs: rec {
+      name = "libfaketime-${version}";
+      version = "0.9.7b1";
+      src = pkgs.fetchurl {
+        url = "https://github.com/wolfcw/libfaketime/archive/v${version}.tar.gz";
+        sha256 = "08id74z44a2szk1rmwsc46hjksvahjkyyxxy484yq0z1p4gm2w9n";
+      };
+    });
+
     ltsa = pkgs.callPackage ../pkgs/ltsa/default.nix { };
 
     mtdutils-for-swupdate = pkgs.mtdutils.overrideDerivation (args: rec {
