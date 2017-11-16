@@ -18,6 +18,9 @@
         $RC{UMASK} = 0027;
 
         $RC{GIT_CONFIG_KEYS} = '.*';
+
+        # Allow creators of "wild repos" to delete their own repos.
+        push( @{$RC{ENABLE}}, 'D' );
       '';
     };
   };
