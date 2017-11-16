@@ -91,6 +91,7 @@
     pythonPackages.ipython
     pythonPackages.sympy
     python2nix
+    ripgrep
     rmlint
     samba
     screen
