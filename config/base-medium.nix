@@ -120,6 +120,9 @@
     w3m
     xdotool  # for keepass auto-type feature
     xpra
+    yubico-piv-tool
+    yubikey-personalization
+    yubikey-personalization-gui
   ];
 
   networking.networkmanager.pia-vpn.enable = true;
@@ -193,7 +196,9 @@
 
     # Provide "MODE=666" or "MODE=664 + GROUP=plugdev" for a bunch of USB
     # devices, so that we don't have to run as root.
-    udev.packages = with pkgs; [ rtl-sdr saleae-logic openocd ];
+    udev.packages = with pkgs; [
+      rtl-sdr saleae-logic openocd libu2f-host yubikey-personalization
+    ];
     udev.extraRules = ''
       # Rigol oscilloscopes
       SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="1ab1", ATTRS{idProduct}=="0588", MODE="0660", GROUP="usbtmc"
