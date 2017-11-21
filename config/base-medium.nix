@@ -68,6 +68,7 @@
     networkmanagerapplet
     nixops
     nixpkgs-lint
+    nix-bash-completions
     nix-generate-from-cpan
     nix-prefetch-scripts
     nix-repl
