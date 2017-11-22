@@ -147,7 +147,7 @@ in
         "'/home/*/.nox/'"
         "'*/.Trash*/'"
         "'*/$RECYCLE.BIN'"
-        "'*/System'"
+        "'*/System Volume Information'"
       ];
       description = ''
         List of files/directories/patterns to exclude from the backup. Each
