@@ -44,6 +44,9 @@ in
         # Allow download of archives in the following formats
         snapshots=tar.xz zip
   
+        # Don't show the .git suffix of repositories.
+        remove-suffix=1
+
         # Enable caching of up to 1000 output entries
         cache-size=1000
   
