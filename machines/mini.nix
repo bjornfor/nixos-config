@@ -227,6 +227,8 @@ in
           # repositories for coming up with the about page:
           readme=:README.asciidoc
           readme=:README.adoc
+          readme=:README.markdown
+          readme=:README.md
           readme=:README.txt
           readme=:README
 
