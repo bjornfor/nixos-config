@@ -206,6 +206,21 @@ in
             ''
           }
 
+          commit-filter=${pkgs.writeScript "cgit-commit-filter.sh" ''
+            #!${pkgs.stdenv.shell}
+            regex=
+            # This expression generates links to commits referenced by their SHA1.
+            regex=$regex'
+            s|\b([0-9a-fA-F]{7,40})\b|<a href="./?id=\1">\1</a>|g'
+
+            # This expression generates links to a bugtracker.
+            #regex=$regex'
+            #s|#([0-9]+)\b|<a href="http://YOUR_SERVER/?bug=\1">#\1</a>|g'
+
+            # Apply the transformation
+            sed -re "$regex"
+          ''}
+
           source-filter=${pkgs.cgit}/lib/cgit/filters/syntax-highlighting.py
 
           # Search for these files in the root of the default branch of
