@@ -104,11 +104,11 @@ in
         enable-git-config=1
   
         # (Can be) maintained by gitolite
-        project-list=/srv/git/projects.list
+        project-list=${config.services.gitolite.dataDir}/projects.list
   
         # scan-path must be last so that earlier settings take effect when
         # scanning
-        scan-path=/srv/git/repositories
+        scan-path=${config.services.gitolite.dataDir}/repositories
       '';
     };
   };
