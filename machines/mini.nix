@@ -196,15 +196,29 @@ in
 
           # about-formatting.sh is impure (doesn't work)
           #about-filter=${pkgs.cgit}/lib/cgit/filters/about-formatting.sh
-          # Add simple plain-text filter
-          about-filter=${pkgs.writeScript "cgit-about-filter.sh"
-            ''
-              #!${pkgs.stdenv.shell}
-              echo "<pre>"
-              ${pkgs.coreutils}/bin/cat
-              echo "</pre>"
-            ''
-          }
+          # Add our own filter
+          about-filter=${pkgs.writeScript "cgit-about-filter.sh" ''
+            #!${pkgs.stdenv.shell}
+            # The filename is available as first argument, but the filter
+            # should read contents from STDIN (and write to STDOUT).
+            filename=$1
+            case "$filename" in
+                *.asciidoc|*.adoc)
+                    exec ${pkgs.asciidoctor}/bin/asciidoctor --safe --no-header-footer - -o -
+                    # Dropping --safe with asciidoc because:
+                    # asciidoc: ERROR: <stdin>: line 3: unsafe: ifeval invalid
+                    #exec ''${pkgs.asciidoc}/bin/asciidoc --no-header-footer -
+                    ;;
+                *.markdown|*.md)
+                    exec ${pkgs.pandoc}/bin/pandoc -f markdown -t html
+                    ;;
+                *)
+                    echo "<pre>"
+                    ${pkgs.coreutils}/bin/cat
+                    echo "</pre>"
+                    ;;
+            esac
+          ''}
 
           commit-filter=${pkgs.writeScript "cgit-commit-filter.sh" ''
             #!${pkgs.stdenv.shell}
