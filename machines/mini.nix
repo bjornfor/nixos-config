@@ -146,6 +146,19 @@ in
             }
           }
         }
+
+        $HTTP["url"] =~ "^/cgit" {
+          setenv.add-environment += (
+            ${let
+                pythonEnv = pkgs.python3.buildEnv.override {
+                  extraLibs = with pkgs.python3Packages; [ pygments ];
+                };
+                cgitPath = with pkgs; lib.makeBinPath [ pythonEnv ];
+              in ''
+              "PATH" => "${cgitPath}:" + env.PATH
+            ''}
+          )
+        }
       '';
       collectd-graph-panel.enable = true;
       nextcloud.enable = true;
@@ -192,6 +205,8 @@ in
               echo "</pre>"
             ''
           }
+
+          source-filter=${pkgs.cgit}/lib/cgit/filters/syntax-highlighting.py
 
           # Search for these files in the root of the default branch of
           # repositories for coming up with the about page:
