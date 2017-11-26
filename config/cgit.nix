@@ -47,9 +47,7 @@ in
         # Enable caching of up to 1000 output entries
         cache-size=1000
   
-        # about-formatting.sh is impure (doesn't work)
-        #about-filter=${pkgs.cgit}/lib/cgit/filters/about-formatting.sh
-        # Add our own filter
+        # Filter for files shown in the "about" page
         about-filter=${pkgs.writeScript "cgit-about-filter.sh" ''
           #!${pkgs.stdenv.shell}
           # The filename is available as first argument, but the filter
