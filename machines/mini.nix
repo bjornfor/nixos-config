@@ -229,10 +229,6 @@ in
           readme=:README.adoc
           readme=:README.txt
           readme=:README
-          readme=:INSTALL.asciidoc
-          readme=:INSTALL.adoc
-          readme=:INSTALL.txt
-          readme=:INSTALL
 
           # Group repositories on the index page by sub-directory name
           section-from-path=1
