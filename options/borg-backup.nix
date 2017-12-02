@@ -230,7 +230,7 @@ in
             die()
             {
                 echo "$*"
-                if type dieHook | grep -q function 2>/dev/null; then
+                if type dieHook 2>/dev/null | grep -q function 2>/dev/null; then
                     dieHook
                 fi
                 # Allow systemd to associate this message with the unit before
