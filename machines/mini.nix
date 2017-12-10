@@ -210,6 +210,11 @@ in
         LoadPlugin tcpconns
         LoadPlugin uptime
 
+        <Plugin "apcups">
+          Host "localhost"
+          Port "3551"
+        </Plugin>
+
         <Plugin "virt">
           Connection "qemu:///system"
         </Plugin>
