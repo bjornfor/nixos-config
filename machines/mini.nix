@@ -8,13 +8,13 @@ let
 in
 {
   imports = [
-    ../config/base-big.nix
-    ../config/cgit.nix
-    ../config/clamav.nix
-    ../config/gitolite.nix
-    ../config/git-daemon.nix
-    ../config/smart-daemon.nix
-    ../config/transmission.nix
+    ../cfg/base-big.nix
+    ../cfg/cgit.nix
+    ../cfg/clamav.nix
+    ../cfg/gitolite.nix
+    ../cfg/git-daemon.nix
+    ../cfg/smart-daemon.nix
+    ../cfg/transmission.nix
   ];
 
   fileSystems = {

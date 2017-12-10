@@ -6,10 +6,10 @@
 
 {
   imports =
-    [ ../config/base-small.nix
+    [ ../cfg/base-small.nix
 
       # Build server
-      ../config/hydra.nix
+      ../cfg/hydra.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../config/base-medium.nix
+    ../cfg/base-medium.nix
   ];
 
   boot.loader.grub.device =
