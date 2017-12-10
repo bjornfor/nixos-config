@@ -332,6 +332,10 @@ in
     '';
   };
 
+  systemd.services.borg-backup = {
+    onFailure = [ "status-email@%n" ];
+  };
+
   systemd.services.borg-backup-mountpoint = {
     # disabled as it's a constant source of locking issues (preventing backups)
     enable = false;
