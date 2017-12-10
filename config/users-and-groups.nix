@@ -15,6 +15,7 @@
         "networkmanager"
         "plugdev"
         "scanner"
+        "syncthing"
         "systemd-journal"
         "tracing"
         "transmission"
