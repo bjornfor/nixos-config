@@ -5,7 +5,6 @@
     # Include the results of the hardware scan.
     ../hardware-configuration.nix
     ./base-small.nix
-    ./apcupsd.nix
     ./munin.nix
     ./desktop-gnome3.nix
     ./virtualisation.nix

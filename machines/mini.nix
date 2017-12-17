@@ -8,6 +8,7 @@ let
 in
 {
   imports = [
+    ../cfg/apcupsd.nix
     ../cfg/base-big.nix
     ../cfg/cgit.nix
     ../cfg/clamav.nix
@@ -178,8 +179,6 @@ in
         pm.max_requests = 500
       '';
     };
-
-    apcupsd.enable = true;
 
     collectd = {
       enable = true;

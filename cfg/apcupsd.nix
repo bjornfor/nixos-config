@@ -2,7 +2,7 @@
 
 {
   services.apcupsd = {
-    #enable = true;
+    enable = true;
     hooks.doshutdown = ''
       HOSTNAME=\$(${pkgs.nettools}/bin/hostname)
       printf \"Subject: apcupsd: \$HOSTNAME is shutting down\\n\" | ${pkgs.msmtp}/bin/msmtp -C /home/bfo/.msmtprc bjorn.forsman@gmail.com
