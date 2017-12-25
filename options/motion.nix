@@ -74,7 +74,7 @@ in
             default = "";
             description = ''
               The contents of motion.conf for this instance.
-	      Note that NixOS injects a 'target_dir
+              Note that NixOS injects a 'target_dir
               ${dataDir}/INSTANCE_NAME' directive at the end of configText.
             '';
           };
@@ -91,16 +91,16 @@ in
             default = 14;
             description = ''
               Files older than this will be deleted. Deletion happens every night,
-	      or on the next boot, if the machine is powered off at midnight.
+              or on the next boot, if the machine is powered off at midnight.
             '';
           };
           limitMebibytes = mkOption {
             type = types.int;
             default = 10 * 1024;
             description = ''
-	      If the video/image output directory is bigger than this, old
-	      files will be deleted until below this size. Deletion happens
-	      every night, or on the next boot, if the machine is powered off
+              If the video/image output directory is bigger than this, old
+              files will be deleted until below this size. Deletion happens
+              every night, or on the next boot, if the machine is powered off
               at midnight.
             '';
           };
