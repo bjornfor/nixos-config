@@ -179,7 +179,6 @@ let
     name = "borg-backup-${name}";
     value = {
       description = "Borg Backup Service ${name}";
-      startAt = value.startAt;
       environment = {
         BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
       };
@@ -188,7 +187,7 @@ let
       ];
       serviceConfig.SyslogIdentifier = "borg-backup-${name}"; # else HASH-borg-backup
       serviceConfig.ExecStart = mkBackupScript value;
-    };
+    } // (if value.startAt != null then { startAt = value.startAt; } else { });
   };
 
 in
@@ -278,10 +277,14 @@ in
           };
 
           startAt = mkOption {
-            type = types.str;
+            type = with types; nullOr str;
             default = "*-*-* 01:15:00";
             description = ''
-              When to run the backup, in systemd.time(7) format.
+              When to run the backup, in systemd.time(7) format. If null, the
+              backup job will not be started automatically. Use this to start
+              the backup by some other means -- either manually or by
+              configuring your own systemd dependencies (e.g. start backup when
+              a certain USB disk is inserted).
             '';
           };
 
