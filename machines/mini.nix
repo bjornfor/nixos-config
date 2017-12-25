@@ -333,18 +333,20 @@ in
 
   services.borg-backup = {
     enable = true;
-    repository = "${backupDiskMountpoint}/backups/backup.borg";
-    archiveBaseName = "{hostname}";
-    pathsToBackup = [ "/" "/mnt/data" ];
-    preHook = ''
-      #systemctl stop borg-backup-mountpoint
-    '';
-    postHook = ''
-      #systemctl start borg-backup-mountpoint
-    '';
+    instances."default" = {
+      repository = "${backupDiskMountpoint}/backups/backup.borg";
+      archiveBaseName = "{hostname}";
+      pathsToBackup = [ "/" "/mnt/data" ];
+      preHook = ''
+        #systemctl stop borg-backup-mountpoint
+      '';
+      postHook = ''
+        #systemctl start borg-backup-mountpoint
+      '';
+    };
   };
 
-  systemd.services.borg-backup = {
+  systemd.services."borg-backup-default" = {
     onFailure = [ "status-email@%n" ];
   };
 
@@ -359,7 +361,7 @@ in
     # error due to inability to create exclusive lock.) The "conflicts"
     # directive doesn't start the conflicted service afterwards, so we
     # explicitly stop/start this service in borg-backup.service instead.
-    #conflicts = [ "borg-backup.service" ];]
+    #conflicts = [ "borg-backup-default.service" ];]
     path = with pkgs; [
       borgbackup utillinux coreutils fuse
     ];

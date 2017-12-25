@@ -100,93 +100,199 @@ with lib;
 
 let
   cfg = config.services.borg-backup;
+
+  # - The initial backup repo must be created manually:
+  #     $ sudo borg init --encryption none $repository
+  # - "icfg" is short for "instance configuration"
+  mkBackupScript = icfg: pkgs.writeScript "borg-backup" ''
+      #!${pkgs.bash}/bin/sh
+      repository="${icfg.repository}"
+
+      die()
+      {
+          echo "$*"
+          if type dieHook 2>/dev/null | grep -q function 2>/dev/null; then
+              dieHook
+          fi
+          # Allow systemd to associate this message with the unit before
+          # exit. Yep, it's a race.
+          sleep 3
+          exit 1
+      }
+
+      ${icfg.preHook}
+
+      echo "Running 'borg create [...]'"
+      borg create \
+          --stats \
+          --verbose \
+          --list \
+          --filter AME \
+          --show-rc \
+          --one-file-system \
+          --exclude-caches \
+          ${if icfg.excludeNix then ''
+            --exclude /etc/nix/nix.conf \
+            --exclude /nix/ \
+          '' else ''\''}
+          ${lib.concatMapStringsSep "\n" (x: "--exclude ${x} \\") icfg.excludes}
+          --compression lz4 \
+          "$repository::${icfg.archiveBaseName}-$(date +%Y%m%dT%H%M%S)" \
+          ${lib.concatStringsSep " " icfg.pathsToBackup}
+      create_ret=$?
+
+      echo "Running 'borg prune [...]'"
+      borg prune \
+          --stats \
+          --verbose \
+          --list \
+          --show-rc \
+          --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
+          --prefix ${icfg.archiveBaseName}- \
+          "$repository"
+      prune_ret=$?
+
+      # Run repository check once a week
+      check_day=Sunday
+      this_day=$(date +%A)
+      if [ "$this_day" = "$check_day" ];  then
+          echo "Running 'borg check [...]' (since today is $this_day)"
+          borg check \
+              --verbose \
+              --show-rc \
+              "$repository"
+          check_ret=$?
+      else
+          echo "Skipping 'borg check' since today is not $check_day (it's $this_day)"
+          check_ret=0
+      fi
+
+      ${icfg.postHook}
+
+      # Exit with error if either command failed
+      if [ $create_ret != 0 -o $prune_ret != 0 -o $check_ret != 0 ]; then
+          die "borg create, prune and/or check operation failed. Exiting with error."
+      fi
+    '';
+
+  mkService = name: value: {
+    name = "borg-backup-${name}";
+    value = {
+      description = "Borg Backup Service ${name}";
+      startAt = value.startAt;
+      environment = {
+        BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
+      };
+      path = with pkgs; [
+        borgbackup utillinux coreutils
+      ];
+      serviceConfig.SyslogIdentifier = "borg-backup-${name}"; # else HASH-borg-backup
+      serviceConfig.ExecStart = mkBackupScript value;
+    };
+  };
+
 in
 {
   options.services.borg-backup = {
 
     enable = mkEnableOption "enable borg backup service to take nightly backups.";
 
-    repository = mkOption {
-      type = types.str;
-      default = "";
-      example = "/mnt/backups/backup.borg";
-      description = ''
-        Path to Borg repository where the backup will be stored.
-      '';
-    };
+    instances = mkOption {
+      type = types.attrsOf (types.submodule {
+        options = {
 
-    archiveBaseName = mkOption {
-      type = types.str;
-      default = "{hostname}";
-      description = ''
-        Complete archive names look like "$archiveBaseName-DATE".
-      '';
-    };
+          repository = mkOption {
+            type = types.str;
+            default = "";
+            example = "/mnt/backups/backup.borg";
+            description = ''
+              Path to Borg repository where the backup will be stored.
+            '';
+          };
 
-    excludeNix = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Whether to exclude /nix/ (and the generated file /etc/nix/nix.conf)
-        from the backup. Set it to false if you want to be able to do full
-        system restore from your backup. Set it to true if you want to save
-        some disk space and are okay with having to recover your system by
-        running nixos-install. A prerequisite for this option is that
-        pathsToBackup includes the Nix store.
-      '';
-    };
+          archiveBaseName = mkOption {
+            type = types.str;
+            default = "{hostname}";
+            description = ''
+              Complete archive names look like "$archiveBaseName-DATE".
+            '';
+          };
 
-    excludes = mkOption {
-      type = types.listOf types.str;
-      default = [
-        "/tmp/"
-        "/var/tmp/"
-        "/var/swapfile"
-        "'/home/*/.cache/'"
-        "'/home/*/.thumbnails/'"
-        "'/home/*/.nox/'"
-        "'*/.Trash*/'"
-        "'*/$RECYCLE.BIN'"
-        "'*/System Volume Information'"
-      ];
-      description = ''
-        List of files/directories/patterns to exclude from the backup. Each
-        element will be passed to borg as "--exclude elem".
-      '';
-    };
+          excludeNix = mkOption {
+            type = types.bool;
+            default = false;
+            description = ''
+              Whether to exclude /nix/ (and the generated file /etc/nix/nix.conf)
+              from the backup. Set it to false if you want to be able to do full
+              system restore from your backup. Set it to true if you want to save
+              some disk space and are okay with having to recover your system by
+              running nixos-install. A prerequisite for this option is that
+              pathsToBackup includes the Nix store.
+            '';
+          };
 
-    pathsToBackup = mkOption {
-      type = types.listOf types.str;
-      default = [ "/" "/boot" ];
-      example = [ "/home" "/srv" ];
-      description = ''
-        List of paths to backup. The backup does not cross filesystem
-        boundaries, so each filesystem (mountpoint) you want to have backed up
-        must be listed here.
-      '';
-    };
+          excludes = mkOption {
+            type = types.listOf types.str;
+            default = [
+              "/tmp/"
+              "/var/tmp/"
+              "/var/swapfile"
+              "'/home/*/.cache/'"
+              "'/home/*/.thumbnails/'"
+              "'/home/*/.nox/'"
+              "'*/.Trash*/'"
+              "'*/$RECYCLE.BIN'"
+              "'*/System Volume Information'"
+            ];
+            description = ''
+              List of files/directories/patterns to exclude from the backup. Each
+              element will be passed to borg as "--exclude elem".
+            '';
+          };
 
-    preHook = mkOption {
-      type = types.lines;
-      default = "";
-      description = ''
-        Shell commands to run before backing up. Abort backup if 'exit N'.
-      '';
-    };
+          pathsToBackup = mkOption {
+            type = types.listOf types.str;
+            default = [ "/" "/boot" ];
+            example = [ "/home" "/srv" ];
+            description = ''
+              List of paths to backup. The backup does not cross filesystem
+              boundaries, so each filesystem (mountpoint) you want to have backed up
+              must be listed here.
+            '';
+          };
 
-    postHook = mkOption {
-      type = types.lines;
-      default = "";
-      description = ''
-        Shell commands to run after backing up, pruning and checking the repository.
-      '';
-    };
+          preHook = mkOption {
+            type = types.lines;
+            default = "";
+            description = ''
+              Shell commands to run before backing up. Abort backup if 'exit N'.
+            '';
+          };
 
-    startAt = mkOption {
-      type = types.str;
-      default = "*-*-* 01:15:00";
+          postHook = mkOption {
+            type = types.lines;
+            default = "";
+            description = ''
+              Shell commands to run after backing up, pruning and checking the repository.
+            '';
+          };
+
+          startAt = mkOption {
+            type = types.str;
+            default = "*-*-* 01:15:00";
+            description = ''
+              When to run the backup, in systemd.time(7) format.
+            '';
+          };
+
+        };
+      });
+      default = {};
       description = ''
-        When to run the backup, in systemd.time(7) format.
+        Each attribute of this option defines a BorgBackup job. The name of
+        each systemd service is "borg-backup-ATTR". If there is an attribute
+        named "default", its repository path will be exported in the BORG_REPO
+        environment variable, for easy (interactive) access.
       '';
     };
 
@@ -195,107 +301,30 @@ in
   config = mkIf cfg.enable {
 
     assertions = [
-      { assertion = config.services.borg-backup.repository != "";
-        message = "Please specify a value in services.borg-backup.repository.";
+      { assertion = builtins.length (builtins.attrNames cfg.instances) > 0;
+        message = "No backup job iinstances defined in services.borg-backup.instances.*";
       }
-      { assertion = config.services.borg-backup.pathsToBackup != [];
-        message = "Please specify a value in services.borg-backup.pathsToBackup.";
-      }
-    ];
+    ] ++
+      (mapAttrsToList
+        (name: value: {
+          assertion = config.services.borg-backup.instances."${name}".repository != "";
+          message = "Please specify a value in services.borg-backup.instances.${name}.repository.";
+        })
+        cfg.instances)
+    ++
+      (mapAttrsToList
+        (name: value: {
+          assertion = config.services.borg-backup.instances."${name}".pathsToBackup != [];
+          message = "Please specify a value in services.borg-backup.instances.${name}.pathsToBackup.";
+        })
+        cfg.instances);
 
     # for convenience
-    environment.sessionVariables = {
-      BORG_REPO = "${cfg.repository}";
+    environment.sessionVariables = mkIf (cfg.instances ? "default") {
+      BORG_REPO = "${cfg.instances."default".repository}";
     };
 
-    systemd.services.borg-backup = {
-      enable = true;
-      description = "Borg Backup Service";
-      startAt = cfg.startAt;
-      environment = {
-        BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
-      };
-      path = with pkgs; [
-        borgbackup utillinux coreutils
-      ];
-      serviceConfig.SyslogIdentifier = "borg-backup"; # else HASH-borg-backup
-      serviceConfig.ExecStart =
-        let
-          # - The initial backup repo must be created manually:
-          #     $ sudo borg init --encryption none $repository
-          borgBackup = pkgs.writeScript "borg-backup" ''
-            #!${pkgs.bash}/bin/sh
-            repository="${cfg.repository}"
-
-            die()
-            {
-                echo "$*"
-                if type dieHook 2>/dev/null | grep -q function 2>/dev/null; then
-                    dieHook
-                fi
-                # Allow systemd to associate this message with the unit before
-                # exit. Yep, it's a race.
-                sleep 3
-                exit 1
-            }
-
-            ${cfg.preHook}
-
-            echo "Running 'borg create [...]'"
-            borg create \
-                --stats \
-                --verbose \
-                --list \
-                --filter AME \
-                --show-rc \
-                --one-file-system \
-                --exclude-caches \
-                ${if cfg.excludeNix then ''
-                  --exclude /etc/nix/nix.conf \
-                  --exclude /nix/ \
-                '' else ''\''}
-                ${lib.concatMapStringsSep "\n" (x: "--exclude ${x} \\") cfg.excludes}
-                --compression lz4 \
-                "$repository::${cfg.archiveBaseName}-$(date +%Y%m%dT%H%M%S)" \
-                ${lib.concatStringsSep " " cfg.pathsToBackup}
-            create_ret=$?
-
-            echo "Running 'borg prune [...]'"
-            borg prune \
-                --stats \
-                --verbose \
-                --list \
-                --show-rc \
-                --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
-                --prefix ${cfg.archiveBaseName}- \
-                "$repository"
-            prune_ret=$?
-
-            # Run repository check once a week
-            check_day=Sunday
-            this_day=$(date +%A)
-            if [ "$this_day" = "$check_day" ];  then
-                echo "Running 'borg check [...]' (since today is $this_day)"
-                borg check \
-                    --verbose \
-                    --show-rc \
-                    "$repository"
-                check_ret=$?
-            else
-                echo "Skipping 'borg check' since today is not $check_day (it's $this_day)"
-                check_ret=0
-            fi
-
-            ${cfg.postHook}
-
-            # Exit with error if either command failed
-            if [ $create_ret != 0 -o $prune_ret != 0 -o $check_ret != 0 ]; then
-                die "borg create, prune and/or check operation failed. Exiting with error."
-            fi
-          '';
-        in
-          borgBackup;
-    };
+    systemd.services = mapAttrs' mkService cfg.instances;
 
   };
 
