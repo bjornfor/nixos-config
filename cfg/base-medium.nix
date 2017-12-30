@@ -112,6 +112,7 @@
     unrar
     unzip
     usbutils
+    vbindiff
     vifm
     vim_configurable
     vlc
