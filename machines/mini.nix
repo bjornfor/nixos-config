@@ -250,11 +250,6 @@ in
         read only = yes
         guest ok = yes
 
-        [backups]
-        path = ${backupDiskMountpoint}/backups/
-        read only = yes
-        guest ok = yes
-
         [borg-backups]
         path = /mnt/borg-backups/
         read only = yes
