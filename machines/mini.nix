@@ -250,8 +250,8 @@ in
         read only = yes
         guest ok = yes
 
-        [borg-backups]
-        path = /mnt/borg-backups/
+        [borg-backups-maria-pc]
+        path = /mnt/borg-backups-maria-pc/
         read only = yes
         guest ok = yes
       '' + (if config.services.transmission.enable then ''
@@ -332,11 +332,7 @@ in
       repository = "${backupDiskMountpoint}/backups/backup.borg";
       archiveBaseName = "{hostname}";
       pathsToBackup = [ "/" "/mnt/data" ];
-      preHook = ''
-        #systemctl stop borg-backup-mountpoint
-      '';
       postHook = ''
-        #systemctl start borg-backup-mountpoint
         systemctl start borg-backup-maria-pc
       '';
     };
@@ -430,30 +426,31 @@ in
   systemd.services."borg-backup-default" = {
     onFailure = [ "status-email@%n" ];
   };
+  systemd.services."borg-backup-maria-pc" = {
+    postStop = ''
+      systemctl start mount-borg-backup-maria-pc
+    '';
+  };
 
-  systemd.services.borg-backup-mountpoint = {
-    # disabled as it's a constant source of locking issues (preventing backups)
-    enable = false;
-    description = "Mount Borg Backup Repository";
+  systemd.services.mount-borg-backup-maria-pc = {
+    description = "Mount Borg Backup Repository for Maria PC";
     wantedBy = [ "multi-user.target" ];
     before = [ "samba.target" ];
-    # "borg create" cannot be used at the same time as "borg mount" is active
-    # on the same repo. (attic hung forever, borg should (AFAIK) exit with
-    # error due to inability to create exclusive lock.) The "conflicts"
-    # directive doesn't start the conflicted service afterwards, so we
-    # explicitly stop/start this service in borg-backup.service instead.
-    #conflicts = [ "borg-backup-default.service" ];]
+    conflicts = [ "borg-backup-maria-pc.service" ];
     path = with pkgs; [
       borgbackup utillinux coreutils fuse
     ];
     preStart = ''
-      mkdir -p /mnt/borg-backups
+      # deal with stale mount processes
+      fusermount -uz /mnt/borg-backups-maria-pc || true
+      mkdir -p /mnt/borg-backups-maria-pc
     '';
     serviceConfig.ExecStart = ''
-      ${pkgs.borgbackup}/bin/borg mount --foreground -o allow_other ${backupDiskMountpoint}/backups/backup.borg /mnt/borg-backups
+      ${pkgs.borgbackup}/bin/borg mount --foreground -o allow_other ${backupDiskMountpoint}/backups/backup-maria-pc.borg /mnt/borg-backups-maria-pc
     '';
     postStop = ''
-      fusermount -u /mnt/borg-backups || true
+      # deal with stale mount processes
+      fusermount -uz /mnt/borg-backups-maria-pc || true
     '';
   };
 
