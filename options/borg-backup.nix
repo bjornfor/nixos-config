@@ -183,7 +183,7 @@ let
         BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
       };
       path = with pkgs; [
-        borgbackup utillinux coreutils
+        borgbackup utillinux coreutils gawk
       ];
       serviceConfig.SyslogIdentifier = "borg-backup-${name}"; # else HASH-borg-backup
       serviceConfig.ExecStart = mkBackupScript value;
