@@ -123,7 +123,7 @@ let
       ${icfg.preHook}
 
       echo "Running 'borg create [...]'"
-      borg create \
+      (cd "${icfg.rootDir}" && borg create \
           --stats \
           --verbose \
           --list \
@@ -138,18 +138,18 @@ let
           ${lib.concatMapStringsSep "\n" (x: "--exclude ${x} \\") icfg.excludes}
           --compression lz4 \
           "$repository::${icfg.archiveBaseName}-$(date +%Y%m%dT%H%M%S)" \
-          ${lib.concatStringsSep " " icfg.pathsToBackup}
+          ${lib.concatStringsSep " " icfg.pathsToBackup})
       create_ret=$?
 
       echo "Running 'borg prune [...]'"
-      borg prune \
+      (cd "${icfg.rootDir}" && borg prune \
           --stats \
           --verbose \
           --list \
           --show-rc \
           --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
           --prefix ${icfg.archiveBaseName}- \
-          "$repository"
+          "$repository")
       prune_ret=$?
 
       # Run repository check once a week
@@ -157,10 +157,10 @@ let
       this_day=$(date +%A)
       if [ "$this_day" = "$check_day" ];  then
           echo "Running 'borg check [...]' (since today is $this_day)"
-          borg check \
+          (cd "${icfg.rootDir}" && borg check \
               --verbose \
               --show-rc \
-              "$repository"
+              "$repository")
           check_ret=$?
       else
           echo "Skipping 'borg check' since today is not $check_day (it's $this_day)"
@@ -249,12 +249,23 @@ in
             '';
           };
 
+          rootDir = mkOption {
+            type = types.path;
+            default = "/";
+            example = [ "/mnt/remote-fs" ];
+            description = ''
+              The directory from where borg commands will be run. Relateive paths
+              in <option>pathsToBackup</option> are relative to this directory.
+            '';
+          };
+
           pathsToBackup = mkOption {
             type = types.listOf types.str;
             default = [ "/" "/boot" ];
             example = [ "/home" "/srv" ];
             description = ''
-              List of paths to backup. The backup does not cross filesystem
+              List of paths to backup, relative to <option>rootdir</option>, unless using absolute paths.
+              The backup does not cross filesystem
               boundaries, so each filesystem (mountpoint) you want to have backed up
               must be listed here.
             '';
