@@ -339,7 +339,12 @@ in
     instances."maria-pc" = rec {
       repository = "${backupDiskMountpoint}/backups/backup-maria-pc.borg";
       archiveBaseName = "maria-pc_seagate_expansion_drive_4tb";
-      pathsToBackup = [ "/mnt/${archiveBaseName}" ];
+      rootDir = "/mnt/${archiveBaseName}";
+      pathsToBackup = [ "." ];
+      excludes = [
+        "'pp:$RECYCLE.BIN'"
+        "'pp:System Volume Information'"
+      ];
       # Started by "parent" backup job instead of a timer.
       startAt = null;
       preHook = ''
