@@ -413,14 +413,6 @@ in
         #send_email $(backup_age_in_days)
         #exit 0
 
-        # access the mountpoint now, to trigger automount (why is this needed?)
-        if ! ls -ld /mnt/${archiveBaseName}; then
-            die "Failed to mount maria-pc"
-        fi
-        # Oops! autofs is considered a filesystem, so this check will always pass.
-        if ! mountpoint /mnt/${archiveBaseName}; then
-            die "exiting"
-        fi
         if [ $(ls /mnt/${archiveBaseName} | wc -l) -lt 1 ]; then
             die "/mnt/${archiveBaseName} has no files, assuming mount failure"
         fi
