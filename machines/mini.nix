@@ -426,7 +426,27 @@ in
   systemd.services."borg-backup-maria-pc" = {
     postStop = ''
       systemctl start mount-borg-backup-maria-pc
+      sleep 10
+      systemctl start external-backup
     '';
+  };
+  # Use borg for this?
+  systemd.services.external-backup = {
+    description = "External Backup";
+    path = with pkgs; [ utillinux rsync ];
+    script = ''
+      num_copies=0
+      for mp in /run/media/bfo/usb_4tb_backup*; do
+         if mountpoint "$mp"; then
+             set -x
+             rsync -ai --delete "${backupDiskMountpoint}/backups/" "$mp"/backups/
+             set +x
+             num_copies=$((num_copies + 1))
+         fi
+      done
+      echo "Made $num_copies backup copies"
+    '';
+    serviceConfig.Restart = "on-failure";
   };
 
   systemd.services.mount-borg-backup-maria-pc = {
