@@ -1,5 +1,5 @@
 { stdenv, fetchurl, utillinux, file, bash, glibc, pkgsi686Linux, writeScript
-, nukeReferences, glibcLocales, libfaketime, coreutils, gnugrep, gnused
+, nukeReferences, glibcLocales, libfaketime, coreutils, gnugrep, gnused, proot
 # Runtime dependencies
 , zlib, glib, libpng12, freetype, libSM, libICE, libXrender, fontconfig
 , libXext, libX11, libXtst, gtk2, bzip2, libelf
@@ -142,7 +142,7 @@ let
     if is32bitPackage then runtimeLibPath32 else runtimeLibPath64;
 
   runtimeBinPath = stdenv.lib.makeBinPath
-    [ coreutils gnugrep gnused glibc ];
+    [ coreutils gnugrep gnused glibc proot ];
 
   setup-chroot-and-exec = writeScript "setup-chroot-and-exec"
     (''
@@ -401,9 +401,26 @@ stdenv.mkDerivation rec {
     # won't break the CLI tools. (Think non-NixOS setups.)
     export PATH="${runtimeBinPath}:\$PATH"
 
+    # Check if we need to isolate ourself from /bin/sh. This is to work around
+    # a long standing bug in nixpkgs that glibc system() calls /bin/sh. The
+    # reasoning behind the test is that Nix tools don't depend on things in
+    # /lib. The test should be positive only on non-sandboxed, non-NixOS builds.
+    bin_sh_is_clean=1
+    if ldd /bin/sh | grep -q "^\s*/lib"; then
+        bin_sh_is_clean=0
+    fi
+
     # Implement the SOURCE_DATE_EPOCH specification, for reproducible builds:
     # https://reproducible-builds.org/specs/source-date-epoch
     if [ "x\$SOURCE_DATE_EPOCH" != x ]; then
+        # Create a minimal "sandbox" with proot, or else programs running
+        # /bin/sh will fail because we're setting LD_PRELOAD etc.
+        if [ \$bin_sh_is_clean -eq 0 ]; then
+            maybe_proot_cmd="proot -b ${bash}/bin/sh:/bin/sh"
+            # Work around bug with linux 4.8.4+ (costs some performance, but
+            # prevents breakage).
+            export PROOT_NO_SECCOMP=1
+        fi
         # Prepare LD_LIBRARY_PATH, LD_PRELOAD
         if [ "x\$LD_LIBRARY_PATH" != x ]; then
             export LD_LIBRARY_PATH="${libfaketime}/lib:\$LD_LIBRARY_PATH"
@@ -428,7 +445,7 @@ stdenv.mkDerivation rec {
     #  warning: setlocale: LC_CTYPE: cannot change locale (en_US.UTF-8): No such file or directory
     export LOCALE_ARCHIVE="${glibcLocales}/lib/locale/locale-archive"
 
-    exec "$1" "\$@"
+    exec \$maybe_proot_cmd "$1" "\$@"
     EOF
         chmod +x "$dest"
     }
