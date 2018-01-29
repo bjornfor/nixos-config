@@ -212,10 +212,9 @@ let
 
   updateComponentInstallers = mkInstallersDir updateComponents;
 
-in
-
-stdenv.mkDerivation rec {
-  name = "${baseName}-${version}";
+# Wrongly indented (temporarily)
+quartusUnwrapped = stdenv.mkDerivation rec {
+  name = "${baseName}-unwrapped-${version}";
   inherit version;
   # srcs is for keeping track of inputs used for the build.
   srcs = components ++ updateComponents;
@@ -352,7 +351,17 @@ stdenv.mkDerivation rec {
         echo "Fix support for Linux 4.x in .../modelsim_ase/vco"
         sed -i -e "/case \$utype in/a 4.[0-9]*) vco=\"linux\" ;;" "$f"
     fi
+  '';
+};
 
+in
+
+stdenv.mkDerivation rec {
+  name = "${baseName}-${version}";
+  # version and srcs are unused by this derivation, but keep them as metadata
+  # (for users).
+  inherit (quartusUnwrapped) version srcs;
+  buildCommand = ''
     # Provide convenience wrappers in $out/bin, so that the tools can be
     # started directly from PATH. Plain symlinks don't work, due to assumptions
     # of resources relative to arg0.
@@ -370,7 +379,7 @@ stdenv.mkDerivation rec {
     # elf2hex), so help them by setting QUARTUS_ROOTDIR (and *OVERRIDE).
     # (Perhaps these tools were never tested _not_ being started from Quartus
     # IDE?)
-    export QUARTUS_ROOTDIR="$out/quartus"
+    export QUARTUS_ROOTDIR="${quartusUnwrapped}/quartus"
     export QUARTUS_ROOTDIR_OVERRIDE="\$QUARTUS_ROOTDIR"
 
     # To prevent e.g. "alt-file-convert" from aborting due to not being able to
@@ -419,7 +428,7 @@ stdenv.mkDerivation rec {
 
     echo "Creating top-level bin/ directory with wrappers for common tools"
     mkdir -p "$out/bin"
-    for p in "$out/"*"/bin/"*; do
+    for p in "${quartusUnwrapped}/"*"/bin/"*; do
         test -f "$p" || continue
         wrap "$p"
     done
@@ -432,7 +441,7 @@ stdenv.mkDerivation rec {
     Type=Application
     Name=${prettyName} ${version}
     Comment=${prettyName} ${version}
-    Icon=$out/quartus/adm/quartusii.png
+    Icon=${quartusUnwrapped}/quartus/adm/quartusii.png
     Exec=$out/bin/quartus
     Terminal=false
     Path=$out
