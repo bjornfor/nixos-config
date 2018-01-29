@@ -212,147 +212,146 @@ let
 
   updateComponentInstallers = mkInstallersDir updateComponents;
 
-# Wrongly indented (temporarily)
-quartusUnwrapped = stdenv.mkDerivation rec {
-  name = "${baseName}-unwrapped-${version}";
-  inherit version;
-  # srcs is for keeping track of inputs used for the build.
-  srcs = components ++ updateComponents;
-  buildInputs = [ file nukeReferences ];
+  quartusUnwrapped = stdenv.mkDerivation rec {
+    name = "${baseName}-unwrapped-${version}";
+    inherit version;
+    # srcs is for keeping track of inputs used for the build.
+    srcs = components ++ updateComponents;
+    buildInputs = [ file nukeReferences ];
 
-  # Fix this:
-  # /nix/store/...-altera-quartus-ii-web-13.1.4.182/quartus/adm/qenv.sh: line 83: \
-  #  warning: setlocale: LC_CTYPE: cannot change locale (en_US.UTF-8): No such file or directory
-  LOCALE_ARCHIVE = "${glibcLocales}/lib/locale/locale-archive";
+    # Fix this:
+    # /nix/store/...-altera-quartus-ii-web-13.1.4.182/quartus/adm/qenv.sh: line 83: \
+    #  warning: setlocale: LC_CTYPE: cannot change locale (en_US.UTF-8): No such file or directory
+    LOCALE_ARCHIVE = "${glibcLocales}/lib/locale/locale-archive";
 
-  # Prebuilt binaries need special treatment
-  dontStrip = true;
-  dontPatchELF = true;
+    # Prebuilt binaries need special treatment
+    dontStrip = true;
+    dontPatchELF = true;
 
-  configurePhase = "true";
-  buildPhase = "true";
-  unpackPhase = "true";
+    configurePhase = "true";
+    buildPhase = "true";
+    unpackPhase = "true";
 
-  # Quartus' setup.sh (from the all-in-one-installers) doesn't fit our needs
-  # (we want automatic and distro-agnostic install), so call the actual setup
-  # program directly instead.
-  #
-  # Quartus*Setup*.run files are statically linked ELF executables that run
-  # open("/lib64/ld-linux-x86-64.so.2", ...) (or "/lib/ld-linux.so.2" for
-  # 32-bit versions) . That obviously doesn't work in sandboxed Nix builds.
-  #
-  # Things that do not work:
-  # * patchelf the installer (there is no .interp section in static ELF)
-  # * dynamic linker tricks (again, static ELF)
-  # * proot (the installer somehow detects something is wrong and aborts)
-  #
-  # We need bigger guns: user namespaces and chroot. That's how we make /lib64/
-  # available to the installer. The installer installs dynamically linked ELF
-  # files, so those we can fixup with usual tools.
-  #
-  # For runtime, injecting (or wrapping with) LD_LIBRARY_PATH is easier, but it
-  # messes with the environment for all child processes. We take the less
-  # invasive approach here, patchelf + RPATH. Unfortunately, Quartus itself
-  # uses LD_LIBRARY_PATH in its wrapper scripts. This cause e.g. firefox to
-  # fail due to LD_LIBRARY_PATH pulling in wrong libraries for it (happens if
-  # clicking any URL in Quartus).
-  installPhase = ''
-    run_quartus_installer()
-    {
-        installer="$1"
-        if [ ! -x "$installer" ]; then
-            echo "ERROR: \"$installer\" either doesn't exist or is not executable"
-            exit 1
-        fi
-        echo "### ${run-in-fhs-env} $installer --mode unattended --installdir $out"
-        "${run-in-fhs-env}" "$installer" --mode unattended --installdir "$out"
-        echo "...done"
-    }
+    # Quartus' setup.sh (from the all-in-one-installers) doesn't fit our needs
+    # (we want automatic and distro-agnostic install), so call the actual setup
+    # program directly instead.
+    #
+    # Quartus*Setup*.run files are statically linked ELF executables that run
+    # open("/lib64/ld-linux-x86-64.so.2", ...) (or "/lib/ld-linux.so.2" for
+    # 32-bit versions) . That obviously doesn't work in sandboxed Nix builds.
+    #
+    # Things that do not work:
+    # * patchelf the installer (there is no .interp section in static ELF)
+    # * dynamic linker tricks (again, static ELF)
+    # * proot (the installer somehow detects something is wrong and aborts)
+    #
+    # We need bigger guns: user namespaces and chroot. That's how we make /lib64/
+    # available to the installer. The installer installs dynamically linked ELF
+    # files, so those we can fixup with usual tools.
+    #
+    # For runtime, injecting (or wrapping with) LD_LIBRARY_PATH is easier, but it
+    # messes with the environment for all child processes. We take the less
+    # invasive approach here, patchelf + RPATH. Unfortunately, Quartus itself
+    # uses LD_LIBRARY_PATH in its wrapper scripts. This cause e.g. firefox to
+    # fail due to LD_LIBRARY_PATH pulling in wrong libraries for it (happens if
+    # clicking any URL in Quartus).
+    installPhase = ''
+      run_quartus_installer()
+      {
+          installer="$1"
+          if [ ! -x "$installer" ]; then
+              echo "ERROR: \"$installer\" either doesn't exist or is not executable"
+              exit 1
+          fi
+          echo "### ${run-in-fhs-env} $installer --mode unattended --installdir $out"
+          "${run-in-fhs-env}" "$installer" --mode unattended --installdir "$out"
+          echo "...done"
+      }
 
-    echo "Running Quartus Setup (in FHS sandbox)..."
-    run_quartus_installer "$(echo "${componentInstallers}"/Quartus*Setup*)"
+      echo "Running Quartus Setup (in FHS sandbox)..."
+      run_quartus_installer "$(echo "${componentInstallers}"/Quartus*Setup*)"
 
-    ${stdenv.lib.optionalString (updateComponents != []) ''
-      echo "Running Quartus Update (in FHS sandbox)..."
-      run_quartus_installer "$(echo "${updateComponentInstallers}"/Quartus*Setup*)"
-    ''}
+      ${stdenv.lib.optionalString (updateComponents != []) ''
+        echo "Running Quartus Update (in FHS sandbox)..."
+        run_quartus_installer "$(echo "${updateComponentInstallers}"/Quartus*Setup*)"
+      ''}
 
-    echo "Removing unneeded \"uninstall\" binaries (saves $(du -sh "$out"/uninstall | cut -f1))"
-    rm -rf "$out"/uninstall
+      echo "Removing unneeded \"uninstall\" binaries (saves $(du -sh "$out"/uninstall | cut -f1))"
+      rm -rf "$out"/uninstall
 
-    echo "Prevent retaining a runtime dependency on the installer binaries (saves $(du -sh "${componentInstallers}" | cut -f1) + $(du -sh "${updateComponentInstallers}" | cut -f1))"
-    nuke-refs "$out/logs/"*
+      echo "Prevent retaining a runtime dependency on the installer binaries (saves $(du -sh "${componentInstallers}" | cut -f1) + $(du -sh "${updateComponentInstallers}" | cut -f1))"
+      nuke-refs "$out/logs/"*
 
-    echo "Fixing ELF interpreter paths with patchelf"
-    find "$out" -type f | while read f; do
-        case "$f" in
-            *.debug) continue;;
-        esac
-        # A few files are read-only. Make them writeable for patchelf. (Nix
-        # will make all files read-only after the build.)
-        chmod +w "$f"
-        magic=$(file "$f") || { echo "file \"$f\" failed"; exit 1; }
-        case "$magic" in
-            *ELF*dynamically\ linked*)
-                orig_rpath=$(patchelf --print-rpath "$f") || { echo "FAILED: patchelf --print-rpath $f"; exit 1; }
-                # Take care not to add ':' at start or end of RPATH, because
-                # that is the same as '.' (current directory), and that's
-                # insecure.
-                if [ "$orig_rpath" != "" ]; then
-                    orig_rpath="$orig_rpath:"
-                fi
-                new_rpath="$orig_rpath${runtimeLibPath}"
-                case "$magic" in
-                    *ELF*executable*)
-                        interp=$(patchelf --print-interpreter "$f") || { echo "FAILED: patchelf --print-interpreter $f"; exit 1; }
-                        # Note the LSB interpreters, required by some files
-                        case "$interp" in
-                            /lib64/ld-linux-x86-64.so.2|/lib64/ld-lsb-x86-64.so.3)
-                                new_interp=$(cat "$NIX_CC"/nix-support/dynamic-linker)
-                                ;;
-                            /lib/ld-linux.so.2|/lib/ld-lsb.so.3)
-                                new_interp="${glibc_lib32}/lib/ld-linux.so.2"
-                                ;;
-                            /lib/ld-linux-armhf.so.3|/lib64/ld64.so.1|/lib64/ld64.so.2)
-                                # Ignore ARM/ppc64/ppc64le executables, they
-                                # are not meant to be run on the build machine.
-                                # Example files:
-                                #   altera-quartus-prime-lite-15.1.0.185/hld/host/arm32/bin/aocl-binedit
-                                #   altera-quartus-prime-lite-15.1.0.185/hld/host/ppc64/bin/aocl-binedit
-                                #   altera-quartus-prime-lite-15.1.0.185/hld/host/ppc64le/bin/aocl-binedit
-                                continue
-                                ;;
-                            *)
-                                echo "FIXME: unhandled interpreter \"$interp\" in $f"
-                                exit 1
-                                ;;
-                        esac
-                        test -f "$new_interp" || { echo "$new_interp is missing"; exit 1; }
-                        patchelf --set-interpreter "$new_interp" \
-                                 --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-interpreter $new_interp --set-rpath $new_rpath $f"; exit 1; }
-                        ;;
-                    *ELF*shared\ object*x86-64*)
-                        patchelf --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-rpath $f"; exit 1; }
-                        ;;
-                esac
-                ;;
-            *ELF*statically\ linked*)
-                echo "WARN: $f is statically linked. Needs fixup?"
-                ;;
-        esac
-    done
+      echo "Fixing ELF interpreter paths with patchelf"
+      find "$out" -type f | while read f; do
+          case "$f" in
+              *.debug) continue;;
+          esac
+          # A few files are read-only. Make them writeable for patchelf. (Nix
+          # will make all files read-only after the build.)
+          chmod +w "$f"
+          magic=$(file "$f") || { echo "file \"$f\" failed"; exit 1; }
+          case "$magic" in
+              *ELF*dynamically\ linked*)
+                  orig_rpath=$(patchelf --print-rpath "$f") || { echo "FAILED: patchelf --print-rpath $f"; exit 1; }
+                  # Take care not to add ':' at start or end of RPATH, because
+                  # that is the same as '.' (current directory), and that's
+                  # insecure.
+                  if [ "$orig_rpath" != "" ]; then
+                      orig_rpath="$orig_rpath:"
+                  fi
+                  new_rpath="$orig_rpath${runtimeLibPath}"
+                  case "$magic" in
+                      *ELF*executable*)
+                          interp=$(patchelf --print-interpreter "$f") || { echo "FAILED: patchelf --print-interpreter $f"; exit 1; }
+                          # Note the LSB interpreters, required by some files
+                          case "$interp" in
+                              /lib64/ld-linux-x86-64.so.2|/lib64/ld-lsb-x86-64.so.3)
+                                  new_interp=$(cat "$NIX_CC"/nix-support/dynamic-linker)
+                                  ;;
+                              /lib/ld-linux.so.2|/lib/ld-lsb.so.3)
+                                  new_interp="${glibc_lib32}/lib/ld-linux.so.2"
+                                  ;;
+                              /lib/ld-linux-armhf.so.3|/lib64/ld64.so.1|/lib64/ld64.so.2)
+                                  # Ignore ARM/ppc64/ppc64le executables, they
+                                  # are not meant to be run on the build machine.
+                                  # Example files:
+                                  #   altera-quartus-prime-lite-15.1.0.185/hld/host/arm32/bin/aocl-binedit
+                                  #   altera-quartus-prime-lite-15.1.0.185/hld/host/ppc64/bin/aocl-binedit
+                                  #   altera-quartus-prime-lite-15.1.0.185/hld/host/ppc64le/bin/aocl-binedit
+                                  continue
+                                  ;;
+                              *)
+                                  echo "FIXME: unhandled interpreter \"$interp\" in $f"
+                                  exit 1
+                                  ;;
+                          esac
+                          test -f "$new_interp" || { echo "$new_interp is missing"; exit 1; }
+                          patchelf --set-interpreter "$new_interp" \
+                                   --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-interpreter $new_interp --set-rpath $new_rpath $f"; exit 1; }
+                          ;;
+                      *ELF*shared\ object*x86-64*)
+                          patchelf --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-rpath $f"; exit 1; }
+                          ;;
+                  esac
+                  ;;
+              *ELF*statically\ linked*)
+                  echo "WARN: $f is statically linked. Needs fixup?"
+                  ;;
+          esac
+      done
 
-    # Modelsim is optional
-    f="$out"/modelsim_ase/vco
-    if [ -f "$f" ]; then
-        echo "Fix hardcoded \"/bin/ls\" in .../modelsim_ase/vco"
-        sed -i -e "s,/bin/ls,ls," "$f"
+      # Modelsim is optional
+      f="$out"/modelsim_ase/vco
+      if [ -f "$f" ]; then
+          echo "Fix hardcoded \"/bin/ls\" in .../modelsim_ase/vco"
+          sed -i -e "s,/bin/ls,ls," "$f"
 
-        echo "Fix support for Linux 4.x in .../modelsim_ase/vco"
-        sed -i -e "/case \$utype in/a 4.[0-9]*) vco=\"linux\" ;;" "$f"
-    fi
-  '';
-};
+          echo "Fix support for Linux 4.x in .../modelsim_ase/vco"
+          sed -i -e "/case \$utype in/a 4.[0-9]*) vco=\"linux\" ;;" "$f"
+      fi
+    '';
+  };
 
 in
 
