@@ -1,5 +1,5 @@
 { stdenv, fetchurl, utillinux, file, bash, glibc, pkgsi686Linux, writeScript
-, nukeReferences, glibcLocales, libfaketime
+, nukeReferences, glibcLocales, libfaketime, coreutils, gnugrep, gnused
 # Runtime dependencies
 , zlib, glib, libpng12, freetype, libSM, libICE, libXrender, fontconfig
 , libXext, libX11, libXtst, gtk2, bzip2, libelf
@@ -140,6 +140,9 @@ let
 
   runtimeLibPath =
     if is32bitPackage then runtimeLibPath32 else runtimeLibPath64;
+
+  runtimeBinPath = stdenv.lib.makeBinPath
+    [ coreutils gnugrep gnused glibc ];
 
   setup-chroot-and-exec = writeScript "setup-chroot-and-exec"
     (''
@@ -392,6 +395,11 @@ stdenv.mkDerivation rec {
           export LD_LIBRARY_PATH="${runtimeLibPath}"
       fi
     ''}
+
+    # Inject path to known tools. This is important not only for having a
+    # complete package (all deps), but also to ensure that LD_PRELOAD etc.
+    # won't break the CLI tools. (Think non-NixOS setups.)
+    export PATH="${runtimeBinPath}:\$PATH"
 
     # Implement the SOURCE_DATE_EPOCH specification, for reproducible builds:
     # https://reproducible-builds.org/specs/source-date-epoch
