@@ -416,6 +416,11 @@ in
         if [ $(ls /mnt/${archiveBaseName} | wc -l) -lt 1 ]; then
             die "/mnt/${archiveBaseName} has no files, assuming mount failure"
         fi
+        # sanity check the backup source
+        expect_path="/mnt/${archiveBaseName}/BILDER/BILDER 1"
+        if [ ! -d "$expect_path" ]; then
+            die "$expect_path is missing. /mnt/${archiveBaseName} contents: $(echo; ls -F /mnt/${archiveBaseName})"
+        fi
       '';
     };
   };
