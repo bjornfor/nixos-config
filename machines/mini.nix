@@ -358,9 +358,9 @@ in
             today=$(date +%Y-%m-%d)
             newest_backup_date=$(borg info "$repository"::"$(borg list "$repository" | tail -1 | awk '{print $1}')" | awk '/Time \(start\)/ {print $4}')
             # POSIX sh:
-            #n_days_old=$(echo "scale=0; ( $(date -d $today +%s) - $(date -d $newest_backup_date +%s) ) / (24*3600)" | bc)
+            #n_days_old=$(echo "scale=0; ( $(date -d "$today" +%s) - $(date -d "$newest_backup_date" +%s) ) / (24*3600)" | bc)
             # bash(?):
-            n_days_old=$(( ( $(date -d $today +%s) - $(date -d $newest_backup_date +%s) ) / (24*3600) ))
+            n_days_old=$(( ( $(date -d "$today" +%s) - $(date -d "$newest_backup_date" +%s) ) / (24*3600) ))
             if [ "$n_days_old" -eq "$n_days_old" ] 2>/dev/null
             then
                 # $n_days_old is an integer
@@ -374,7 +374,7 @@ in
         {
             n_days_old=$(backup_age_in_days)
             echo "Last backup is $n_days_old days old"
-            if [ $n_days_old -ge 7 -a $(( $n_days_old % 7 )) = 0 ]; then
+            if [ "$n_days_old" -ge 7 -a $(( "$n_days_old" % 7 )) = 0 ]; then
                 echo "Warning: backup is old ($n_days_old days), sending email"
                 send_email $(n_days_old)
             fi
