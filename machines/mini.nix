@@ -348,6 +348,18 @@ in
       # Started by "parent" backup job instead of a timer.
       startAt = null;
       preHook = ''
+        if [ $(ls "/mnt/${archiveBaseName}" | wc -l) -lt 1 ]; then
+            echo "/mnt/${archiveBaseName} has no files, assuming mount failure"
+            exit 1
+        fi
+        # sanity check the backup source
+        expect_path="/mnt/${archiveBaseName}/BILDER/BILDER 1"
+        if [ ! -d "$expect_path" ]; then
+            echo "$expect_path is missing. /mnt/${archiveBaseName} contents: $(echo; ls -F /mnt/${archiveBaseName})"
+            exit 1
+        fi
+      '';
+      postHook = ''
         # Email notification receivers.
         # Separate multiple addresses with comma and space (", ").
         to_recipients="$(cat /etc/marias-email-address.txt)"
@@ -380,10 +392,6 @@ in
             fi
         }
 
-        dieHook() {
-            maybe_send_failure_notification
-        }
-
         send_email()
         {
             n_days_old=$1
@@ -413,14 +421,7 @@ in
         #send_email $(backup_age_in_days)
         #exit 0
 
-        if [ $(ls /mnt/${archiveBaseName} | wc -l) -lt 1 ]; then
-            die "/mnt/${archiveBaseName} has no files, assuming mount failure"
-        fi
-        # sanity check the backup source
-        expect_path="/mnt/${archiveBaseName}/BILDER/BILDER 1"
-        if [ ! -d "$expect_path" ]; then
-            die "$expect_path is missing. /mnt/${archiveBaseName} contents: $(echo; ls -F /mnt/${archiveBaseName})"
-        fi
+        maybe_send_failure_notification
       '';
     };
   };

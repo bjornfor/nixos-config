@@ -108,18 +108,22 @@ let
       #!${pkgs.bash}/bin/sh
       repository="${icfg.repository}"
 
-      die()
+      on_exit()
       {
-          echo "$*"
-          if type dieHook 2>/dev/null | grep -q function 2>/dev/null; then
-              dieHook
-          fi
-          # Allow systemd to associate this message with the unit before
-          # exit. Yep, it's a race.
-          sleep 3
-          exit 1
-      }
+          exit_status=$?
+          # Reset the EXIT handler, or else we're called again on 'exit' below
+          trap - EXIT
+          echo "Running postHook"
+          ${icfg.postHook}
 
+          # Allow systemd/journal to associate the last messages from this unit
+          # before exit. Yep, it's a race.
+          sleep 3
+          exit $exit_status
+      }
+      trap 'on_exit' INT TERM QUIT EXIT
+
+      echo "Running preHook"
       ${icfg.preHook}
 
       echo "Running 'borg create [...]'"
@@ -167,11 +171,10 @@ let
           check_ret=0
       fi
 
-      ${icfg.postHook}
-
       # Exit with error if either command failed
       if [ $create_ret != 0 -o $prune_ret != 0 -o $check_ret != 0 ]; then
-          die "borg create, prune and/or check operation failed. Exiting with error."
+          echo "borg create, prune and/or check operation failed. Exiting with error."
+          false  # sets $? for the postHook
       fi
     '';
 
@@ -275,7 +278,8 @@ in
             type = types.lines;
             default = "";
             description = ''
-              Shell commands to run before backing up. Abort backup if 'exit N'.
+              Shell commands to run before backing up. Abort the backup with
+              'exit N'.
             '';
           };
 
@@ -283,7 +287,13 @@ in
             type = types.lines;
             default = "";
             description = ''
-              Shell commands to run after backing up, pruning and checking the repository.
+              Shell commands to run just before exit, for example to undo resource
+              allocations done by the preHook. These commands are run even on
+              unsuccessful backups (e.g if the preHook calls 'exit'). The
+              (planned) exit status is stored in the "exit_status" variable and
+              can be modified by this hook, if desired. Do not call 'exit' from
+              this hook, that may cause the most recent log output to not be
+              associated with this backup job (it's a kernel/systemd/journal race).
             '';
           };
 
