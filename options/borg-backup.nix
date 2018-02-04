@@ -156,18 +156,34 @@ let
           "$repository")
       prune_ret=$?
 
-      # Run repository check once a week
-      check_day=Sunday
-      this_day=$(date +%A)
-      if [ "$this_day" = "$check_day" ];  then
-          echo "Running 'borg check [...]' (since today is $this_day)"
-          (cd "${icfg.rootDir}" && borg check \
-              --verbose \
-              --show-rc \
-              "$repository")
-          check_ret=$?
+      # Rate limit repository checks, since they are quite expensive.
+      repository_dir="$(dirname ${icfg.repository})"
+      repository_name="$(basename ${icfg.repository})"
+      repository_check_stampfile="$repository_dir/.$repository_name.check_stamp"
+      repo_check_min_interval_in_days=1
+      repo_check_is_old=0
+      if [ ! -f "$repository_check_stampfile" ]; then
+          repo_check_is_old=1
+      elif [ "$(find "$repository_check_stampfile" -ctime "+$repo_check_min_interval_in_days")" ]; then
+          repo_check_is_old=1
+      fi
+      if [ "$repo_check_is_old" -eq 1 ];  then
+          check_day=Sunday
+          this_day=$(date +%A)
+          if [ "$this_day" = "$check_day" ];  then
+              echo "Running 'borg check [...]' (since a check is due and today is $this_day)"
+              (cd "${icfg.rootDir}" && borg check \
+                  --verbose \
+                  --show-rc \
+                  "$repository")
+              check_ret=$?
+              touch "$repository_check_stampfile"
+          else
+              echo "Skipping 'borg check' since today is not $check_day (it's $this_day)"
+              check_ret=0
+          fi
       else
-          echo "Skipping 'borg check' since today is not $check_day (it's $this_day)"
+          echo "Skipping 'borg check' since the last check was done less than $repo_check_min_interval_in_days day(s) ago"
           check_ret=0
       fi
 
