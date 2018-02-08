@@ -107,6 +107,9 @@ let
   mkBackupScript = icfg: pkgs.writeScript "borg-backup" ''
       #!${pkgs.bash}/bin/sh
       repository="${icfg.repository}"
+      archive="${icfg.archiveBaseName}-$(date +%Y%m%dT%H%M%S)"
+      archive_in_progress="$archive.IN_PROGRESS"
+      archive_unsuccessful="$archive.UNSUCCESSFUL"
 
       on_exit()
       {
@@ -140,9 +143,17 @@ let
           '' else ''\''}
           ${lib.concatMapStringsSep "\n" (x: "--exclude ${x} \\") icfg.excludes}
           --compression lz4 \
-          "$repository::${icfg.archiveBaseName}-$(date +%Y%m%dT%H%M%S)" \
+          "$repository::$archive_in_progress" \
           ${lib.concatStringsSep " " icfg.pathsToBackup})
       create_ret=$?
+
+      if [ $create_ret = 0 ]; then
+          final_archive_name="$archive"
+      else
+          final_archive_name="$archive_unsuccessful"
+      fi
+      echo "Renaming archive: $archive_in_progress -> $final_archive_name"
+      (cd "${icfg.rootDir}" && borg rename "$repository::$archive_in_progress" "$final_archive_name") || create_ret=1
 
       echo "Running 'borg prune [...]'"
       (cd "${icfg.rootDir}" && borg prune \
