@@ -7,7 +7,10 @@ with lib;
 let
   cfg = config.networking.networkmanager.pia-vpn;
 
-  piaCertificateFile = ./pia-ca.rsa.4096.crt;
+  piaCertificateFile = pkgs.fetchurl {
+    url = "https://www.privateinternetaccess.com/openvpn/ca.rsa.4096.crt";
+    sha256 = "1av6dilvm696h7pb5xn91ibw0mrziqsnwk51y8a7da9y8g8v3s9j";
+  };
 
   # id: human facing name of the connection (visible in NetworkManager)
   # uuid: any UUID in the form produced by uuid(1) (or perhaps _any_ string?)
