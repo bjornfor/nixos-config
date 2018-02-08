@@ -162,7 +162,7 @@ let
           --list \
           --show-rc \
           --keep-within=2d --keep-daily=7 --keep-weekly=4 --keep-monthly=6 \
-          --prefix ${icfg.archiveBaseName}- \
+          --prefix "${icfg.archiveBaseName}-" \
           "$repository")
       prune_ret=$?
 
@@ -198,7 +198,7 @@ let
       fi
 
       # Exit with error if either command failed
-      if [ $create_ret != 0 -o $prune_ret != 0 -o $check_ret != 0 ]; then
+      if [ $create_ret != 0 ] || [ $prune_ret != 0 ] || [ $check_ret != 0 ]; then
           echo "borg create, prune and/or check operation failed. Exiting with error."
           false  # sets $? for the postHook
       fi
