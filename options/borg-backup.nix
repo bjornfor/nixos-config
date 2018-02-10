@@ -208,9 +208,7 @@ let
     name = "borg-backup-${name}";
     value = {
       description = "Borg Backup Service ${name}";
-      environment = {
-        BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
-      };
+      environment = value.environment;
       path = with pkgs; [
         borgbackup utillinux coreutils gawk
       ];
@@ -332,6 +330,21 @@ in
               the backup by some other means -- either manually or by
               configuring your own systemd dependencies (e.g. start backup when
               a certain USB disk is inserted).
+            '';
+          };
+
+          environment = mkOption {
+            type = with types; attrsOf str;
+            default = {
+              BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
+            };
+            example = lib.literalExample ''
+              { BORG_PASSCOMMAND = "cat /path/to/password-file";
+                BORG_RSH = "ssh -i /root/.ssh/id_backup";
+              }
+            '';
+            description = ''
+              Extra environment variables passed to the service's processes.
             '';
           };
 
