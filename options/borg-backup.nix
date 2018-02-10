@@ -335,9 +335,7 @@ in
 
           environment = mkOption {
             type = with types; attrsOf str;
-            default = {
-              BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
-            };
+            default = {};
             example = lib.literalExample ''
               { BORG_PASSCOMMAND = "cat /path/to/password-file";
                 BORG_RSH = "ssh -i /root/.ssh/id_backup";
