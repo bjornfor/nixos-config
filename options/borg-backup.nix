@@ -118,6 +118,7 @@ let
           trap - EXIT
           echo "Running postHook"
           ${icfg.postHook}
+          echo "Done, exiting with status $exit_status."
 
           # Allow systemd/journal to associate the last messages from this unit
           # before exit. Yep, it's a race.
