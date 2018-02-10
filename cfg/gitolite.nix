@@ -9,7 +9,7 @@
       enable = true;
       dataDir = "/srv/git";
       # Initial admin key (ssh)
-      adminPubkey = with import ../misc/ssh-keys.nix; bfo_at_mini;
+      adminPubkey = with import ../misc/ssh-keys.nix; mini.bfo.default;
       user = "git";
       group = "git";
       extraGitoliteRc = ''

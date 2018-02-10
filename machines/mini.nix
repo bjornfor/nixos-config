@@ -306,9 +306,9 @@ in
   ];
 
   users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
-    bfo_at_whitetip
-    (''command="./bin/restricted-hamster-scp-command",restrict '' + bf_at_work)
-    (''command="/run/current-system/sw/bin/uptime",restrict '' + my_phone)
+    whitetip.bfo.default
+    (''command="./bin/restricted-hamster-scp-command",restrict '' + virtualbox_at_work.bf.default)
+    (''command="/run/current-system/sw/bin/uptime",restrict '' + my_phone.user.default)
   ];
 
   # The NixOS release to be compatible with for stateful data such as databases.
