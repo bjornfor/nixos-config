@@ -126,6 +126,10 @@ let
       }
       trap 'on_exit' INT TERM QUIT EXIT
 
+      # Inject the environment variables here, so they'll be available also
+      # when not run under systemd.
+      ${lib.concatMapStringsSep "\n" (x: x) (lib.mapAttrsFlatten (n: v: "export ${n}=\"${v}\"") icfg.environment)}
+
       echo "Running preHook"
       ${icfg.preHook}
 
@@ -208,7 +212,6 @@ let
     name = "borg-backup-${name}";
     value = {
       description = "Borg Backup Service ${name}";
-      environment = value.environment;
       path = with pkgs; [
         borgbackup utillinux coreutils gawk
       ];
@@ -342,7 +345,7 @@ in
               }
             '';
             description = ''
-              Extra environment variables passed to the service's processes.
+              Extra environment variables, set in the job script.
             '';
           };
 
