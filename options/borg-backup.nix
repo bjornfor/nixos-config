@@ -226,7 +226,7 @@ in
 
     enable = mkEnableOption "enable borg backup service to take nightly backups.";
 
-    instances = mkOption {
+    jobs = mkOption {
       type = types.attrsOf (types.submodule {
         options = {
 
@@ -365,30 +365,30 @@ in
   config = mkIf cfg.enable {
 
     assertions = [
-      { assertion = builtins.length (builtins.attrNames cfg.instances) > 0;
-        message = "No backup job iinstances defined in services.borg-backup.instances.*";
+      { assertion = builtins.length (builtins.attrNames cfg.jobs) > 0;
+        message = "No backup jobs defined in services.borg-backup.jobs.*";
       }
     ] ++
       (mapAttrsToList
         (name: value: {
-          assertion = config.services.borg-backup.instances."${name}".repository != "";
-          message = "Please specify a value in services.borg-backup.instances.${name}.repository.";
+          assertion = config.services.borg-backup.jobs."${name}".repository != "";
+          message = "Please specify a value in services.borg-backup.jobs.${name}.repository.";
         })
-        cfg.instances)
+        cfg.jobs)
     ++
       (mapAttrsToList
         (name: value: {
-          assertion = config.services.borg-backup.instances."${name}".pathsToBackup != [];
-          message = "Please specify a value in services.borg-backup.instances.${name}.pathsToBackup.";
+          assertion = config.services.borg-backup.jobs."${name}".pathsToBackup != [];
+          message = "Please specify a value in services.borg-backup.jobs.${name}.pathsToBackup.";
         })
-        cfg.instances);
+        cfg.jobs);
 
     # for convenience
-    environment.sessionVariables = mkIf (cfg.instances ? "default") {
-      BORG_REPO = "${cfg.instances."default".repository}";
+    environment.sessionVariables = mkIf (cfg.jobs ? "default") {
+      BORG_REPO = "${cfg.jobs."default".repository}";
     };
 
-    systemd.services = mapAttrs' mkService cfg.instances;
+    systemd.services = mapAttrs' mkService cfg.jobs;
 
   };
 

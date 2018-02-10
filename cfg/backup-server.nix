@@ -11,7 +11,7 @@ in
 
   services.borg-backup = {
     enable = true;
-    instances."default" = {
+    jobs."default" = {
       repository = "${backupDiskMountpoint}/backups/backup.borg";
       archiveBaseName = "{hostname}";
       pathsToBackup = [ "/" "/mnt/data" ];
@@ -19,7 +19,7 @@ in
         systemctl start borg-backup-maria-pc
       '';
     };
-    instances."maria-pc" = rec {
+    jobs."maria-pc" = rec {
       repository = "${backupDiskMountpoint}/backups/backup-maria-pc.borg";
       archiveBaseName = "maria-pc_seagate_expansion_drive_4tb";
       rootDir = "/mnt/${archiveBaseName}";
