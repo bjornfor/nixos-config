@@ -123,6 +123,9 @@ in
     onFailure = [ "status-email@%n" ];
   };
   systemd.services."borg-backup-maria-pc" = {
+    # borg-backup-maria-pc is set to conflict with mount-borg-backup-maria-pc.
+    # Because of that we have to start the latter _after_ the backup service.
+    # If not, systemd would kill the backup service to resolve the conflict.
     postStop = ''
       systemctl start mount-borg-backup-maria-pc
       sleep 10
