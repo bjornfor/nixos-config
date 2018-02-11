@@ -242,7 +242,8 @@ in
 
           archiveBaseName = mkOption {
             type = types.str;
-            default = "{hostname}";
+            default = config.networking.hostName;
+            defaultText = "config.networking.hostName";
             description = ''
               Complete archive names look like "$archiveBaseName-DATE".
             '';
