@@ -13,7 +13,6 @@ in
     enable = true;
     jobs."default" = {
       repository = "${backupDiskMountpoint}/backups/backup.borg";
-      archiveBaseName = "{hostname}";
       pathsToBackup = [ "/" "/mnt/data" ];
       postHook = ''
         systemctl start borg-backup-maria-pc
