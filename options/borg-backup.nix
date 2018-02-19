@@ -142,6 +142,7 @@ let
           --filter AME \
           --show-rc \
           --one-file-system \
+          --exclude-caches \
           ${if icfg.excludeNix then ''
             --exclude /etc/nix/nix.conf \
             --exclude /nix/ \
