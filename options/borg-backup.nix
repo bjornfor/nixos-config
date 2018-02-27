@@ -134,6 +134,12 @@ let
       echo "Running preHook"
       ${icfg.preHook}
 
+      # Prevent borg from looking at autofs mountpoints. (Because if the
+      # underlying filesystem cannot be mounted, stat() returns ENODEV, borg
+      # prints a warning and exits with status 1. Even with --one-file-system.)
+      autofs_excludes=$(cat /proc/mounts | while read src mountpoint fstype rest; do
+          test "$fstype" = autofs && printf "%s\n" "--exclude \"$mountpoint\""; done)
+
       echo "Running 'borg create [...]'"
       (cd "${icfg.rootDir}" && borg create \
           --stats \
@@ -142,6 +148,7 @@ let
           --filter AME \
           --show-rc \
           --one-file-system \
+          $autofs_excludes \
           --exclude-caches \
           ${if icfg.excludeNix then ''
             --exclude /etc/nix/nix.conf \
