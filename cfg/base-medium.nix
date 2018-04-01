@@ -151,7 +151,10 @@
     ];
   };
   # Apply the same programs.chromium settings to google-chrome
-  environment.etc."opt/chrome".source = "/etc/chromium";
+  environment.etc =
+    if lib.versionOlder lib.nixpkgsVersion "18.03"
+    then { "opt/chrome".source = "/etc/chromium"; }
+    else {}; # NixOS 18.03 has this built-in.
 
   services = {
     atd.enable = true;
