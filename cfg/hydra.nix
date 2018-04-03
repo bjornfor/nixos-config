@@ -15,6 +15,12 @@
     #smtpHost = "localhost";
   };
 
+  systemd.services.hydra-evaluator = {
+    # This allows Hydra to evaluate very large derivations if necessary.
+    # Fixes "Too many heap sections: Increase MAXHINCR or MAX_HEAP_SECTS".
+    environment."GC_INITIAL_HEAP_SIZE" = "16G";
+  };
+
   nix = {
     useSandbox = true;
     buildCores = lib.mkOverride 90 0;  # 0 is special, it means "use all available CPU cores"
