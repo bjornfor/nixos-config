@@ -134,6 +134,8 @@
   networking.networkmanager.pia-vpn.serverList =
     [ "denmark" "fi" "nl" "no" "sweden" "uk-london" "us-newyorkcity" ];
 
+  programs.adb.enable = true;
+
   programs.chromium = {
     enable = true;
     # Imperatively installed extensions will seamlessly merge with these.
