@@ -15,7 +15,6 @@
     aspell
     aspellDicts.en
     aspellDicts.nb
-    attic
     babeltrace
     bind
     bmon
