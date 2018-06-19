@@ -596,4 +596,163 @@ rec {
 
   };
 
+  v17 = rec {
+    recurseForDerivations = true;
+    version = "17.1.0.590";
+    is32bitPackage = false;
+    baseUrl = "http://download.altera.com/akdlm/software/acdsinst/17.1std/590/ib_installers";
+
+    lite_edition = {
+      recurseForDerivations = true;
+      baseName = "altera-quartus-prime-lite";
+      prettyName = "Quartus Prime Lite Edition";
+      inherit version is32bitPackage updates;
+      components = {
+        recurseForDerivations = true;
+        quartus = fetchurl {
+          # Size: 2.0 GB MD5: 8A22E65F15B695E7967A292CAA7275F3
+          url = "${baseUrl}/QuartusLiteSetup-${version}-linux.run";
+          sha256 = "1y8v207903zi367yy6iarqwmywqmw654rc3vgidla21kmqxs5n4k";
+        };
+        modelsim = fetchurl {
+          # Size: 1.1 GB MD5: 47E17B9DCCE592AD248991660B0B3CD8
+          url = "${baseUrl}/ModelSimSetup-${version}-linux.run";
+          sha256 = "1ilgyyjm3n9h1sybip7ng764g6y7alp32kvxkrjispbm7098xzv6";
+        };
+        arria = fetchurl {
+          # Size: 499.6 MB MD5: EA15FB95662AB632F2CD95A93D995A92
+          url = "${baseUrl}/arria_lite-${version}.qdz";
+          sha256 = "0ql9k0gsj1jg4c89afjg61gfy1zwmjmpxzjixrjvphiszk6gmadp";
+        };
+        cyclone = fetchurl {
+          # Size: 466.6 MB MD5: 09D346E4AE7AC403DF4F36563E6B7BFB
+          url = "${baseUrl}/cyclone-${version}.qdz";
+          sha256 = "03jk7gsvqi93vyqay12l5vq7sg5ifd5yhycmk2irj0xshpg3x277";
+        };
+        cyclone10lp = fetchurl {
+          # Size: 266.1 MB MD5: C9D4AC6A692BE4C3EAC15473325218BB
+          url = "${baseUrl}/cyclone10lp-${version}.qdz";
+          sha256 = "0vj5wxplpkhz4bmc0r2dbghnifznw6rm1jqjxqf6bmj23ap6qahq";
+        };
+        cyclonev = fetchurl {
+          # Size: 1.1 GB MD5: 747202966905F7917FB3B8F95228E026
+          url = "${baseUrl}/cyclonev-${version}.qdz";
+          sha256 = "0zmd3mkpz3cpclbasjjn8rrcffhsn2f00mw00jya3x259hrvvpcr";
+        };
+        max = fetchurl {
+          # Size: 11.4 MB MD5: 77B086D125489CD74D05FD9ED1AA4883
+          url = "${baseUrl}/max-${version}.qdz";
+          sha256 = "12h6sgqqdjf929mmdis5wad85c5bjmnwlp8xqjxl3hhzd15x1xcd";
+        };
+        max10 = fetchurl {
+          # Size: 325.2 MB MD5: 9B55655054A7EA1409160F27592F2358
+          url = "${baseUrl}/max10-${version}.qdz";
+          sha256 = "0xwvy7ja637qh7dbf64pxrhqhyr15ws9wdir1zfxwahdw0n1ril5";
+        };
+      };
+    };
+
+    standard_edition = {
+      recurseForDerivations = true;
+      baseName = "altera-quartus-prime-standard";
+      prettyName = "Quartus Prime Standard Edition";
+      inherit version is32bitPackage updates;
+      components = {
+        recurseForDerivations = true;
+        quartus = fetchurl {
+          # Size: 2.7 GB MD5: 6526114644039D5011AD1FA3960941D1
+          url = "${baseUrl}/QuartusSetup-${version}-linux.run";
+          sha256 = "0kdlkqqi39l1frlf92amafqxfiyhmyljxi2d1wbgmacnr4msh19g";
+        };
+        modelsim = fetchurl {
+          # Size: 1.1 GB MD5: 47E17B9DCCE592AD248991660B0B3CD8
+          url = "${baseUrl}/ModelSimSetup-${version}-linux.run";
+          sha256 = "1ilgyyjm3n9h1sybip7ng764g6y7alp32kvxkrjispbm7098xzv6";
+        };
+        arria = fetchurl {
+          # Size: 669.7 MB MD5: 8B3BC0110C9485DDA2EE1B34A74D7B50
+          url = "${baseUrl}/arria-${version}.qdz";
+          sha256 = "1kmapmgip25jvzkg633zv8x6knbbcr8d512i3lnixn5f12zls4h6";
+        };
+        arria10_part1 = fetchurl {
+          # Size: 3.2 GB MD5: 9543781AE7538DCCB71142625934EB9A
+          url = "${baseUrl}/arria10_part1-${version}.qdz";
+          sha256 = "11g8ifnas7vbl0kbbk6vzf6wb80kyi37d7w33y3lrwcv5p5g4igg";
+        };
+        arria10_part2 = fetchurl {
+          # Size: 3.6 GB MD5: F80A0EA351CBCF105E74EAC6893B0F56
+          url = "${baseUrl}/arria10_part2-${version}.qdz";
+          sha256 = "1crglrnlr5ygd825vzjcav4b1difyzi0lys5ffxzqqa0pkr9vbm0";
+        };
+        arria10_part3 = fetchurl {
+          # Size: 4.8 GB MD5: 7B0F872DA6E3F48DCCBD171A588A7546
+          url = "${baseUrl}/arria10_part3-${version}.qdz";
+          sha256 = "1x43khxxmlvql450m4l4d3c853g0n0zrhwq7ixykyk9z7alkj65q";
+        };
+        arriav = fetchurl {
+          # Size: 1.3 GB MD5: 577D4E4F470930AB8054C1AC88F24FB7
+          url = "${baseUrl}/arriav-${version}.qdz";
+          sha256 = "16fk0k26dqsxn7gwwb1f9fr96h1nj2yy48bhrwji7kb9bmwydys7";
+        };
+        arriavgz = fetchurl {
+          # Size: 2.0 GB MD5: 62DA0E43F4F6147646901611CE7CA043
+          url = "${baseUrl}/arriavgz-${version}.qdz";
+          sha256 = "02r5r66m6kj3zriyvshrd02mp4njpa1jack6bh4zdbr936wriiw3";
+        };
+        cyclone = fetchurl {
+          # Size: 466.6 MB MD5: 09D346E4AE7AC403DF4F36563E6B7BFB
+          url = "${baseUrl}/cyclone-${version}.qdz";
+          sha256 = "03jk7gsvqi93vyqay12l5vq7sg5ifd5yhycmk2irj0xshpg3x277";
+        };
+        cyclone10lp = fetchurl {
+          # Size: 266.1 MB MD5: C9D4AC6A692BE4C3EAC15473325218BB
+          url = "${baseUrl}/cyclone10lp-${version}.qdz";
+          sha256 = "0vj5wxplpkhz4bmc0r2dbghnifznw6rm1jqjxqf6bmj23ap6qahq";
+        };
+        cyclonev = fetchurl {
+          # Size: 1.1 GB MD5: 747202966905F7917FB3B8F95228E026
+          url = "${baseUrl}/cyclonev-${version}.qdz";
+          sha256 = "0zmd3mkpz3cpclbasjjn8rrcffhsn2f00mw00jya3x259hrvvpcr";
+        };
+        max = fetchurl {
+          # Size: 11.4 MB MD5: 77B086D125489CD74D05FD9ED1AA4883
+          url = "${baseUrl}/max-${version}.qdz";
+          sha256 = "12h6sgqqdjf929mmdis5wad85c5bjmnwlp8xqjxl3hhzd15x1xcd";
+        };
+        max10 = fetchurl {
+          # Size: 325.2 MB MD5: 9B55655054A7EA1409160F27592F2358
+          url = "${baseUrl}/max10-${version}.qdz";
+          sha256 = "0xwvy7ja637qh7dbf64pxrhqhyr15ws9wdir1zfxwahdw0n1ril5";
+        };
+        stratixiv = fetchurl {
+          # Size: 544.5 MB MD5: 9A8BA92290A4ABD5F658AF0ED6B314AA
+          url = "${baseUrl}/stratixiv-${version}.qdz";
+          sha256 = "08pf4aa068h1m1fhg8bjbkh3sxw8rhgr5h7gwlzjjh2p8dgqr41q";
+        };
+        stratixv = fetchurl {
+          # Size: 2.9 GB MD5: 7A20672F48961BD91F20F23574FD7461
+          url = "${baseUrl}/stratixv-${version}.qdz";
+          sha256 = "0w115lsb3h2xlibg2c2qcw2rwigarv6569gn19xp3krk2h0i03p9";
+        };
+      };
+    };
+
+    # Updates are shared between editions. I.e. this update can be applied to
+    # either lite or standard editions.
+    updates = rec {
+      recurseForDerivations = true;
+      version = "17.1.1.593";
+      updateBaseUrl = "http://download.altera.com/akdlm/software/acdsinst/17.1std.1/593/update";
+      components = {
+        recurseForDerivations = true;
+        quartus = fetchurl {
+          # Size: 1.9 GB MD5: 70E8016EA12CF7835DFCD3B22B1E3153
+          url = "${updateBaseUrl}/QuartusSetup-${version}-linux.run";
+          sha256 = "1nk903prd6qs1v5dyyh1l227drk7m99zssp3dc8v4jq53fv9hsjs";
+        };
+      };
+    };
+
+  };
+
 }

@@ -266,8 +266,9 @@ let
               echo "ERROR: \"$installer\" either doesn't exist or is not executable"
               exit 1
           fi
-          echo "### ${run-in-fhs-env} $installer --mode unattended --installdir $out"
-          "${run-in-fhs-env}" "$installer" --mode unattended --installdir "$out"
+          maybe_accept_eula="${if stdenv.lib.versionAtLeast version "17.1" then "--accept_eula 1" else ""}"
+          echo "### ${run-in-fhs-env} $installer --mode unattended --installdir $out" $maybe_accept_eula
+          "${run-in-fhs-env}" "$installer" --mode unattended --installdir "$out" $maybe_accept_eula
           echo "...done"
       }
 
