@@ -287,7 +287,7 @@
             Content-Transfer-Encoding: 8bit
             Content-Type: text/plain; charset=UTF-8
 
-            $(systemctl status --full "$unit" -n50)
+            $(systemctl status --full "$unit" -n80)
             __EOF__
             echo "Status mail sent to $addr for unit $unit"
           '';
