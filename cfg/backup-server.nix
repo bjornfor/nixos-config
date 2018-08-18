@@ -70,7 +70,7 @@ in
             echo "Last backup is $n_days_old days old"
             if [ "$n_days_old" -ge 7 -a $(( "$n_days_old" % 7 )) = 0 ]; then
                 echo "Warning: backup is old ($n_days_old days), sending email"
-                send_email $(n_days_old)
+                send_email $n_days_old
             fi
         }
 
