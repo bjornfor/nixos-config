@@ -65,6 +65,7 @@
     msmtp
     mutt
     ncdu
+    nethogs
     networkmanager
     networkmanagerapplet
     nixops
