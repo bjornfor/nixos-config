@@ -40,6 +40,7 @@
     diffstat
     dmidecode
     dos2unix
+    exfat
     exiv2
     file
     firefox
