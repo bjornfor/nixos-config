@@ -5,13 +5,14 @@
     ../cfg/base-medium.nix
   ];
 
-  boot.loader.grub.device =
-    "/dev/disk/by-id/ata-Corsair_Force_3_SSD_123479100000148001C8";
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.grub.enable = lib.mkForce false;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  fileSystems."/mnt/backup-disk" =
-    { device = "/dev/disk/by-label/backup";
-      options = [ "nofail" ];
-    };
+  # TODO: patch nixos-generate-config to detect bcache, so this ends up in
+  # hardware-configuration.nix automatically.
+  boot.initrd.availableKernelModules = [ "bcache" ];
 
   networking.hostName = "media";
 
