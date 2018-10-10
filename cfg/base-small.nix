@@ -51,6 +51,9 @@
     options usb-storage quirks=0bc2:2322:u
   '';
 
+  hardware.cpu.amd.updateMicrocode = true;
+  hardware.cpu.intel.updateMicrocode = true;
+
   networking = {
     firewall.enable = false;
     networkmanager.enable = true;
