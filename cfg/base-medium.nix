@@ -73,7 +73,6 @@
     nix-bash-completions
     nix-generate-from-cpan
     nix-prefetch-scripts
-    nix-repl
     nix-serve
     nox
     ntfs3g
@@ -128,7 +127,9 @@
     yubico-piv-tool
     yubikey-personalization
     yubikey-personalization-gui
-  ];
+  ]
+  # nix-repl was replaced by the built-in "nix repl" from nix in nixos-18.09.
+  ++ (lib.optional (lib.versionOlder (lib.version or lib.nixpkgsVersion) "18.09") nix-repl);
 
   networking.networkmanager.pia-vpn.enable = true;
   networking.networkmanager.pia-vpn.usernameFile = "/etc/pia-vpn.username";
@@ -154,7 +155,7 @@
   };
   # Apply the same programs.chromium settings to google-chrome
   environment.etc =
-    if lib.versionOlder lib.nixpkgsVersion "18.03"
+    if lib.versionOlder (lib.version or lib.nixpkgsVersion) "18.03"
     then { "opt/chrome".source = "/etc/chromium"; }
     else {}; # NixOS 18.03 has this built-in.
 
@@ -190,7 +191,7 @@
     };
 
     # for hamster-time-tracker
-    dbus.packages = with pkgs; [ gnome3.gconf ];
+    dbus.packages = with pkgs; [ gnome2.GConf ];
 
     postfix = {
       enable = true;

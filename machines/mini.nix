@@ -4,6 +4,13 @@ let
   myDomain = "bforsman.name";
   phpSockName1 = "/run/phpfpm/pool1.sock";
   acmeChallengesDir = "/var/www/challenges/";
+
+  gitwebConfig = {
+    projectroot = "/srv/git/repositories";
+    extraConfig = ''
+      our $projects_list = '/srv/git/projects.list';
+    '';
+  };
 in
 {
   imports = [
@@ -30,14 +37,11 @@ in
 
   networking.hostName = "mini";
 
-  nixpkgs.config = {
-    #virtualbox.enableExtensionPack = true;
-  };
-
   environment.systemPackages = with pkgs; [
   ];
 
   virtualisation.virtualbox.host.enable = true;
+  #virtualisation.virtualbox.host.enableExtensionPack = true;
 
   users.extraUsers."lighttpd".extraGroups = [ "git" ];
 
@@ -157,11 +161,11 @@ in
       '';
       collectd-graph-panel.enable = true;
       nextcloud.enable = true;
-      gitweb.enable = true;
-      gitweb.projectroot = "/srv/git/repositories";
-      gitweb.extraConfig = ''
-        our $projects_list = '/srv/git/projects.list';
-      '';
+      # NixOS 18.09+ renamed services.lighttpd.gitweb.* to services.gitweb.*
+      gitweb = { enable = true; } //
+        (if lib.versionOlder (lib.version or lib.nixpkgsVersion) "18.09"
+        then gitwebConfig
+        else {});
     };
 
     phpfpm.poolConfigs = lib.mkIf config.services.lighttpd.enable {
@@ -295,6 +299,11 @@ in
       extraConfig = "--disable-login";
     };
   };
+
+  # NixOS 18.09+ renamed services.lighttpd.gitweb.* to services.gitweb.*
+  services.gitweb =
+    lib.mkIf (lib.versionAtLeast (lib.version or lib.nixpkgsVersion) "18.09")
+      gitwebConfig;
 
   services.gitolite-mirror.enable = true;
   services.gitolite-mirror.repoUrls = [
