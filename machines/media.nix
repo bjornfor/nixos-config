@@ -17,7 +17,7 @@
   networking.hostName = "media";
 
   system.autoUpgrade = {
-    enable = true;
+    enable = false;  # too many issues with the desktop disappearing
     dates = "04:40";
     channel = "https://nixos.org/channels/nixos-18.03";
   };
