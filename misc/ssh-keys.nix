@@ -1,6 +1,8 @@
 # SSH public keys, stored in an attribute set hierarchy of <host>.<user>.<description>.
 
 {
+  media.root.backup = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJsLLEZxPtdFQJVqG8zOuBZTUYHhhh026F2BDsHXJXPW root@media (for backup automation)'';
+
   mini.bfo.default = ''ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTl8tsKUmHqO5eJoPvAVSu5vm7Ibml9rYxAblTUU/dl+zip7RNfl178qaX4nwUHkI3qsITJ8yQr42iIanvIPpCvM5V4rYjDmD7R4R8wSvzsrxegipG+kXfItlgsmCIuNsYZNCPtxESsLMW6tuJBfFy8L0IGmwYXLNNj7NIsrI4ElOhmWHz+VppZU1R74IghC+ZWJkkqoc9Ayt17ezLfBPYYuoan60H2/KOBtJX5qjfdxGXF5H7Oa7SBE/0zZ5Eaq8MudM/7CClc2nA787xadp8O6aQoF/ZB27dwr3mK2IugYc7w2rDlT67iQHLT27LKMU74CY//xSqkGUZOyGDAN7B bfo@mini'';
 
   whitetip.bfo.default = ''ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfy7XFi35G277tbjGzFeFdbtz8c3b9dQcBpE9KlcVVKMG9mMzVQeLJkehqi/NGyzV7DcJgvFW0vFJaRbQbOVuIlnC3rCwO+NUJW+48aarnna1Izv6ihHp5vprYhZT9AANfUUsaCy5ZBVljlJ34S8gJNvmq7oogh9ioi9hE3LvdZMC0M6k2WZG5+lPlDWbNjuWlYF9e9XVJlopU+xfNy98u0djyBo2urkqtNT8vXu49JarKpxgi3tMDv2pZFNNICukWsg8EEH6YIhJjsiO0RdnanzO/yQK2/SQtq0GjnzEaRilAgiUnGHC7f7iOBeNhc+hUcKltBlWmPsF9ZV5txZDT bfo@whitetip'';
