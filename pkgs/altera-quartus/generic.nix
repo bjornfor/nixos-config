@@ -2,7 +2,7 @@
 , nukeReferences, glibcLocales, libfaketime, coreutils, gnugrep, gnused, proot
 # Runtime dependencies
 , zlib, glib, libpng12, freetype, libSM, libICE, libXrender, fontconfig
-, libXext, libX11, libXtst, gtk2, bzip2, libelf
+, libXext, libX11, libXtst, libXi, gtk2, bzip2, libelf
 }:
 
 { baseName
@@ -111,12 +111,15 @@ let
     (x: ((builtins.match ".*fix-i686-memchr.patch" (builtins.toString x)) == null)
      && ((builtins.match ".*2.25-49.patch.gz" (builtins.toString x)) == null));
 
-  glibc_lib_for_installer = glibc_lib.overrideAttrs (oldAttrs:
-    commonGlibcAttrs224 // { patches = glibcPatchFilter (oldAttrs.patches or []); }
-  );
-  glibc_lib32_for_installer = glibc_lib32.overrideAttrs (oldAttrs:
-    commonGlibcAttrs224 // { patches = glibcPatchFilter (oldAttrs.patches or []); }
-  );
+  # Quartus 18 works with glibc-2.25, TODO branch here on quartus version
+  glibc_lib_for_installer = glibc_lib;
+  # glibc_lib_for_installer = glibc_lib.overrideAttrs (oldAttrs:
+  #   commonGlibcAttrs224 // { patches = glibcPatchFilter (oldAttrs.patches or []); }
+  # );
+  glibc_lib32_for_installer = glibc_lib32;
+  # glibc_lib32_for_installer = glibc_lib32.overrideAttrs (oldAttrs:
+  #   commonGlibcAttrs224 // { patches = glibcPatchFilter (oldAttrs.patches or []); }
+  # );
 
   # Keep in sync with runtimeLibPath64
   # (with pkgsi686Linux; [ .. ] doesn't bind strongly enough.)
@@ -126,6 +129,7 @@ let
         pkgsi686Linux.freetype pkgsi686Linux.xorg.libSM pkgsi686Linux.xorg.libICE
         pkgsi686Linux.xorg.libXrender pkgsi686Linux.fontconfig.lib
         pkgsi686Linux.xorg.libXext pkgsi686Linux.xorg.libX11 pkgsi686Linux.xorg.libXtst
+        pkgsi686Linux.xorg.libXi
         pkgsi686Linux.gtk2 pkgsi686Linux.bzip2.out pkgsi686Linux.libelf
         pkgsi686Linux.stdenv.cc.cc.lib
       ];
@@ -134,7 +138,7 @@ let
   runtimeLibPath64 =
     stdenv.lib.makeLibraryPath
     [ zlib glib libpng12 freetype libSM libICE libXrender fontconfig.lib
-      libXext libX11 libXtst gtk2 bzip2.out libelf
+      libXext libX11 libXtst libXi gtk2 bzip2.out libelf
       stdenv.cc.cc.lib
     ];
 
@@ -202,12 +206,13 @@ let
           ${stdenv.lib.concatStringsSep "\n"
             (map
               (p: ''
-                cp "${p}" "$out/$(stripHash "${p}")"
+                dst="$out/$(stripHash "${p}")"
+                cp "${p}" "$dst"
+                chmod +x "$dst"
               '')
               srcs
             )
           }
-          chmod +x "$out"/*.run
         '';
     };
 
@@ -266,8 +271,8 @@ let
               echo "ERROR: \"$installer\" either doesn't exist or is not executable"
               exit 1
           fi
-          echo "### ${run-in-fhs-env} $installer --mode unattended --installdir $out"
-          "${run-in-fhs-env}" "$installer" --mode unattended --installdir "$out"
+          echo "### ${run-in-fhs-env} $installer --mode unattended --installdir $out --accept_eula 1"
+          "${run-in-fhs-env}" "$installer" --mode unattended --installdir "$out" --accept_eula 1
           echo "...done"
       }
 
@@ -293,10 +298,11 @@ let
           # A few files are read-only. Make them writeable for patchelf. (Nix
           # will make all files read-only after the build.)
           chmod +w "$f"
-          magic=$(file "$f") || { echo "file \"$f\" failed"; exit 1; }
-          case "$magic" in
+          file_magic=$(file "$f") || { echo "file \"$f\" failed"; exit 1; }
+          case "$file_magic" in
               *ELF*dynamically\ linked*)
-                  orig_rpath=$(patchelf --print-rpath "$f") || { echo "FAILED: patchelf --print-rpath $f"; exit 1; }
+                  # Filter out some /build absolute paths in the distrubuted objects...
+                  orig_rpath=$(patchelf --print-rpath "$f" | sed -r -e 's|(^\|:)(/(build\|data\|tools)/[^:]*:?)+|\1|g' -e 's|:$||') || { echo "FAILED: patchelf --print-rpath $f"; exit 1; }
                   # Take care not to add ':' at start or end of RPATH, because
                   # that is the same as '.' (current directory), and that's
                   # insecure.
@@ -304,8 +310,9 @@ let
                       orig_rpath="$orig_rpath:"
                   fi
                   new_rpath="$orig_rpath${runtimeLibPath}"
+                  magic=$(readelf -h "$f" | grep '^  Type:') || { echo "readelf \"$f\" failed"; exit 1; }
                   case "$magic" in
-                      *ELF*executable*)
+                      *EXEC*Executable\ file*)
                           interp=$(patchelf --print-interpreter "$f") || { echo "FAILED: patchelf --print-interpreter $f"; exit 1; }
                           # Note the LSB interpreters, required by some files
                           case "$interp" in
@@ -333,8 +340,8 @@ let
                           patchelf --set-interpreter "$new_interp" \
                                    --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-interpreter $new_interp --set-rpath $new_rpath $f"; exit 1; }
                           ;;
-                      *ELF*shared\ object*x86-64*)
-                          patchelf --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-rpath $f"; exit 1; }
+                      *DYN*Shared\ object\ file*)
+                          patchelf --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-rpath $new_rpath $f"; }
                           ;;
                   esac
                   ;;

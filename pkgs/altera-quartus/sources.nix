@@ -596,4 +596,31 @@ rec {
 
   };
 
+  v18 = rec {
+    recurseForDerivations = true;
+    version = "18.1.0.625";
+    is32bitPackage = false;
+    baseUrl = "http://download.altera.com/akdlm/software/acdsinst/18.1std/625/ib_installers";
+
+    lite_edition = {
+      recurseForDerivations = true;
+      baseName = "altera-quartus-prime-lite";
+      prettyName = "Quartus Prime Lite Edition";
+      inherit version is32bitPackage;
+      components = {
+        recurseForDerivations = true;
+        quartus = fetchurl {
+          # Size: 2.0 GB MD5: 75F5029A9058F64F969496B016EE19D4
+          url = "${baseUrl}/QuartusLiteSetup-${version}-linux.run";
+          sha256 = "04smqi5njlgjwal87xc80dji79w78hvdd4kz80chfac6bzv7bn86";
+        };
+        cyclonev = fetchurl {
+          # Size: 1.1 GB MD5: 8386E6891D17DC1FAF29067C46953FC7
+          url = "${baseUrl}/cyclonev-${version}.qdz";
+          sha256 = "0ab38m648cwp95yd0f7xlnhmvqjg9yrls94xigxxmadixs8r9y03";
+        };
+      };
+    };
+  };
+
 }

@@ -2,7 +2,7 @@
 , nukeReferences, glibcLocales, libfaketime, coreutils, gnugrep, gnused, proot
 # Runtime libraries:
 , zlib, glib, libpng12, freetype, libSM, libICE, libXrender, fontconfig
-, libXext, libX11, libXtst, gtk2, bzip2, libelf
+, libXext, libX11, libXtst, libXi, gtk2, bzip2, libelf
 }:
 
 let
@@ -15,19 +15,21 @@ let
       nukeReferences glibcLocales libfaketime coreutils gnugrep gnused proot
       # Runtime libraries:
       zlib glib libpng12 freetype libSM libICE libXrender fontconfig
-      libXext libX11 libXtst gtk2 bzip2 libelf;
+      libXext libX11 libXtst libXi gtk2 bzip2 libelf;
   };
 
   mkCommonQuartus = srcAttrs:
     buildQuartus {
       inherit (srcAttrs) baseName prettyName is32bitPackage;
-      version = srcAttrs.updates.version;
+      # If the package doens't have any updates, use the base version
+      version = srcAttrs.updates.version or srcAttrs.version;
       components = with srcAttrs.components; [
         quartus cyclonev
       ];
-      updateComponents = with srcAttrs.updates.components; [
-        quartus
-      ];
+      updateComponents =
+        stdenv.lib.optional
+          (stdenv.lib.hasAttr "updates" srcAttrs)
+          srcAttrs.updates.components.quartus;
     };
 
 in rec {
@@ -58,8 +60,11 @@ in rec {
   altera-quartus-prime-standard-16 =
     mkCommonQuartus sources.v16.standard_edition;
 
+  altera-quartus-prime-lite-18 =
+    mkCommonQuartus sources.v18.lite_edition;
+
   # Aliases to latest versions
-  altera-quartus-prime-lite = altera-quartus-prime-lite-16;
+  altera-quartus-prime-lite = altera-quartus-prime-lite-18;
   altera-quartus-prime-standard = altera-quartus-prime-standard-16;
 
 }
