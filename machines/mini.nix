@@ -27,7 +27,8 @@ in
 
   fileSystems = {
     "/".device = "/dev/disk/by-label/240gb";
-    "/mnt/data".device = "/dev/disk/by-label/1.5tb";
+    "/mnt/data".device = "/dev/disk/by-uuid/87c75c5e-67d5-4a61-949a-e514542db339";
+    "/mnt/data".options = [ "nofail" ];
     "/mnt/ssd-120".device = "/dev/disk/by-id/ata-KINGSTON_SH103S3120G_50026B722600AA5F-part1";
     "/mnt/ssd-120".options = [ "nofail" ];
   };
