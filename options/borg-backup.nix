@@ -145,7 +145,7 @@ let
           --stats \
           --verbose \
           --list \
-          --filter AME \
+          --filter ME \
           --show-rc \
           --one-file-system \
           $autofs_excludes \
