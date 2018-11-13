@@ -306,15 +306,6 @@ in
     lib.mkIf (lib.versionAtLeast (lib.version or lib.nixpkgsVersion) "18.09")
       gitwebConfig;
 
-  services.gitolite-mirror.enable = true;
-  services.gitolite-mirror.repoUrls = [
-    "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
-    "https://github.com/nixos/nix"
-    "https://github.com/nixos/nixpkgs"
-    "https://github.com/nixos/nixops"
-    "https://github.com/nixos/nixpkgs"
-  ];
-
   users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
     whitetip.bfo.default
     (''command="./bin/restricted-hamster-scp-command",restrict '' + virtualbox_at_work.bf.default)
