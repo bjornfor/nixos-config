@@ -1,4 +1,8 @@
 # SSH public keys, stored in an attribute set hierarchy of <host>.<user>.<description>.
+#
+# Suggestion on where to store the keys on the client side.
+# Default key: ~/.ssh/id_<algo>
+# Other keys:  ~/.ssh/id_<algo>_<description>
 
 {
   media.root.backup = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJsLLEZxPtdFQJVqG8zOuBZTUYHhhh026F2BDsHXJXPW root@media (for backup automation)'';
