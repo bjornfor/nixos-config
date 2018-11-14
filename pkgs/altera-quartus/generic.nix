@@ -416,6 +416,21 @@ stdenv.mkDerivation rec {
     Terminal=false
     Path=$out
     EOF
+
+    # udev rules based on
+    # https://www.intel.com/content/www/us/en/programmable/support/support-resources/download/drivers/dri-usb_b-lnx.html
+    echo "Installing udev rules"
+    mkdir -p "$out/lib/udev/rules.d"
+    cat > "$out/lib/udev/rules.d/51-usbblaster.rules" << EOF
+    # USB-Blaster / Intel FPGA Download Cable
+    SUBSYSTEM=="usb", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6001", MODE="0666"
+    SUBSYSTEM=="usb", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6002", MODE="0666"
+    SUBSYSTEM=="usb", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6003", MODE="0666"
+
+    # USB-Blaster II / Intel FPGA Download Cable II
+    SUBSYSTEM=="usb", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6010", MODE="0666"
+    SUBSYSTEM=="usb", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6810", MODE="0666"
+    EOF
   '';
 
   meta = with stdenv.lib; {
