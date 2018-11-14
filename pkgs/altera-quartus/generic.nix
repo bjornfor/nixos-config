@@ -31,61 +31,6 @@
 , wrapWithLdLibraryPath ? true
 }:
 
-# Here are my notes written when debugging why this expression initially built
-# only on nixpkgs release-16.09 branch, but not release-17.03. The failure mode
-# was that Quartus*Setup*run hung forever.
-# Summary: use glibc-2.24 instead of 2.25. This expression now overrides glibc
-# to be the 2.24 version when running Quartus*Setup*run.
-#
-# Bisecting the build breakage (hanging) between release-16.09 and
-# release-17.03 ended up with this:
-#
-#   There are only 'skip'ped commits left to test.
-#   The first bad commit could be any of:
-#   5cf7b7c10954178217bd9cd6a6db00de0c5b8fe7
-#   5a38ab8add15fb041d488e59c1fee6a4704a67ac
-#   62c323bdffafacc0aebe5db158530816a8be7282
-#   292efffb6285cb55cfbbc1b22a54c40b8e63eada
-#   4339dca980bfbaaf958d11ae8e3db6e21fc33fc3
-#   2cb76ff1ff3f90a82156f6a742374d975fe06a31
-#   dbae14164b1748e6f5b67bcf43e0c64b48c37e8f
-#   09d02f72f6dc9201fbfce631cb1155d295350176
-#   9458018a875402fe246efad2672a1a4c0ede074a
-#   0ff2179e0ffc5aded75168cb5a13ca1821bdcd24
-#   3ba1875743c21d5fe184123a88015fdf916a22ee
-#   b17eb34203b891cd801d5d9394d2b3cfa15c786f
-#   We cannot bisect more!
-#   bisect run cannot continue any more
-#
-# Here is a `git bisect run $SCRIPT`:
-#
-#   #!/bin/sh
-#
-#   set -x
-#   cd /path/to/packages/altera-quartus-prime-lite/
-#   # A working build may take up to 30 minutes (on _my_ build machine). A broken one hangs forever.
-#   #NIX_PATH=nixpkgs=$HOME/nixpkgs timeout 40m time nix-build -E '(import <nixpkgs> {}).callPackage ./. {}'
-#   # Disable some packages to shorten the build time (working ~10 minutes)
-#   NIX_PATH=nixpkgs=$HOME/nixpkgs timeout 30m time nix-build -E '(import <nixpkgs> {}).callPackage ./. { disableComponents = [ "quartus_help" "devinfo" "arria_lite" "cyclone" "cyclonev" "max" "max10" "quartus_update" "modelsim_ase" "modelsim_ae" ]; }'
-#
-#   ret=$?
-#   if [ $ret -eq 100 ]; then
-#           # AFAICS, 100 means a dependency failed to build
-#           exit 125 # signal to `git bisect run` that this revision cannot be tested.
-#   else
-#           exit $ret
-#   fi
-#
-# After reverting the glibc update (2.24 -> 2.25) in master / release-17.03 the
-# build works again.
-#
-# $ git log origin/master..tmp | grep "This reverts"
-#     This reverts commit 09d02f72f6dc9201fbfce631cb1155d295350176.
-#     This reverts commit 4b7215368ac16b862ee523bdc193e69c174c4942.
-#     This reverts commit c30b12b9a5cc35b658e65b3ff54e9c877f1380ad.
-#     This reverts commit e47ac55a21ce5b7c4b9e7e3a068fb5823a2cb5b0.
-#     This reverts commit 8328e3d3a6dc511f3ac962e4ca74f96d29ab1c5f.
-
 let
   # Somewhere between NixOS 16.09 and 17.03 (for instance, commit 9e6eec201b)
   # the glibc attribute lacked $out/lib{,64}. The glibc_lib attribute below
