@@ -51,16 +51,11 @@ let
     };
   };
 
-  # Filter out patches that do not apply on 2.24 (and we can live without).
-  glibcPatchFilter = builtins.filter
-    (x: ((builtins.match ".*fix-i686-memchr.patch" (builtins.toString x)) == null)
-     && ((builtins.match ".*2.25-49.patch.gz" (builtins.toString x)) == null));
-
   glibc_lib_for_installer = glibc_lib.overrideAttrs (oldAttrs:
-    commonGlibcAttrs224 // { patches = glibcPatchFilter (oldAttrs.patches or []); }
+    commonGlibcAttrs224 // { patches = []; }
   );
   glibc_lib32_for_installer = glibc_lib32.overrideAttrs (oldAttrs:
-    commonGlibcAttrs224 // { patches = glibcPatchFilter (oldAttrs.patches or []); }
+    commonGlibcAttrs224 // { patches = []; }
   );
 
   # Keep in sync with runtimeLibPath64
@@ -175,6 +170,9 @@ let
     # Prebuilt binaries need special treatment
     dontStrip = true;
     dontPatchELF = true;
+    # Fix "RPATH of binary X contains a forbidden reference to /build" issue.
+    # (These are prebuilt binaries, not much we can do.)
+    noAuditTmpdir = true;
 
     configurePhase = "true";
     buildPhase = "true";
