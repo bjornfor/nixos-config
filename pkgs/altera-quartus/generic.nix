@@ -40,7 +40,7 @@ let
   glibc_lib32 =
     if pkgsi686Linux.glibc ? out then pkgsi686Linux.glibc.out else pkgsi686Linux.glibc;
 
-  # Using glibc-2.25 causes the Quartus*Setup*run installer to hang.
+  # Using glibc>=2.25 causes the Quartus*Setup*run installer to hang.
   # Use 2.24 instead.
   commonGlibcAttrs224 = rec {
     name = "glibc-${version}";
@@ -51,11 +51,12 @@ let
     };
   };
 
+  # Backport upstream patch to fix build against nixpkgs-18.09.
   glibc_lib_for_installer = glibc_lib.overrideAttrs (oldAttrs:
-    commonGlibcAttrs224 // { patches = []; }
+    commonGlibcAttrs224 // { patches = [ ./patches/glibc/0001-Avoid-.symver-on-common-symbols-BZ-21666.patch ];  }
   );
   glibc_lib32_for_installer = glibc_lib32.overrideAttrs (oldAttrs:
-    commonGlibcAttrs224 // { patches = []; }
+    commonGlibcAttrs224 // { patches = [ ./patches/glibc/0001-Avoid-.symver-on-common-symbols-BZ-21666.patch ];  }
   );
 
   # Keep in sync with runtimeLibPath64
@@ -249,6 +250,9 @@ let
                   fi
                   new_rpath="$orig_rpath${runtimeLibPath}"
                   case "$magic" in
+                      *ELF*pie\ executable*|*ELF*shared\ object*x86-64*)
+                          patchelf --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-rpath $f"; exit 1; }
+                          ;;
                       *ELF*executable*)
                           interp=$(patchelf --print-interpreter "$f") || { echo "FAILED: patchelf --print-interpreter $f"; exit 1; }
                           # Note the LSB interpreters, required by some files
@@ -276,9 +280,6 @@ let
                           test -f "$new_interp" || { echo "$new_interp is missing"; exit 1; }
                           patchelf --set-interpreter "$new_interp" \
                                    --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-interpreter $new_interp --set-rpath $new_rpath $f"; exit 1; }
-                          ;;
-                      *ELF*shared\ object*x86-64*)
-                          patchelf --set-rpath "$new_rpath" "$f" || { echo "FAILED: patchelf --set-rpath $f"; exit 1; }
                           ;;
                   esac
                   ;;
