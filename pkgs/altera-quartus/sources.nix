@@ -621,6 +621,24 @@ rec {
         };
       };
     };
+    standard_edition = {
+      recurseForDerivations = true;
+      baseName = "altera-quartus-prime-standard";
+      prettyName = "Quartus Prime Standard Edition";
+      inherit version is32bitPackage;
+      components = {
+        recurseForDerivations = true;
+        quartus = fetchurl {
+          # Size: 2.7 GB MD5: 7D26DB3BB0ED8EAB62D30FDA4EE316B1
+          url = "${baseUrl}/QuartusSetup-${version}-linux.run";
+          sha256 = "13racbf0x4lb501nqc7crnn0yjl4j7z8bqj6qv9ss3mhdcr5dcp5";
+        };
+        cyclonev = fetchurl {
+          # Size: 1.1 GB MD5: 75F5029A9058F64F969496B016EE19D4
+          url = "${baseUrl}/cyclonev-${version}.qdz";
+          sha256 = "0ab38m648cwp95yd0f7xlnhmvqjg9yrls94xigxxmadixs8r9y03";
+        };
+      };
+    };
   };
-
 }

@@ -63,8 +63,11 @@ in rec {
   altera-quartus-prime-lite-18 =
     mkCommonQuartus sources.v18.lite_edition;
 
+  altera-quartus-prime-standard-18 =
+    mkCommonQuartus sources.v18.standard_edition;
+
   # Aliases to latest versions
   altera-quartus-prime-lite = altera-quartus-prime-lite-18;
-  altera-quartus-prime-standard = altera-quartus-prime-standard-16;
+  altera-quartus-prime-standard = altera-quartus-prime-standard-18;
 
 }
