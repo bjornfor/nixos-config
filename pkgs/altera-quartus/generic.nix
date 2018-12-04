@@ -444,6 +444,8 @@ stdenv.mkDerivation rec {
         # Set the time to SOURCE_DATE_EPOCH
         export FAKETIME_FMT="%s"
         export FAKETIME=\$(date +%s -d @\$SOURCE_DATE_EPOCH)
+        # Stop Java applications from hanging
+        export DONT_FAKE_MONOTONIC=1
     fi
 
     # Fix this:
