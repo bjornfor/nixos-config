@@ -369,7 +369,7 @@ stdenv.mkDerivation rec {
   name = "${baseName}-${version}";
   # version and srcs are unused by this derivation, but keep them as metadata
   # (for users).
-  inherit (quartusUnwrapped) version srcs;
+  inherit (quartusUnwrapped) version;
   buildCommand = ''
     # Provide convenience wrappers in $out/bin, so that the tools can be
     # started directly from PATH. Plain symlinks don't work, due to assumptions
@@ -478,6 +478,10 @@ stdenv.mkDerivation rec {
     Path=$out
     EOF
   '';
+
+  passthru = {
+    unwrapped = quartusUnwrapped;
+  };
 
   meta = with stdenv.lib; {
     description = "Development tools for Altera FPGA, CPLD and SoC designs";
