@@ -378,8 +378,7 @@ stdenv.mkDerivation rec {
     {
         dest="$out/bin/$(basename "$1")"
         if [ -f "$dest" ]; then
-            echo "ERROR: $dest already exist"
-            exit 1
+            echo "WARNING: $dest already exists"
         fi
         cat > "$dest" << EOF
     #!${bash}/bin/sh
@@ -459,7 +458,7 @@ stdenv.mkDerivation rec {
 
     echo "Creating top-level bin/ directory with wrappers for common tools"
     mkdir -p "$out/bin"
-    for p in "${quartusUnwrapped}/"*"/bin/"*; do
+    for p in "${quartusUnwrapped}/"*"/bin/"* "${quartusUnwrapped}/quartus/sopc_builder/bin/"*; do
         test -f "$p" || continue
         wrap "$p"
     done
