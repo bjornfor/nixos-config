@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../cfg/base-medium.nix
+    ../../cfg/base-medium.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -69,7 +69,7 @@
     };
   };
 
-  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
+  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
     mini.bfo.default
     whitetip.bfo.default
   ];

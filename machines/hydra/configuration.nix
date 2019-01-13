@@ -6,10 +6,10 @@
 
 {
   imports =
-    [ ../cfg/base-small.nix
+    [ ../../cfg/base-small.nix
 
       # Build server
-      ../cfg/hydra.nix
+      ../../cfg/hydra.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -72,7 +72,7 @@
     '';
   };
 
-  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
+  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
     whitetip.bfo.default
     mini.bfo.default
   ];

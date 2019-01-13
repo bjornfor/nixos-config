@@ -14,15 +14,15 @@ let
 in
 {
   imports = [
-    ../cfg/apcupsd.nix
-    ../cfg/base-big.nix
-    ../cfg/cgit.nix
-    ../cfg/clamav.nix
-    ../cfg/gitolite.nix
-    ../cfg/git-daemon.nix
-    ../cfg/backup-server.nix
-    ../cfg/smart-daemon.nix
-    ../cfg/transmission.nix
+    ../../cfg/apcupsd.nix
+    ../../cfg/base-big.nix
+    ../../cfg/cgit.nix
+    ../../cfg/clamav.nix
+    ../../cfg/gitolite.nix
+    ../../cfg/git-daemon.nix
+    ../../cfg/backup-server.nix
+    ../../cfg/smart-daemon.nix
+    ../../cfg/transmission.nix
   ];
 
   fileSystems = {
@@ -306,7 +306,7 @@ in
     lib.mkIf (lib.versionAtLeast (lib.version or lib.nixpkgsVersion) "18.09")
       gitwebConfig;
 
-  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
+  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
     whitetip.bfo.default
     (''command="./bin/restricted-hamster-scp-command",restrict '' + virtualbox_at_work.bf.default)
     (''command="/run/current-system/sw/bin/uptime",restrict '' + my_phone.user.default)
