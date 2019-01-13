@@ -6,9 +6,9 @@ let
   acmeChallengesDir = "/var/www/challenges/";
 
   gitwebConfig = {
-    projectroot = "/srv/git/repositories";
+    projectroot = "${config.services.gitolite.dataDir}/repositories";
     extraConfig = ''
-      our $projects_list = '/srv/git/projects.list';
+      our $projects_list = '${config.services.gitolite.dataDir}/projects.list';
     '';
   };
 in
