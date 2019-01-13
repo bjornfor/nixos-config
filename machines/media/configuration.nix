@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./hardware-configuration.nix
     ../../cfg/base-medium.nix
   ];
 

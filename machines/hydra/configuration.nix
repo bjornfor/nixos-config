@@ -6,7 +6,9 @@
 
 {
   imports =
-    [ ../../cfg/base-small.nix
+    [ ./hardware-configuration.nix
+
+      ../../cfg/base-small.nix
 
       # Build server
       ../../cfg/hydra.nix

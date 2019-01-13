@@ -2,8 +2,6 @@
 
 {
   imports = [
-    # Include the results of the hardware scan.
-    ../hardware-configuration.nix
     ./avahi.nix
     ./shell.nix
     ./users-and-groups.nix

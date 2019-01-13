@@ -14,6 +14,7 @@ let
 in
 {
   imports = [
+    ./hardware-configuration.nix
     ../../cfg/apcupsd.nix
     ../../cfg/base-big.nix
     ../../cfg/cgit.nix
