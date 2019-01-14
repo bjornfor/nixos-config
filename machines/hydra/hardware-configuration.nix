@@ -23,6 +23,7 @@
       fsType = "vfat";
     };
 
+  # WARN: Added manually
   swapDevices = [
     { device = "/var/swapfile"; size = 32*1024; }
   ];
