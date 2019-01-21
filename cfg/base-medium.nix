@@ -105,6 +105,7 @@
     taskwarrior
     tcpdump
     tig
+    tmux
     torbrowser
     traceroute
     tree
