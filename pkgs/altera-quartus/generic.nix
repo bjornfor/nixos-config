@@ -425,7 +425,6 @@ stdenv.mkDerivation rec {
             maybe_proot_cmd="proot -b ${bash}/bin/sh:/bin/sh"
             # Work around bug with linux 4.8.4+ (costs some performance, but
             # prevents breakage).
-            export PROOT_NO_SECCOMP=1
         fi
         # Prepare LD_LIBRARY_PATH, LD_PRELOAD
         if [ "x\$LD_LIBRARY_PATH" != x ]; then
