@@ -39,6 +39,7 @@
     dmidecode
     dos2unix
     exfat
+    exiftool
     exiv2
     file
     firefox
