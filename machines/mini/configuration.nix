@@ -302,6 +302,55 @@ in
     };
   };
 
+  systemd.services.archive-photos-from-syncthing = {
+    description = "Archive photos from Syncthing";
+    startAt = "weekly";
+    path = with pkgs; [ exiftool "/run/wrappers" ];
+    serviceConfig.User = "bfo";
+    serviceConfig.SyslogIdentifier = "archive-photos";
+    script = ''
+      # Where to look for files (images and videos).
+      input_dir=/var/lib/syncthing/lg-h930-foto/Camera
+      # Files newer than this are not moved.
+      days_to_keep=30
+      # Files older than $days_to_keep are moved here, in YEAR + MONTH
+      # subdirectories.
+      pictures_archive=/mnt/data/pictures
+
+      for dir in "$input_dir" "$pictures_archive"; do
+          if ! [ -d "$dir" ]; then
+              echo "No such directory: $dir" >&2
+              exit 1
+          fi
+      done
+
+      on_exit()
+      {
+          exit_status=$?
+
+          echo "Sending email with job status"
+          cat << EOM | sendmail -t
+      From: root
+      To: bjorn.forsman@gmail.com
+      Subject: Archived photos from Syncthing
+
+      This is an automatic message sent from host $HOSTNAME showing the status
+      of the archive-photos-from-syncthing job:
+
+      $(systemctl status archive-photos-from-syncthing -n10000)
+      EOM
+
+          exit "$exit_status"
+      }
+      trap 'on_exit' INT TERM QUIT EXIT
+
+      # For testing, add/change these exiftool args:
+      # * Add "-o ." to copy instead of move and change the -d value to "$HOME/tmp/exiftool/%Y/%Y-%m".
+      echo "Processing files in $input_dir. Files older than $days_to_keep days will be moved to $pictures_archive in YEAR + MONTH subdirs."
+      find "$input_dir" -type f -mtime +"$days_to_keep" -print0 | xargs -0 --no-run-if-empty exiftool '-Directory<CreateDate' -d "$pictures_archive/%Y/%Y-%m" -verbose
+    '';
+  };
+
   # NixOS 18.09+ renamed services.lighttpd.gitweb.* to services.gitweb.*
   services.gitweb =
     lib.mkIf (lib.versionAtLeast (lib.version or lib.nixpkgsVersion) "18.09")
