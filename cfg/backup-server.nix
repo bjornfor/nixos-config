@@ -6,7 +6,7 @@ in
 {
   fileSystems = {
     # My backup disk:
-    "${backupDiskMountpoint}" = { device = "/dev/disk/by-label/backup2"; };
+    "${backupDiskMountpoint}" = { device = "/dev/disk/by-label/backup2"; options = [ "nofail" ]; };
   };
 
   services.borg-backup = {
