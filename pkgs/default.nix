@@ -29,7 +29,5 @@
     '';
   });
 
-  spotify-ripper = pkgs.callPackage ../pkgs/spotify-ripper/default.nix { };
-
   winusb = pkgs.callPackage ../pkgs/winusb/default.nix { };
 }
