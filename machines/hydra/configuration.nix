@@ -11,7 +11,7 @@
       ../../cfg/base-small.nix
 
       # Build server
-      ../../cfg/hydra.nix
+      #../../cfg/hydra.nix  # disabled, see https://github.com/NixOS/hydra/issues/578
     ];
 
   # Use the systemd-boot EFI boot loader.
