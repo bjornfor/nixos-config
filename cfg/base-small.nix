@@ -3,6 +3,7 @@
 {
   imports = [
     ./avahi.nix
+    ./keyboard.nix
     ./shell.nix
     ./users-and-groups.nix
 

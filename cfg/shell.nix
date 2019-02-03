@@ -37,9 +37,6 @@
     NIX_AUTO_INSTALL = "1";
   };
 
-  # Select internationalisation properties.
-  i18n.consoleKeyMap = "qwerty/no";
-
   programs.bash.enableCompletion = true;
 
   # Show git info in bash prompt and display a colorful hostname if using ssh.
