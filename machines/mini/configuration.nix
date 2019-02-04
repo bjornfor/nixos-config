@@ -42,9 +42,6 @@ in
   environment.systemPackages = with pkgs; [
   ];
 
-  virtualisation.virtualbox.host.enable = true;
-  #virtualisation.virtualbox.host.enableExtensionPack = true;
-
   users.extraUsers."lighttpd".extraGroups = [ "git" ];
 
   security.acme.certs = {
