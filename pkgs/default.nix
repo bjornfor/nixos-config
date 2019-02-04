@@ -1,9 +1,9 @@
 { pkgs ? import <nixpkgs> {} }:
 
 {
-  altera-quartuses = pkgs.callPackage ../pkgs/altera-quartus { };
+  altera-quartuses = pkgs.callPackage ./altera-quartus { };
 
-  keil-uvision-c51 = pkgs.callPackage ../pkgs/keil-uvision-c51 { };
+  keil-uvision-c51 = pkgs.callPackage ./keil-uvision-c51 { };
 
   libfaketime = pkgs.libfaketime.overrideAttrs (oldAttrs: rec {
     name = "libfaketime-${version}";
@@ -14,7 +14,7 @@
     };
   });
 
-  ltsa = pkgs.callPackage ../pkgs/ltsa/default.nix { };
+  ltsa = pkgs.callPackage ./ltsa/default.nix { };
 
   mtdutils-for-swupdate = pkgs.mtdutils.overrideDerivation (args: rec {
     # Copied from the .bbappend file from meta-swupdate.
@@ -29,5 +29,5 @@
     '';
   });
 
-  winusb = pkgs.callPackage ../pkgs/winusb/default.nix { };
+  winusb = pkgs.callPackage ./winusb/default.nix { };
 }
