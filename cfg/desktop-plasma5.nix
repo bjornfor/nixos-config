@@ -11,7 +11,6 @@
   environment.systemPackages = with pkgs; [
     kdeApplications.ark
     kdeApplications.gwenview
-    kdeApplications.kmix
     kdeApplications.okular
   ];
 }
