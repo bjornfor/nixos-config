@@ -5,6 +5,7 @@
     ./base-small.nix
     ./munin.nix
     ./desktop-gnome3.nix
+    ./dictionary.nix
     ./virtualisation.nix
   ];
 
