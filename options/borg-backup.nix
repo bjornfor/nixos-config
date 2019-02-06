@@ -6,7 +6,7 @@ $ cd /mnt/restore
 $ [sudo] borg extract -v --list --numeric-owner /mnt/backup-disk/repo-name::archive-name
 
 Restore from remote repository:
-$ [sudo BORG_RSH='ssh -i /home/bfo/.ssh/id_rsa'] borg extract -v --list --numeric-owner --remote-path="sudo borg" ssh://bfo@server/mnt/backup-disk/repo-name::archive-name
+$ [sudo BORG_RSH='ssh -i /home/bf/.ssh/id_rsa'] borg extract -v --list --numeric-owner --remote-path="sudo borg" ssh://bf@server/mnt/backup-disk/repo-name::archive-name
 
 Interactive restore (slower than 'borg extract'):
 $ borg mount /mnt/backup-disk/repo-name /mnt/fuse-mountpoint

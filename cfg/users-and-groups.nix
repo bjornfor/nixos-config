@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 {
   users.extraUsers = {
-    bfo = {
+    bf = {
       description = "Bjørn Forsman";
       uid = 1000;
       extraGroups = [

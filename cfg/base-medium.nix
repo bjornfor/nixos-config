@@ -255,10 +255,10 @@
         map to guest = Bad User
 
         [upload]
-        path = /home/bfo/upload
+        path = /home/bf/upload
         read only = no
         guest ok = yes
-        force user = bfo
+        force user = bf
       '';
     };
 
@@ -268,7 +268,7 @@
     description = "Hello World Loop";
     #wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      User = "bfo";
+      User = "bf";
       ExecStart = ''
         ${pkgs.stdenv.shell} -c "while true; do echo Hello World; sleep 10; done"
       '';

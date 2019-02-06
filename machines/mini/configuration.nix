@@ -303,7 +303,7 @@ in
     description = "Archive photos from Syncthing";
     startAt = "weekly";
     path = with pkgs; [ exiftool "/run/wrappers" ];
-    serviceConfig.User = "bfo";
+    serviceConfig.User = "bf";
     serviceConfig.SyslogIdentifier = "archive-photos";
     script = ''
       # Where to look for files (images and videos).
@@ -353,8 +353,8 @@ in
     lib.mkIf (lib.versionAtLeast (lib.version or lib.nixpkgsVersion) "18.09")
       gitwebConfig;
 
-  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
-    whitetip.bfo.default
+  users.extraUsers.bf.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
+    whitetip.bf.default
     (''command="./bin/restricted-hamster-scp-command",restrict '' + virtualbox_at_work.bf.default)
     (''command="/run/current-system/sw/bin/uptime",restrict '' + my_phone.user.default)
   ];

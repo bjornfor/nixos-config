@@ -39,7 +39,7 @@
     { what = "//maria-pc/seagate_expansion_drive_4tb";
       where = "/mnt/maria-pc_seagate_expansion_drive_4tb";
       type = "cifs";
-      options = "ro,credentials=/root/.credentials.maria-pc,uid=bfo,gid=users,iocharset=utf8";
+      options = "ro,credentials=/root/.credentials.maria-pc,uid=bf,gid=users,iocharset=utf8";
     }
   ];
 
@@ -70,9 +70,9 @@
     };
   };
 
-  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
-    mini.bfo.default
-    whitetip.bfo.default
+  users.extraUsers.bf.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
+    mini.bf.default
+    whitetip.bf.default
   ];
 
   # The NixOS release to be compatible with for stateful data such as databases.

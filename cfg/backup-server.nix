@@ -138,7 +138,7 @@ in
     path = with pkgs; [ utillinux rsync ];
     script = ''
       num_copies=0
-      for mp in /run/media/bfo/usb_4tb_backup*; do
+      for mp in /run/media/bf/usb_4tb_backup*; do
          if mountpoint "$mp"; then
              set -x
              rsync -ai --delete "${backupDiskMountpoint}/backups/" "$mp"/backups/
@@ -183,7 +183,7 @@ in
     { what = "//maria-pc/seagate_expansion_drive_4tb";
       where = "/mnt/maria-pc_seagate_expansion_drive_4tb";
       type = "cifs";
-      options = "ro,credentials=/root/.credentials.maria-pc,uid=bfo,gid=users,iocharset=utf8";
+      options = "ro,credentials=/root/.credentials.maria-pc,uid=bf,gid=users,iocharset=utf8";
     }
   ];
 

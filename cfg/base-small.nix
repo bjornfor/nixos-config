@@ -189,7 +189,7 @@
       forwardX11 = true;
       passwordAuthentication = false;
       extraConfig = ''
-        AllowUsers backup git bfo
+        AllowUsers backup git bf
 
         # Doesn't work on NixOS: https://github.com/NixOS/nixpkgs/issues/18503
         ## Allow password authentication (only) from local network

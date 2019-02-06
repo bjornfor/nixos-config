@@ -74,9 +74,9 @@
     '';
   };
 
-  users.extraUsers.bfo.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
-    whitetip.bfo.default
-    mini.bfo.default
+  users.extraUsers.bf.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
+    whitetip.bf.default
+    mini.bf.default
   ];
 
   # The NixOS release to be compatible with for stateful data such as databases.
