@@ -97,7 +97,6 @@
     ripgrep
     rmlint
     samba
-    screen
     silver-searcher
     smartmontools
     sqlite-interactive
