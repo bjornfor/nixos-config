@@ -29,13 +29,13 @@
       bind-key k select-pane -U
       bind-key l select-pane -R
 
-      # Move between panes using Shift+<Arrow>. It's very similar (in effort) though
+      # Move between panes using Alt+<Arrow>. It's very similar (in effort) though
       # to use the default binding: <prefix> + <arrow>.
       # WARN: konsole eats these for itself, always.
-      bind-key -n S-Left select-pane -L
-      bind-key -n S-Down select-pane -D
-      bind-key -n S-Up select-pane -U
-      bind-key -n S-Right select-pane -R
+      bind-key -n M-Left select-pane -L
+      bind-key -n M-Down select-pane -D
+      bind-key -n M-Up select-pane -U
+      bind-key -n M-Right select-pane -R
 
       # Switch windows with Alt+number.
       # WARN: gnome-terminal eats these for itself, if using tabs.
