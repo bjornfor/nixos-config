@@ -28,7 +28,7 @@
     # Define build slaves (need at least one).
     buildMachines = [
       { hostName = "localhost";
-        system = "x86_64-linux";
+        systems = [ "builtin" "x86_64-linux" "i686-linux" ];
         supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
         maxJobs = "12";
       }
