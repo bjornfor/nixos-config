@@ -64,4 +64,9 @@
   environment.systemPackages = with pkgs; [
     pythonPackages.powerline
   ];
+
+  fonts.fonts = with pkgs; [
+    #pythonPackages.powerline  # looks ok
+    powerline-fonts            # looks better
+  ];
 }
