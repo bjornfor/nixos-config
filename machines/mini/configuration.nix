@@ -61,6 +61,9 @@ in
 
   services = {
 
+    xserver.displayManager.gdm.autoLogin.enable = true;
+    xserver.displayManager.gdm.autoLogin.user = "bf";
+
     ddclient = {
       enable = true;
       # Use imperative configuration to keep secrets out of the (world

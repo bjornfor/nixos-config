@@ -5,8 +5,6 @@
 
   services.xserver = {
     displayManager.gdm.enable = true;
-    displayManager.gdm.autoLogin.enable = true;
-    displayManager.gdm.autoLogin.user = "bf";
     desktopManager.gnome3.enable = true;
   };
 

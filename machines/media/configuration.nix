@@ -53,7 +53,8 @@
   services.samba.enable = true; # required for nsswins to work
   services.samba.nsswins = true;
 
-  services.xserver.displayManager.gdm.autoLogin.user = lib.mkForce "media";
+  services.xserver.displayManager.gdm.autoLogin.enable = true;
+  services.xserver.displayManager.gdm.autoLogin.user = "media";
   virtualisation.libvirtd.enable = lib.mkForce false;
 
   users.extraUsers = {
