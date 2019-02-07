@@ -302,6 +302,12 @@ in
     };
   };
 
+  # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
   systemd.services.archive-photos-from-syncthing = {
     description = "Archive photos from Syncthing";
     startAt = "weekly";
