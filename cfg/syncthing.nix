@@ -3,7 +3,7 @@
 {
   services.syncthing = {
     enable = true;
-    group = "syncthing"; # NixOS defaults to "nogroup" (should be fixed)
+    group = "syncthing"; # FIXME: NixOS defaults to "nogroup"
   };
 
   # Undo the 700 perms syncthing sets on /var/lib/syncthing on startup. Without
