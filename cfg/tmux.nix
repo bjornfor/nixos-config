@@ -60,4 +60,8 @@
       source-file ${pkgs.pythonPackages.powerline}/share/tmux/powerline.conf
     '';
   };
+
+  environment.systemPackages = with pkgs; [
+    pythonPackages.powerline
+  ];
 }
