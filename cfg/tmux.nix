@@ -12,6 +12,9 @@
       # Let the mouse select panes, resize panes, scroll, select and copy text.
       set-option -g mouse on
 
+      # This is a command line, so make emacs keys work there (<prefix> + :)
+      set-option -g status-keys "emacs"
+
       # Show tmux messages for N ms (or until a key is pressed)
       set-option -g display-time 4000
 
