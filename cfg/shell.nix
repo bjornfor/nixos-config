@@ -26,6 +26,11 @@
     export HISTSIZE=1000000         # big big history
     export HISTFILESIZE=$HISTSIZE
     shopt -s histappend             # append to history, don't overwrite it
+
+    # Disable use of Ctrl-S/Ctrl-Q to stop/start process output. This frees up
+    # those keys to do other stuff.
+    stty stop ""
+    stty start ""
   '';
 
   environment.profileRelativeEnvVars = {
