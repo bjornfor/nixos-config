@@ -22,6 +22,26 @@
       nix-env -qaP --description \* | grep -i "$@"
     }
 
+    # Edit the real configuration.nix file, not the /etc/nixos/configuration.nix
+    # symlink. This fixes using Vim 'gf' to jump to relative file paths.
+    en()
+    {
+        cd /etc/nixos \
+            && "$EDITOR" -c "set makeprg=sudo\ nixos-rebuild\ dry-build errorformat=error:\ %m\ at\ %f:%l:%c" "machines/$HOSTNAME/configuration.nix" \
+            && (echo "Activate the new config? sudo nixos-rebuild ...?"
+                echo " 1) switch"
+                echo " 2) test"
+                echo " q) quit"
+                read -p "Your choice? [q] " ans
+                case "$ans" in
+                    1) action=switch;;
+                    2) action=test;;
+                    *) echo "quit"; exit 0;;
+                esac
+                sudo nixos-rebuild "$action"
+               )
+    }
+
     export HISTCONTROL=ignoreboth   # ignorespace + ignoredups
     export HISTSIZE=1000000         # big big history
     export HISTFILESIZE=$HISTSIZE
