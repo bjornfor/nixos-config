@@ -26,7 +26,7 @@
     # symlink. This fixes using Vim 'gf' to jump to relative file paths.
     en()
     {
-        cd /etc/nixos \
+        (cd /etc/nixos \
             && "$EDITOR" -c "set makeprg=sudo\ nixos-rebuild\ dry-build errorformat=error:\ %m\ at\ %f:%l:%c" "machines/$HOSTNAME/configuration.nix" \
             && (echo "Activate the new config? sudo nixos-rebuild ...?"
                 echo " 1) switch"
@@ -40,6 +40,7 @@
                 esac
                 sudo nixos-rebuild "$action"
                )
+        )
     }
 
     export HISTCONTROL=ignoreboth   # ignorespace + ignoredups
