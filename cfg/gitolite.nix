@@ -3,21 +3,10 @@
 let
   miniciGcRootDir = "/nix/var/nix/gcroots/mini-ci";
 
-  mini-ci =
-    pkgs.stdenv.mkDerivation rec {
-      name = "mini-ci";
-      src = ../pkgs/mini-ci/mini-ci.sh;
-      unpackPhase = "true";
-      installPhase = ''
-        mkdir -p "$out/bin"
-        install -m 755 "$src" "$out/bin/mini-ci"
-        # Set configurable paths
-        sed -e "s|^repositories=.*|repositories=\"${config.services.gitolite.dataDir}/repositories\"|" \
-            -e "s|^default_datadir=.*|default_datadir=${miniciGcRootDir}|" \
-            -i "$out/bin/mini-ci"
-        ${pkgs.shellcheck}/bin/shellcheck "$out/bin/mini-ci"
-      '';
-    };
+  mini-ci = pkgs.mini-ci.override {
+    repositories = "${config.services.gitolite.dataDir}/repositories";
+    miniciGcRootDir = miniciGcRootDir;
+  };
 
   # Make a VREF script that takes one optional argument. Usage:
   #   - VREF/$name                  = @all   # run on all branches/refs

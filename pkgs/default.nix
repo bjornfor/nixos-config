@@ -14,6 +14,10 @@
     };
   });
 
+  # Added for completeness' sake. (Most likey a .override is in order to
+  # customize it appropriately.)
+  mini-ci = pkgs.callPackage ./mini-ci { };
+
   ltsa = pkgs.callPackage ./ltsa/default.nix { };
 
   winusb = pkgs.callPackage ./winusb/default.nix { };
