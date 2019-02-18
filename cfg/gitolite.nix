@@ -3,7 +3,7 @@
 let
   miniciGcRootDir = "/nix/var/nix/gcroots/mini-ci";
 
-  mini-ci = pkgs.mini-ci.override {
+  mini-ci = pkgs.my.mini-ci.override {
     repositories = "${config.services.gitolite.dataDir}/repositories";
     miniciGcRootDir = miniciGcRootDir;
   };

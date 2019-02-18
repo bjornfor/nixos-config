@@ -14,13 +14,16 @@
     };
   });
 
-  max_perf_pct = pkgs.callPackage ./max_perf_pct { };
-
-  # Added for completeness' sake. (Most likey a .override is in order to
-  # customize it appropriately.)
-  mini-ci = pkgs.callPackage ./mini-ci { };
-
   ltsa = pkgs.callPackage ./ltsa/default.nix { };
+
+  # Things for which I'm the author
+  my = pkgs.recurseIntoAttrs {
+    max_perf_pct = pkgs.callPackage ./max_perf_pct { };
+
+    # Added for completeness' sake. (Most likey a .override is in order to
+    # customize it appropriately.)
+    mini-ci = pkgs.callPackage ./mini-ci { };
+  };
 
   winusb = pkgs.callPackage ./winusb/default.nix { };
 }
