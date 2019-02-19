@@ -34,7 +34,6 @@
 
       # Move between panes using Alt+<Arrow>. It's very similar (in effort) though
       # to use the default binding: <prefix> + <arrow>.
-      # WARN: konsole eats these for itself, always.
       bind-key -n M-Left select-pane -L
       bind-key -n M-Down select-pane -D
       bind-key -n M-Up select-pane -U
