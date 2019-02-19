@@ -23,6 +23,8 @@
     # Added for completeness' sake. (Most likey a .override is in order to
     # customize it appropriately.)
     mini-ci = pkgs.callPackage ./mini-ci { };
+
+    nix-check-before-push = pkgs.callPackage ./nix-check-before-push { };
   };
 
   winusb = pkgs.callPackage ./winusb/default.nix { };

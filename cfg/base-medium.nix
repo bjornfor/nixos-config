@@ -66,6 +66,7 @@
     mosh
     msmtp
     mutt
+    my.nix-check-before-push
     ncdu
     nethogs
     networkmanager
