@@ -3,6 +3,7 @@
 {
   imports = [
     ./avahi.nix
+    ./git
     ./kernel.nix
     ./keyboard.nix
     ./shell.nix
@@ -132,41 +133,6 @@
   # for "attic mount -o allow_other" to be shareable with samba
   environment.etc."fuse.conf".text = ''
     user_allow_other
-  '';
-
-  environment.etc."gitconfig".text = ''
-    [core]
-      editor = vim
-      excludesfile = ~/.gitignore
-    [color]
-      ui = auto
-    [alias]
-      st = status
-      df = diff
-      ci = commit
-      co = checkout
-      wc = whatchanged
-      br = branch
-      f = fetch
-      a = add
-      l = log
-      lga = log --graph --pretty=oneline --abbrev-commit --decorate --all
-      rup = remote update -p
-      # Working with github pull-requests:
-      #   - git pullify  # just once
-      #   - git fetch
-      #   - git checkout pr/PULL_REQUEST_NUMBER
-      pullify = config --add remote.origin.fetch '+refs/pull/*/head:refs/remotes/origin/pr/*'
-      incoming = log ..@{u}
-      outgoing = log @{u}..
-      # "git serve" is from https://gist.github.com/datagrok/5080545
-      serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
-    [sendemail]
-      smtpserver = /run/current-system/sw/bin/msmtp
-    [diff "word"]
-      textconv = antiword
-    [push]
-      default = simple
   '';
 
   # Make it easier to work with external scripts
