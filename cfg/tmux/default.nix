@@ -3,7 +3,6 @@
 {
   programs.tmux = {
     enable = true;
-    # extraTmuxConf is based on my .tmux.conf from dotfiles.git.
     extraTmuxConf = ''
       # extraTmuxConf starts here
       ${builtins.readFile ./tmux.conf}
