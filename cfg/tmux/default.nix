@@ -3,10 +3,6 @@
 {
   programs.tmux = {
     enable = true;
-    baseIndex = 1;
-    clock24 = true;
-    historyLimit = 100000;
-    keyMode = "vi";
     # extraTmuxConf is based on my .tmux.conf from dotfiles.git.
     extraTmuxConf = ''
       # extraTmuxConf starts here
