@@ -7,7 +7,7 @@
     ./kernel.nix
     ./keyboard.nix
     ./shell.nix
-    ./tmux.nix
+    ./tmux
     ./users-and-groups.nix
 
     ../options/borg-backup.nix
