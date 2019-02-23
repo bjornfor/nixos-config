@@ -7,7 +7,6 @@
     ./kernel.nix
     ./keyboard.nix
     ./shell.nix
-    ./tmux
     ./users-and-groups.nix
 
     ../options/borg-backup.nix
@@ -134,6 +133,15 @@
   environment.etc."fuse.conf".text = ''
     user_allow_other
   '';
+
+  environment.systemPackages = with pkgs; [
+    my.tmux
+  ];
+
+  fonts.fonts = with pkgs; [
+    #pythonPackages.powerline  # looks ok
+    powerline-fonts            # looks better
+  ];
 
   # Make it easier to work with external scripts
   system.activationScripts.fhsCompat = ''

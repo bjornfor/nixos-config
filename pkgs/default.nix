@@ -16,7 +16,8 @@
 
   ltsa = pkgs.callPackage ./ltsa/default.nix { };
 
-  # Things for which I'm the author
+  # Things for which I'm the author, or wrappers of upstream projects that
+  # source custom configs.
   my = pkgs.recurseIntoAttrs {
     max_perf_pct = pkgs.callPackage ./max_perf_pct { };
 
@@ -25,6 +26,8 @@
     mini-ci = pkgs.callPackage ./mini-ci { };
 
     nix-check-before-push = pkgs.callPackage ./nix-check-before-push { };
+
+    tmux = pkgs.callPackage ./tmux {  };
   };
 
   winusb = pkgs.callPackage ./winusb/default.nix { };
