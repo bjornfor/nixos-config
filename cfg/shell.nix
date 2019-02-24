@@ -52,6 +52,12 @@
     # those keys to do other stuff.
     stty stop ""
     stty start ""
+
+    # FZF fuzzy finder configuration
+    # Try "cd **<TAB>"
+    source "${pkgs.fzf}/share/fzf/completion.bash"
+    # Try ctrl-r, ctrl-t or alt-c
+    source "${pkgs.fzf}/share/fzf/key-bindings.bash"
   '';
 
   environment.profileRelativeEnvVars = {
