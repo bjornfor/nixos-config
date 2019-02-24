@@ -3,6 +3,11 @@
 { pkgs }:
 
 let
+  plugins = with pkgs.tmuxPlugins; [
+    resurrect
+    continuum  # depends on resurrect, so must be after it
+  ];
+
   fullTmuxConf = pkgs.runCommand "tmux.conf"
     { # Variables to be substituted in tmux.conf
       pythonPackages_powerline = pkgs.pythonPackages.powerline;
@@ -16,6 +21,17 @@ let
           echo "error: found one or more unpatched @metaVars@"
           exit 1
       fi
+
+      # Configure plugins
+      echo "" >> "$out"
+      # tmux-continuum config
+      # Last saved environment is automatically restored when tmux is started.
+      echo "set-option -g @continuum-restore 'on'" >> "$out"
+
+      # Install plugins
+      echo "" >> "$out"
+      echo "# Plugins" >> "$out"
+      echo '${pkgs.lib.concatMapStrings (x: "run-shell ${x.rtp}\n") plugins}' >> "$out"
     '';
 
   tmuxWithConf = pkgs.writeShellScriptBin "tmux" ''
