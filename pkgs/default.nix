@@ -27,7 +27,7 @@
 
     nix-check-before-push = pkgs.callPackage ./nix-check-before-push { };
 
-    tmux = pkgs.callPackage ./tmux {  };
+    tmux = pkgs.callPackage ./tmux { };
   };
 
   winusb = pkgs.callPackage ./winusb/default.nix { };
