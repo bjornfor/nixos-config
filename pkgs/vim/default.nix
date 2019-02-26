@@ -26,9 +26,9 @@ let
         matchit-zip
         nerdcommenter
         taglist-vim
-        #vim-addon-nix  # fails to load unless plugins are managed by VAM?
         vim-airline
         vim-gitgutter
+        vim-nix
         vim-speeddating
       ];
       # manually loadable by calling `:packadd $plugin-name`
