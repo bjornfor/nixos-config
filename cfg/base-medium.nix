@@ -117,7 +117,6 @@
     usbutils
     vbindiff
     vifm
-    vim_configurable
     vlc
     wget
     wgetpaste

@@ -136,6 +136,7 @@
 
   environment.systemPackages = with pkgs; [
     my.tmux
+    my.vim
   ];
 
   fonts.fonts = with pkgs; [

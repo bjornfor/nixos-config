@@ -1,87 +1,4 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Bjørn Forsman's .vimrc file v0.7
-"
-" Plugins are managed with vim-plug:
-"   https://github.com/junegunn/vim-plug
-"
-" Run :PlugInstall to install plugins.
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-if has('nvim')
-    let local_path_to_vim_plug = "~/.local/share/nvim/site/autoload/plug.vim"
-else
-    let local_path_to_vim_plug = "~/.vim/autoload/plug.vim"
-endif
-
-if !filereadable(expand(local_path_to_vim_plug))
-    echo "vim-plug not found. Installing it..."
-    call system("curl -fLo " . local_path_to_vim_plug . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim")
-    echo "...done. Now run :PlugInstall to install all plugins."
-endif
-
-" Specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plugged
-" - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.vim/plugged')
-
-" Make sure you use single quotes.
-" Tracking down slow Vim startup (caused by too many plugins):
-"   time vim --startuptime /dev/stdout +q
-Plug 'honza/vim-snippets'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-"Plug 'MarcWeber/vim-addon-local-vimrc'  " error
-"Plug 'MarcWeber/vim-addon-nix'          " error
-Plug 'mfukar/robotframework-vim'
-Plug 'vim-ruby/vim-ruby'
-Plug 'vim-scripts/asciidoc.vim'
-Plug 'vim-scripts/AutoTag'
-Plug 'vim-scripts/bnf.vim'
-Plug 'vim-scripts/CCTree'
-Plug 'vim-scripts/CSApprox'
-Plug 'vim-scripts/cscope_macros.vim'
-Plug 'vim-scripts/csv.vim'
-Plug 'vim-scripts/delimitMate.vim'
-Plug 'vim-scripts/DetectIndent'
-Plug 'vim-scripts/DrawIt'
-Plug 'vim-scripts/EasyGrep'
-Plug 'vim-scripts/ebnf.vim'
-Plug 'vim-scripts/editorconfig-vim'
-" Plug 'vim-scripts/EvalSelection'
-Plug 'vim-scripts/fugitive.vim'
-Plug 'vim-scripts/Gundo'
-Plug 'vim-scripts/headerguard'
-Plug 'vim-scripts/indenthaskell.vim'
-Plug 'vim-scripts/indentpython.vim--nianyang'
-Plug 'vim-scripts/javacomplete'
-Plug 'vim-scripts/matchit.zip'
-Plug 'vim-scripts/Mustang2'
-Plug 'vim-scripts/pydoc.vim'
-Plug 'vim-scripts/python_match.vim'
-Plug 'vim-scripts/rails.vim'
-Plug 'vim-scripts/repeat.vim'
-Plug 'vim-scripts/speeddating.vim'
-Plug 'vim-scripts/surround.vim'
-Plug 'vim-scripts/taglist-plus'
-Plug 'vim-scripts/The-NERD-Commenter'
-"Plug 'vim-scripts/The-NERD-tree'
-Plug 'vim-airline/vim-airline'
-Plug 'airblade/vim-gitgutter'
-Plug 'vim-scripts/wmgraphviz'
-
-" Initialize plugin system
-call plug#end()
-
-" Plugin notes:
-" * DetectIndent must be hooked up: autocmd BufReadPost * :DetectIndent
-" * snipMate messes somewhat with autocomplete (<C-o> and <C-u>) so
-"   that multiple TAB keys do not cycle through the list. One can still use
-"   <C-n>/<C-p> though...
-"
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Generic stuff
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype plugin indent on
@@ -392,6 +309,13 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Settings related to plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Plugin notes:
+" * DetectIndent must be hooked up: autocmd BufReadPost * :DetectIndent
+" * snipMate messes somewhat with autocomplete (<C-o> and <C-u>) so
+"   that multiple TAB keys do not cycle through the list. One can still use
+"   <C-n>/<C-p> though...
+
 " Get gvim colorschemes in vim (the CSApprox plugin is required).
 " When the CSApprox plugin is installed we just need to tell vim that
 " we have a terminal with lots of colors.
