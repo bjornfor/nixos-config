@@ -326,9 +326,11 @@ endif
 " easy mappings for the taglist plugin (vim-addons install taglist)
 nnoremap <silent> <Leader>t :TlistToggle<CR>
 
-" fzf.vim
-map <Leader>f :Files<CR>
-map <Leader>b :Buffers<CR>
+" fzf.vim (see :help fzf-vim-commands for what can be mapped)
+map <Leader>ff :Files<CR>
+map <Leader>fb :Buffers<CR>
+map <Leader>fg :GFiles<CR>
+map <Leader>fl :Lines<CR>
 " Use the whole screen
 let g:fzf_layout = { 'down': '~100%' }
 
