@@ -38,6 +38,7 @@ let
         vim-gitgutter
         vim-nix
         vim-speeddating
+        vim-tmux-navigator
       ];
       # manually loadable by calling `:packadd $plugin-name`
       opt = [ /* ... */ ];
