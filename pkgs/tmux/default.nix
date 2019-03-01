@@ -34,12 +34,14 @@ let
       echo '${pkgs.lib.concatMapStrings (x: "run-shell ${x.rtp}\n") plugins}' >> "$out"
     '';
 
-  tmuxWithConf = pkgs.writeShellScriptBin "tmux" ''
+  tmuxWithConf = pkgs.writeScriptBin "tmux" ''
+    #!${pkgs.bash}/bin/bash
     export PATH="''${PATH}''${PATH:+:}${pkgs.pythonPackages.powerline}/bin"
     exec "${pkgs.tmux}/bin/tmux" -f "${fullTmuxConf}" "$@"
   '';
 
-  tmuxSourceConf = pkgs.writeShellScriptBin "tmux-source-conf" ''
+  tmuxSourceConf = pkgs.writeScriptBin "tmux-source-conf" ''
+    #!${pkgs.bash}/bin/bash
     # Helper script to source the new tmux.conf without global state (only
     # $PATH lookup).
     "${pkgs.tmux}/bin/tmux" source-file "${fullTmuxConf}"
