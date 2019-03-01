@@ -388,7 +388,21 @@ do_set_ref_symlink()
     mkdir -p "$(dirname "$reflink")"
     # Another blank line for visual separation
     info ""
-    commitdir="$datadir/repo/$repo/commit/$commit"
+    # $commit might point to an annotated tag object. If so, dereference the
+    # tag to get the real commit. We cannot use git rev-parse or show-ref
+    # --dereference here, since the ref hasn't been integrated in the repo
+    # at pre-receive hook time(!). Use some low-level git cat-file instead.
+    if "$GIT_BIN" cat-file tag "$commit" 2>/dev/null >/dev/null; then
+        real_commit=$("$GIT_BIN" cat-file tag "$commit" | grep object | cut -d' ' -f2)
+    else
+        # not annotated commit, nothing to dereference
+        real_commit=$commit
+    fi
+    commitdir="$datadir/repo/$repo/commit/$real_commit"
+    if [ ! -d "$commitdir" ]; then
+        info "Attempted to create ref symlink to non-existing commitdir: $commitdir"
+        exit 1
+    fi
     info "Adding ref symlink $reflink -> $commitdir"
     ln -srnf "$commitdir" "$reflink"
     if [ "x$base_url" != x ]; then
