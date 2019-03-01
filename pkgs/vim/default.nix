@@ -2,23 +2,22 @@
 #
 # Measure Vim startup time, to see which plugins slow it down:
 # $ time vim --startuptime /dev/stdout +q
+#
+# Some vim and neovim differences:
+# Startup time:
+#   nvim: ~450 ms
+#   vim:  ~250 ms
+# Easy to map Alt+<key>:
+#   nvim: yes
+#   vim: no
+# Whether :!COMMAND is tty-capable (no means: cannot run 'tig' nor 'git add
+# -p' and 'git df' is without colors):
+#   nvim: no
+#   vim: yes
 
-{ pkgs }:
+{ pkgs, useNeovim ? true }:
 
 let
-  # Some vim and neovim differences:
-  # Startup time:
-  #   nvim: ~450 ms
-  #   vim:  ~250 ms
-  # Easy to map Alt+<key>:
-  #   nvim: yes
-  #   vim: no
-  # Whether :!COMMAND is tty-capable (no means: cannot run 'tig' nor 'git add
-  # -p' and 'git df' is without colors):
-  #   nvim: no
-  #   vim: yes
-  useNeovim = true;
-
   vimConfig = {
     customRC = builtins.readFile ./vimrc;
     packages.myVimPackage = with pkgs.vimPlugins; {
