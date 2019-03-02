@@ -3,7 +3,6 @@
 {
   imports = [
     ./avahi.nix
-    ./git
     ./kernel.nix
     ./keyboard.nix
     ./shell.nix
@@ -135,6 +134,7 @@
   '';
 
   environment.systemPackages = with pkgs; [
+    my.git
     my.tmux
     my.vim
   ];

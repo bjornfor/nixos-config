@@ -19,6 +19,8 @@
   # Things for which I'm the author, or wrappers of upstream projects that
   # source custom configs.
   my = pkgs.recurseIntoAttrs {
+    git = pkgs.callPackage ./git { };
+
     max_perf_pct = pkgs.callPackage ./max_perf_pct { };
 
     # Added for completeness' sake. (Most likey a .override is in order to
