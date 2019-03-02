@@ -36,6 +36,7 @@ let
       outgoing = "log @{u}..";
       # "git serve" is from https://gist.github.com/datagrok/5080545
       serve = "daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/";
+      suir = "submodule update --init --recursive";
     };
     sendemail = {
       smtpserver = "/run/current-system/sw/bin/msmtp";
