@@ -122,7 +122,6 @@
     which
     wireshark
     w3m
-    xdotool  # for keepass auto-type feature
     xpra
     yubico-piv-tool
     yubikey-personalization
