@@ -62,7 +62,6 @@
 
   environment.profileRelativeEnvVars = {
     GRC_BLOCKS_PATH = [ "/share/gnuradio/grc/blocks" ];
-    PYTHONPATH = [ "/lib/python2.7/site-packages" ];
   };
 
   environment.sessionVariables = {
