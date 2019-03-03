@@ -57,7 +57,7 @@ let
       genArg = section: sattrs:
         mapAttrsToList (n: v: "-c \"${section}.${n}=${v}\"") sattrs;
     in
-      concatStringsSep " " (flatten (mapAttrsToList genArg (gitConfig)));
+      concatStringsSep " " (flatten (mapAttrsToList genArg (conf)));
     
   gitWithConf = pkgs.writeScriptBin "git" ''
     #!${pkgs.bash}/bin/bash
