@@ -37,7 +37,7 @@ let
       suir = "submodule update --init --recursive";
     };
     sendemail = {
-      smtpserver = "/run/current-system/sw/bin/msmtp";
+      smtpserver = "${pkgs.msmtp}/bin/msmtp";
     };
     # gitconfig snippet like "[diff "word"]\ntextconv=..." get expressed as
     # nested sections like -c diff.word.textconf=... on the command-line.
