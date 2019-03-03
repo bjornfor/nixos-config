@@ -58,11 +58,13 @@ let
       argsInAttrs =
         mapAttrsRecursiveCond isAttrs toArg conf;
     in
-      concatStringsSep " " (collect isString argsInAttrs);
+      concatStringsSep " \\\n    " (collect isString argsInAttrs);
     
   gitWithConf = pkgs.writeScriptBin "git" ''
     #!${pkgs.bash}/bin/bash
-    exec "${pkgs.gitFull}/bin/git" ${argsFromConf gitConfig} "$@"
+    exec "${pkgs.gitFull}/bin/git" \
+        ${argsFromConf gitConfig} \
+        "$@"
   '';
 
 in
