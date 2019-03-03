@@ -5,8 +5,6 @@
 let
   # There doesn't seem to be a -f path/to/gitconfig option. Workaround: pass
   # all options using -c section.key=value.
-  # TODO: Suggest upstream to add option to read custom config file that
-  # disables reading the global files (/etc/gitconfig, ~/.gitconfig).
   gitConfig = {
     core = {
       editor = "vim";
@@ -41,23 +39,25 @@ let
     sendemail = {
       smtpserver = "/run/current-system/sw/bin/msmtp";
     };
-    # TODO: How to specify this gitconfig snippet "[diff "word"]\ntextconv=..."?
-    ##"diff\\ \\\"word\\\"" = {
-    #"diff word" = {
-    #  textconv = "antiword";
-    #};
+    # gitconfig snippet like "[diff "word"]\ntextconv=..." get expressed as
+    # nested sections like -c diff.word.textconf=... on the command-line.
+    diff = {
+      word.textconv = "antiword";
+    };
     push = {
       default = "simple";
     };
   };
 
   argsFromConf = conf:
+    with pkgs.lib;
     let
-      inherit (pkgs.lib) concatStringsSep flatten mapAttrsToList;
-      genArg = section: sattrs:
-        mapAttrsToList (n: v: "-c \"${section}.${n}=${v}\"") sattrs;
+      toArg = path: value:
+        "-c " + (concatStringsSep "." path) + "=\"${value}\"";
+      argsInAttrs =
+        mapAttrsRecursiveCond isAttrs toArg conf;
     in
-      concatStringsSep " " (flatten (mapAttrsToList genArg (conf)));
+      concatStringsSep " " (collect isString argsInAttrs);
     
   gitWithConf = pkgs.writeScriptBin "git" ''
     #!${pkgs.bash}/bin/bash
