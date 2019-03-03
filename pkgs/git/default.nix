@@ -37,6 +37,7 @@ let
       suir = "submodule update --init --recursive";
     };
     sendemail = {
+      # Must be absolute path or else it's interpreted as a hostname.
       smtpserver = "${pkgs.msmtp}/bin/msmtp";
     };
     # gitconfig snippet like "[diff "word"]\ntextconv=..." get expressed as
