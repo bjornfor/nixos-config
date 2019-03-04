@@ -25,6 +25,9 @@ stdenv.mkDerivation rec {
     cp *.txt "$out/share/ltsa"
     cp -r Chapter_examples/ "$out/share/ltsa"
 
+    # Keep a ref to the source, in case it disappears from the Internet.
+    ln -s "${src}" "$out/share/ltsa/ltsatool.zip"
+
     cat > "$out/bin/ltsa" << EOF
     #!${stdenv.shell}
     exec ${jre}/bin/java -jar "$out/lib/ltsa.jar" "\$@"
