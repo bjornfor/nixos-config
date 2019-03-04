@@ -45,7 +45,6 @@
     exiv2
     file
     firefox
-    fzf
     gcc
     gdb
     gitFull

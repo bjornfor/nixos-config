@@ -134,6 +134,7 @@
   '';
 
   environment.systemPackages = with pkgs; [
+    fzf
     my.git
     my.tmux
     my.vim
