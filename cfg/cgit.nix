@@ -52,7 +52,7 @@ in
   
         # Filter for files shown in the "about" page
         about-filter=${pkgs.writeScript "cgit-about-filter.sh" ''
-          #!${pkgs.stdenv.shell}
+          #!${pkgs.bash}/bin/sh
           # The filename is available as first argument, but the filter
           # should read contents from STDIN (and write to STDOUT).
           filename=$1
@@ -75,7 +75,7 @@ in
         ''}
   
         commit-filter=${pkgs.writeScript "cgit-commit-filter.sh" ''
-          #!${pkgs.stdenv.shell}
+          #!${pkgs.bash}/bin/sh
           regex=
           # This expression generates links to commits referenced by their SHA1.
           regex=$regex'
