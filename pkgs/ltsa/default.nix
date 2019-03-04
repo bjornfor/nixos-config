@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, unzip, jre }:
+{ stdenv, fetchurl, unzip, jre, bash }:
 
 stdenv.mkDerivation rec {
   name = "ltsa-3.0";
@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
     ln -s "${src}" "$out/share/ltsa/ltsatool.zip"
 
     cat > "$out/bin/ltsa" << EOF
-    #!${stdenv.shell}
+    #!${bash}/bin/sh
     exec ${jre}/bin/java -jar "$out/lib/ltsa.jar" "\$@"
     EOF
 
