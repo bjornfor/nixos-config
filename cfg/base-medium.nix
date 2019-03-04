@@ -255,17 +255,6 @@
 
   };
 
-  systemd.services.helloworld = {
-    description = "Hello World Loop";
-    #wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      User = "bf";
-      ExecStart = ''
-        ${pkgs.stdenv.shell} -c "while true; do echo Hello World; sleep 10; done"
-      '';
-    };
-  };
-
   systemd.services."status-email@" = {
     description = "Send Status Email For Unit %i";
     path = [ "/run/wrappers" ];
