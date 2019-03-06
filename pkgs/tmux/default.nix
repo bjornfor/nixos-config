@@ -54,6 +54,6 @@ pkgs.symlinkJoin {
   postBuild = ''
     rm "$out/bin/tmux"
     cp "${tmuxWithConf}/bin/tmux" "$out/bin"
-    cp "${tmuxSourceConf}/bin/tmux-source-conf" "$out/bin/.tmux-source-conf"
+    cp "${tmuxSourceConf}/bin/tmux-source-conf" "$out/bin/tmux-source-conf"
   '';
 }
