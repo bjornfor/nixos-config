@@ -36,7 +36,7 @@ let
 
   tmuxWithConf = pkgs.writeScriptBin "tmux" ''
     #!${pkgs.bash}/bin/bash
-    export PATH="''${PATH}''${PATH:+:}${pkgs.pythonPackages.powerline}/bin"
+    export PATH="''${PATH}''${PATH:+:}${with pkgs; lib.makeBinPath [ pythonPackages.powerline xclip ]}"
     exec "${pkgs.tmux}/bin/tmux" -f "${fullTmuxConf}" "$@"
   '';
 
