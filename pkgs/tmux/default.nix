@@ -12,6 +12,11 @@ let
     # (windows and panes). Depends on resurrect, so must be after it (if plugin
     # load order matters).
     continuum
+
+    # prefix + C - Create a session by prompting for its name
+    # prefix + X - Deletes the current session
+    # prefix + g - Lists all the sessions (alternative to prefix + s)
+    sessionist
   ];
 
   fullTmuxConf = pkgs.runCommand "tmux.conf"
