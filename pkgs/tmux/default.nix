@@ -4,8 +4,14 @@
 
 let
   plugins = with pkgs.tmuxPlugins; [
+    # prefix + Ctrl-s - save
+    # prefix + Ctrl-r - restore
     resurrect
-    continuum  # depends on resurrect, so must be after it
+
+    # Uses tmux-resurrect to automatically save and restore of environment
+    # (windows and panes). Depends on resurrect, so must be after it (if plugin
+    # load order matters).
+    continuum
   ];
 
   fullTmuxConf = pkgs.runCommand "tmux.conf"
