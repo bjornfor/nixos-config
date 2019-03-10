@@ -27,7 +27,7 @@
     en()
     {
         (cd /etc/nixos \
-            && "$EDITOR" -c "set makeprg=sudo\ nixos-rebuild\ dry-build errorformat=error:\ %m\ at\ %f:%l:%c" "machines/$HOSTNAME/configuration.nix" \
+            && vim -c "set makeprg=sudo\ nixos-rebuild\ dry-build errorformat=error:\ %m\ at\ %f:%l:%c" "machines/$HOSTNAME/configuration.nix" \
             && (echo "Activate the new config? sudo nixos-rebuild ...?"
                 echo " 1) switch"
                 echo " 2) test"
