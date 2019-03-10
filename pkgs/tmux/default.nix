@@ -56,7 +56,7 @@ let
     # Helper script to source the new tmux.conf without global state (only
     # $PATH lookup).
     "${pkgs.tmux}/bin/tmux" source-file "${fullTmuxConf}"
-    "${pkgs.tmux}/bin/tmux" display-message "sourced ${fullTmuxConf}"
+    "${pkgs.tmux}/bin/tmux" display-message "Sourced ${fullTmuxConf}"
   '';
 in
 pkgs.symlinkJoin {
