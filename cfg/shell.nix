@@ -66,6 +66,8 @@
 
   environment.sessionVariables = {
     NIX_AUTO_INSTALL = "1";
+    EDITOR = "vim";
+    VISUAL = "vim";
   };
 
   programs.bash.enableCompletion = true;
