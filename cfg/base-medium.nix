@@ -65,6 +65,7 @@
     msmtp
     mutt
     my.nix-check-before-push
+    my.custom-desktop-entries
     ncdu
     nethogs
     networkmanager

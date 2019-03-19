@@ -19,6 +19,8 @@
   # Things for which I'm the author, or wrappers of upstream projects that
   # source custom configs.
   my = pkgs.recurseIntoAttrs {
+    custom-desktop-entries = pkgs.callPackage ./custom-desktop-entries {};
+
     git = pkgs.callPackage ./git { };
 
     max_perf_pct = pkgs.callPackage ./max_perf_pct { };
