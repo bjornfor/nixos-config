@@ -7,6 +7,10 @@
 let
   get-nett-tv = makeDesktopItem {
     name = "get-nett-tv";  # nix store path name
+    # Chromium fails with
+    #   This video file cannot be played.
+    #   (Error Code: 102630)
+    # so use google-chrome instead.
     exec = "google-chrome-stable --app=https://tv.get.no/";
     icon = fetchurl {
       name = "get-nett-tv-favicon.png";
@@ -23,6 +27,8 @@ let
 
   netflix = makeDesktopItem {
     name = "netflix";  # nix store path name
+    # It's a pain to maintain widewine for Chromium (slow to build, breaks), so
+    # use google-chrome for netflix.
     exec = "google-chrome-stable --app=https://www.netflix.com/";
     icon = fetchurl {
       url = "http://www.iconarchive.com/download/i106070/papirus-team/papirus-apps/netflix.svg";
@@ -38,7 +44,7 @@ let
 
   nrk-tv = makeDesktopItem {
     name = "nrk-tv";  # nix store path name
-    exec = "google-chrome-stable --app=https://tv.nrk.no/";
+    exec = "chromium-browser --app=https://tv.nrk.no/";
     icon = fetchurl {
       url = "https://static.nrk.no/core-icons/latest/nrk-logo-nrk.svg";
       sha256 = "0kwpdqxkal51xamnc4c6r54jyjg6l3a0dmvp229ks4jdlp64pc34";
