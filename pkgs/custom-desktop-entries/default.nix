@@ -46,8 +46,9 @@ let
     name = "nrk-tv";  # nix store path name
     exec = "chromium-browser --app=https://tv.nrk.no/";
     icon = fetchurl {
-      url = "https://static.nrk.no/core-icons/latest/nrk-logo-nrk.svg";
-      sha256 = "0kwpdqxkal51xamnc4c6r54jyjg6l3a0dmvp229ks4jdlp64pc34";
+      name = "nrk-tv-logo.png";
+      url = "http://mirrors.kodi.tv/addons/leia/plugin.video.nrk/icon.png";
+      sha256 = "0a0cn831qcn1wn2zqrgjhw3q3ch9li7fqgazvcii4a8gcrvcc3sm";
     };
     comment = "NRK TV";
     desktopName = "NRK TV";
