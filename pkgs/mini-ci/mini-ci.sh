@@ -190,6 +190,8 @@ init_repo_copy()
         # * Use hardlinks (cp -l) and un-hardlink .git/HEAD afterwards.
         # * Use rsync to a persistent cache dir.
         cp -r "$ORIG_GIT_DIR" "$repo_copy"
+        # Set remote.origin.url to handle repos with relative submodule URLs
+        (cd "$repo_copy" && "$GIT_BIN" config remote.origin.url "$ORIG_GIT_DIR")
         export GIT_DIR="$repo_copy"
     fi
 }
