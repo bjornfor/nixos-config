@@ -19,6 +19,9 @@
   hardware.pulseaudio = {
     enable = true;
     package = pkgs.pulseaudioFull;
+    daemon.config = {
+      flat-volumes = "no";
+    };
   };
 
   hardware.bluetooth.enable = true;
