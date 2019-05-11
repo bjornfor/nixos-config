@@ -16,6 +16,8 @@
 
   ltsa = pkgs.callPackage ./ltsa/default.nix { };
 
+  roomeqwizard = pkgs.callPackage ./roomeqwizard { };
+
   # Things for which I'm the author, or wrappers of upstream projects that
   # source custom configs.
   my = pkgs.recurseIntoAttrs {
