@@ -138,7 +138,7 @@ let
       # underlying filesystem cannot be mounted, stat() returns ENODEV, borg
       # prints a warning and exits with status 1. Even with --one-file-system.)
       autofs_excludes=$(cat /proc/mounts | while read src mountpoint fstype rest; do
-          test "$fstype" = autofs && printf "%s\n" "--exclude \"$mountpoint\""; done)
+          test "$fstype" = autofs && printf "%s %q\n" --exclude "$mountpoint"; done)
 
       echo "Running 'borg create [...]'"
       (cd "${icfg.rootDir}" && borg create \
