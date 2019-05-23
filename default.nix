@@ -31,7 +31,6 @@ let
 in
 {
   inherit iso;
-  hydra = buildConfig ./machines/hydra/configuration.nix;
   media = buildConfig ./machines/media/configuration.nix;
   mini = buildConfig ./machines/mini/configuration.nix;
 }
