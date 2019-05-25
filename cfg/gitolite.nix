@@ -65,7 +65,7 @@ in
 {
   services.gitolite = {
     enable = true;
-    dataDir = "/srv/git";
+    dataDir = "/var/lib/gitolite";
     # Initial admin key (ssh)
     adminPubkey = with import ../misc/ssh-keys.nix; mini.bf.default;
     user = "git";
@@ -89,20 +89,6 @@ in
           # Allow creators of "wild repos" to delete their own repos.
           push( @{$RC{ENABLE}}, 'D' );
         '';
-  };
-
-  # Creating /srv requires root privileges. The gitolite-init service itself
-  # runs as unprivileged user. Use this helper service to create the needed
-  # directories.
-  systemd.services.gitolite-init-setup-srv = {
-    description = "Create /srv Directory For Gitolite";
-    requiredBy = [ "gitolite-init.service" ];
-    before = [ "gitolite-init.service" ];
-    script = ''
-      mkdir -p /srv
-      chmod a+rx /srv
-    '';
-    serviceConfig.Type = "oneshot";
   };
 
   # For convenience / testing
