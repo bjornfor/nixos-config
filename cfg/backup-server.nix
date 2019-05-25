@@ -12,14 +12,14 @@ in
   services.borg-backup = {
     enable = true;
     jobs."default" = {
-      repository = "${backupDiskMountpoint}/backups/backup.borg";
+      repository = "${backupDiskMountpoint}/backups/hosts/mini.local/mini.borg";
       pathsToBackup = [ "/" "/mnt/data" ];
       postHook = ''
         systemctl start borg-backup-maria-pc
       '';
     };
     jobs."maria-pc" = rec {
-      repository = "${backupDiskMountpoint}/backups/backup-maria-pc.borg";
+      repository = "${backupDiskMountpoint}/backups/hosts/maria-pc/maria-pc.borg";
       archiveBaseName = "maria-pc_seagate_expansion_drive_4tb";
       rootDir = "/mnt/${archiveBaseName}";
       pathsToBackup = [ "." ];
@@ -165,7 +165,7 @@ in
       mkdir -p /mnt/borg-backups-maria-pc
     '';
     serviceConfig.ExecStart = ''
-      ${pkgs.borgbackup}/bin/borg mount --foreground -o allow_other ${backupDiskMountpoint}/backups/backup-maria-pc.borg /mnt/borg-backups-maria-pc
+      ${pkgs.borgbackup}/bin/borg mount --foreground -o allow_other ${backupDiskMountpoint}/backups/hosts/maria-pc/maria-pc.borg /mnt/borg-backups-maria-pc
     '';
     postStop = ''
       # deal with stale mount processes
