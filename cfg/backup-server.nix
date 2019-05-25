@@ -2,6 +2,11 @@
 
 let
   backupDiskMountpoint = "/mnt/backup-disk";
+  externalBackupDiskLabels = [
+    "usb_4tb_backup4"
+    "usb_4tb_backup5"
+    "usb_4tb_backup6"
+  ];
 in
 {
   fileSystems = {
@@ -138,8 +143,9 @@ in
     path = with pkgs; [ utillinux rsync ];
     script = ''
       num_copies=0
-      for mp in /run/media/bf/usb_4tb_backup*; do
-         if mountpoint "$mp"; then
+      for dev in ${lib.concatMapStringsSep " " (x: "/dev/disk/by-label/${x}") externalBackupDiskLabels}; do
+         if [ -a "$dev" ]; then
+             mp="/mnt/$(basename "$dev")"
              set -x
              rsync -ai --delete "${backupDiskMountpoint}/backups/" "$mp"/backups/
              set +x
@@ -177,7 +183,13 @@ in
     { where = "/mnt/maria-pc_seagate_expansion_drive_4tb";
       wantedBy = [ "multi-user.target" ];
     }
-  ];
+  ] ++ (map (x:
+          {
+            where = "/mnt/${x}";
+            wantedBy = [ "multi-user.target" ];
+            automountConfig.TimeoutIdleSec = "5min";
+          }) externalBackupDiskLabels
+       );
 
   systemd.mounts = [
     { what = "//maria-pc/seagate_expansion_drive_4tb";
@@ -185,7 +197,12 @@ in
       type = "cifs";
       options = "ro,credentials=/root/.credentials.maria-pc,uid=bf,gid=users,iocharset=utf8";
     }
-  ];
+  ] ++ (map (x:
+          {
+            what = "/dev/disk/by-label/${x}";
+            where = "/mnt/${x}";
+          }) externalBackupDiskLabels
+       );
 
   environment.systemPackages = with pkgs; [
     borgbackup
