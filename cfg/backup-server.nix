@@ -188,6 +188,7 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
+    borgbackup
     cifs_utils  # for mount.cifs, needed for cifs filesystems in systemd.mounts.
   ];
 
