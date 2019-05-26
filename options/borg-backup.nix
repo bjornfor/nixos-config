@@ -223,6 +223,7 @@ let
       description = "Borg Backup Service ${name}";
       path = with pkgs; [
         borgbackup utillinux coreutils gawk openssh
+        "/run/wrappers"  # for sendmail
       ];
       serviceConfig.SyslogIdentifier = "borg-backup-${name}"; # else HASH-borg-backup
       serviceConfig.ExecStart = mkBackupScript value;
