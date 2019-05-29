@@ -31,6 +31,8 @@ let
 in
 {
   inherit iso;
-  media = buildConfig ./machines/media/configuration.nix;
-  mini = buildConfig ./machines/mini/configuration.nix;
+  machines = pkgs.recurseIntoAttrs {
+    media = buildConfig ./machines/media/configuration.nix;
+    mini = buildConfig ./machines/mini/configuration.nix;
+  };
 }
