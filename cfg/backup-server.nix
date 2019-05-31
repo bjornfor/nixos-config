@@ -184,6 +184,98 @@ in
     '';
   };
 
+  systemd.services.backup-status = {
+    description = "Send weekly status email about the backup";
+    wantedBy = [ "multi-user.target" ];
+    path = [ "/run/wrappers" /* for sendmail */ ];
+    startAt = "Sun *-*-* 09:00:00";  # weekly, sunday morning
+    script =
+      let
+        repos =
+          lib.mapAttrsToList
+            (n: v: v.repository)
+            config.services.borg-backup.jobs;
+      in
+        ''
+          set -e
+          set -u
+
+          overall_status=GOOD
+
+          indent()
+          {
+              n=$1
+              sed "s/^/$(for i in $(seq $n); do printf " "; done)/"
+          }
+
+          check_repo()
+          {
+              repository=$1
+              indent=$2
+              # "borg info" is more expensive than "borg list", but the latter doesn't include "nfiles"
+              json_info=$(${pkgs.borgbackup}/bin/borg info --last 1 --json "$repository")
+              latest_archive_name=$(echo "$json_info" | ${pkgs.jq}/bin/jq --raw-output ".archives[0].name")
+              nfiles=$(echo "$json_info" | ${pkgs.jq}/bin/jq --raw-output ".archives[0].stats.nfiles")
+              echo
+              echo "$repository:" | indent $indent
+              n_days_old=$(${printBackupAgeInDays} "$repository")
+              if [ "$n_days_old" -ge 2 ]; then
+                  if [ "x$set_overall_status" = "x1" ]; then
+                      overall_status=BAD
+                  fi
+                  suffix=" (WARNING)"
+              else
+                  suffix=
+              fi
+              echo "$latest_archive_name -> nfiles=$nfiles, age_days=$n_days_old$suffix" | indent $(($indent * 2))
+          }
+
+          check_local_repos()
+          {
+              ${lib.concatMapStringsSep "\n"
+                (x: ''
+                  check_repo "${x}" 4
+                '')
+                repos
+              }
+          }
+
+          check_other_repos()
+          {
+              for repo in ${backupDiskMountpoint}/backups/hosts/*/*.borg; do
+                  case "$repo" in
+                    ${lib.concatMapStringsSep "\n"
+                      (x: ''
+                        ${x}) true;;  # skip locally configured repo
+                      '')
+                      repos
+                    }
+                    *) check_repo "$repo" 4;;
+                    esac
+              done
+          }
+
+          set_overall_status=1
+          local_repos_info=$(check_local_repos)
+          set_overall_status=0
+          other_repos_info=$(check_other_repos)
+
+          cat << EOM | sendmail -t
+          From: "Mr. Robot" <noreply>
+          To: root
+          Subject: Status of backup(s): $overall_status
+
+          Locally configured repos:
+          $local_repos_info
+
+          Other repos (not affecting overall status):
+          $other_repos_info
+
+          - Mr. Robot
+          EOM
+        '';
+  };
+
   systemd.automounts = [
     { where = "/mnt/maria-pc_seagate_expansion_drive_4tb";
       wantedBy = [ "multi-user.target" ];
