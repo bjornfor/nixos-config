@@ -55,7 +55,7 @@ in
         backup_age_in_days()
         {
             today=$(date +%Y-%m-%d)
-            newest_backup_date=$(borg info "$repository"::"$(borg list "$repository" | tail -1 | awk '{print $1}')" | awk '/Time \(start\)/ {print $4}')
+            newest_backup_date=$(borg list --last 1 --json "$repository" | ${pkgs.jq}/bin/jq --raw-output ".archives[0].start")
             # POSIX sh:
             #n_days_old=$(echo "scale=0; ( $(date -d "$today" +%s) - $(date -d "$newest_backup_date" +%s) ) / (24*3600)" | bc)
             # bash(?):
