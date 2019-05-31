@@ -7,6 +7,28 @@ let
     "usb_4tb_backup5"
     "usb_4tb_backup6"
   ];
+  printBackupAgeInDays = pkgs.writeScript "print-backup-age-in-days" ''
+    #!${pkgs.bash}/bin/sh
+    set -e
+    repository=$1
+    if [ "x$repository" = "x" ]; then
+        echo "Usage: $0 BORG_REPO_URL" >&2
+        exit 1
+    fi
+    today=$(date +%Y-%m-%d)
+    newest_backup_date=$(${pkgs.borgbackup}/bin/borg list --last 1 --json "$repository" | ${pkgs.jq}/bin/jq --raw-output ".archives[0].start")
+    # POSIX sh:
+    #n_days_old=$(echo "scale=0; ( $(date -d "$today" +%s) - $(date -d "$newest_backup_date" +%s) ) / (24*3600)" | bc)
+    # bash(?):
+    n_days_old=$(( ( $(date -d "$today" +%s) - $(date -d "$newest_backup_date" +%s) ) / (24*3600) ))
+    if [ "$n_days_old" -eq "$n_days_old" ] 2>/dev/null
+    then
+        # $n_days_old is an integer
+        echo "$n_days_old"
+    else
+        exit 1
+    fi
+  '';
 in
 {
   fileSystems = {
@@ -52,26 +74,9 @@ in
         to_recipients="$(cat /etc/marias-email-address.txt)"
         cc_recipients="bjorn.forsman@gmail.com"
 
-        backup_age_in_days()
-        {
-            today=$(date +%Y-%m-%d)
-            newest_backup_date=$(borg list --last 1 --json "$repository" | ${pkgs.jq}/bin/jq --raw-output ".archives[0].start")
-            # POSIX sh:
-            #n_days_old=$(echo "scale=0; ( $(date -d "$today" +%s) - $(date -d "$newest_backup_date" +%s) ) / (24*3600)" | bc)
-            # bash(?):
-            n_days_old=$(( ( $(date -d "$today" +%s) - $(date -d "$newest_backup_date" +%s) ) / (24*3600) ))
-            if [ "$n_days_old" -eq "$n_days_old" ] 2>/dev/null
-            then
-                # $n_days_old is an integer
-                echo "$n_days_old"
-            else
-                echo "-1"
-            fi
-        }
-
         maybe_send_failure_notification()
         {
-            n_days_old=$(backup_age_in_days)
+            n_days_old=$(${printBackupAgeInDays} "$repository")
             echo "Last backup is $n_days_old days old"
             if [ "$n_days_old" -ge 7 -a $(( "$n_days_old" % 7 )) = 0 ]; then
                 echo "Warning: backup is old ($n_days_old days), sending email"
@@ -105,7 +110,7 @@ in
         }
 
         # For test
-        #send_email $(backup_age_in_days)
+        #send_email $(${printBackupAgeInDays} "$repository")
         #exit 0
 
         maybe_send_failure_notification
