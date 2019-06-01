@@ -41,9 +41,6 @@ in
     jobs."default" = {
       repository = "${backupDiskMountpoint}/backups/hosts/mini.local/mini.borg";
       pathsToBackup = [ "/" "/mnt/data" ];
-      postHook = ''
-        systemctl start borg-backup-maria-pc
-      '';
     };
     jobs."maria-pc" = rec {
       repository = "${backupDiskMountpoint}/backups/hosts/maria-pc/maria-pc.borg";
@@ -54,8 +51,7 @@ in
         "'pp:$RECYCLE.BIN'"
         "'pp:System Volume Information'"
       ];
-      # Started by "parent" backup job instead of a timer.
-      startAt = null;
+      startAt = "*-*-* 01:15:00";  # every night
       preHook = ''
         if [ $(ls "/mnt/${archiveBaseName}" | wc -l) -lt 1 ]; then
             echo "/mnt/${archiveBaseName} has no files, assuming mount failure"
@@ -137,14 +133,15 @@ in
     # If not, systemd would kill the backup service to resolve the conflict.
     postStop = ''
       systemctl start mount-borg-backup-maria-pc
-      sleep 10
-      systemctl start external-backup
     '';
   };
 
   # Use borg for this?
   systemd.services.external-backup = {
     description = "External Backup";
+    # every morning (try to make it so all other backup jobs have completed
+    # before this)
+    startAt = "*-*-* 06:00:00";
     path = with pkgs; [ utillinux rsync ];
     script = ''
       num_copies=0
