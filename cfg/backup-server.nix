@@ -183,7 +183,6 @@ in
 
   systemd.services.backup-status = {
     description = "Send weekly status email about the backup";
-    wantedBy = [ "multi-user.target" ];
     path = [ "/run/wrappers" /* for sendmail */ ];
     startAt = "Sun *-*-* 09:00:00";  # weekly, sunday morning
     script =
