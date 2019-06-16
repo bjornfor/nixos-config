@@ -184,6 +184,14 @@ in
   systemd.services.backup-status = {
     description = "Send weekly status email about the backup";
     path = [ "/run/wrappers" /* for sendmail */ ];
+    # Run after the local backup jobs (since otherwise the borg repos will be
+    # locked). Remote backup jobs might still cause trouble.
+    # TODO: This will not work until the backup jobs are made into "oneshot"
+    # types.
+    #after =
+    #  map
+    #    (x: "borg-backup-${x}.service")
+    #    (lib.mapAttrsToList (n: v: n) config.services.borg-backup.jobs);
     startAt = "Mon *-*-* 17:00:00";  # weekly
     script =
       let
