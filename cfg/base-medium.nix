@@ -106,7 +106,6 @@
     sysstat
     taskwarrior
     tcpdump
-    tig
     torbrowser
     traceroute
     tree

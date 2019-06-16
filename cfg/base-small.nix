@@ -139,6 +139,7 @@
     my.git
     my.tmux
     my.vim
+    tig
   ];
 
   fonts.fonts = with pkgs; [
