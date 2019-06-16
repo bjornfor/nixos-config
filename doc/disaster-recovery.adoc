@@ -1,74 +1,92 @@
-== Disaster recovery
+= Disaster recovery
 
 1. Boot NixOS Live CD/USB installer.
    (If doing full system restore, the PC must boot in the same firmware
    mode (BIOS/MBR v. EFI) as the old system.)
 
 2. Install BorgBackup:
+
    $ nix-env -iA nixos.borgbackup
 
 3. Make the backup available to borg.
    Here, an SSH example:
+
    $ export BORG_REMOTE_PATH="sudo borg"
    $ export BORG_RSH="ssh -i /path/to/private/key"
    $ export BORG_REPO=ssh://user@server/backups/repo.borg
-   (Remember to add SSH keys for the root user to be able to login to
-   server as user.)
-   Here, a CIFS example:
++
+(Remember to add SSH keys for the root user to be able to login to
+server as user.)
++
+Here, a CIFS example:
+
    $ mkdir /backups
    $ mount.cifs //server/backups /backups -o rw,username=$YOUR_USER
    $ export BORG_REPO=/backups/backup.borg
 
 4. List available archives, choose one to restore from:
+
    $ borg list
    $ export ARCHIVE_NAME=some-archive-name-from-above
 
-5. Partition, format and mount disk(s) on /mnt.
+5. Partition, format and mount disk(s) on `/mnt`:
    - If doing full system restore, the partitions must have the same
      filesystem labels and/or uuids like the old system.
      Hint:
+
      $ mkdir etc_nixos && cd etc_nixos && borg extract ::$ARCHIVE_NAME etc/nixos
-     Get label and uuid values from etc/nixos/*.nix files. If your
-     config contains direct refs like /dev/sda3 (bad idea!) you might
-     have to do nixos-install.
++
+Get label and uuid values from etc/nixos/*.nix files. If your
+config contains direct refs like `/dev/sda3` (bad idea!) you might
+have to do nixos-install.
++
      $ mkfs.ext4 -L $label -U $uuid /dev/my-disk-partition
-     For mkfs.vfat the $uuid from the config needs to have the dash
-     ('-') removed, or else it complains "Volume ID must be a hexadecimal number".
++
+For mkfs.vfat the $uuid from the config needs to have the dash
+('-') removed, or else it complains "Volume ID must be a hexadecimal number".
++
      $ mkfs.vfat -F32 -n $label -i $uuid /dev/my-disk-partition
+
    - If booting in EFI mode, the FAT32 formatted EFI System Partition
      must be mounted on /mnt/boot. (If booting in BIOS/MBR mode you
      don't _have_ to make a separate boot partition, as long as your
      root filesystem is supported by GRUB.)
 
 6. Restore files:
+
    $ cd /mnt && borg extract -v --list --numeric-owner ::$ARCHIVE_NAME
-   (If the backup includes the Nix store but you want to do a
-   re-install anyway (e.g. to redo disk partitioning or migrating from
-   BIOS/MBR to EFI), add `--exclude /nix` to the borg command.)
++
+(If the backup includes the Nix store but you want to do a
+re-install anyway (e.g. to redo disk partitioning or migrating from
+BIOS/MBR to EFI), add `--exclude /nix` to the borg command.)
 
 7. Make the system bootable.
-   Alternative 1, the backup includes the Nix store. The disk just
+   - Alternative 1, the backup includes the Nix store. The disk just
    needs to be made bootable:
-     For BIOS/MBR:
-       $ grub-install --boot-directory=/mnt/boot /dev/sdX
-     For EFI:
-       Nothing really needs to be done. The system will be bootable
-       because there is /EFI/BOOT/BOOTX64.EFI in the EFI System
-       Partition. If you want to add/update EFI variables, here are
-       some tips:
-       $ efibootmgr  # see current entries (and HEX_VAL identifier)
-       $ efibootmgr --delete-bootnum --bootnum HEX_VAL
-       $ efibootmgr --verbose --create --disk /dev/sda --part 1 --loader /EFI/BOOT/BOOTX64.EFI --label "NixOS"
++
+For BIOS/MBR:
 
-   Alternative 2, the backup does NOT include the Nix store. Must
+   $ grub-install --boot-directory=/mnt/boot /dev/sdX
++
+For EFI:
+Nothing really needs to be done. The system will be bootable
+because there is `/EFI/BOOT/BOOTX64.EFI` in the EFI System
+Partition. If you want to add/update EFI variables, here are
+some tips:
+
+   $ efibootmgr  # see current entries (and HEX_VAL identifier)
+   $ efibootmgr --delete-bootnum --bootnum HEX_VAL
+   $ efibootmgr --verbose --create --disk /dev/sda --part 1 --loader /EFI/BOOT/BOOTX64.EFI --label "NixOS"
+
+   - Alternative 2, the backup does NOT include the Nix store. Must
    perform NixOS install. However, this allows changing between
    BIOS/MBR and EFI booting, as well as completely redesigning
    partitions/filesystems.
-   - Check that bootloader and filesystem(s) is set up to your liking
+   * Check that bootloader and filesystem(s) is set up to your liking
      in NixOS configuration (which disk label/uuid to use etc.). If
      restoring onto new HW, pay attention when updating
      hardware-configuration.nix (`nixos-generate-config --dir /tmp`,
      then manually merge with /mnt/etc/nixos).
-   - nixos-install
+   * nixos-install
 
 8. Reboot into your new old system :-)
