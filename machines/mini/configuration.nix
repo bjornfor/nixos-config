@@ -81,11 +81,6 @@
       cidr_allow 192.168.1.0/24
     '';
 
-    tftpd = {
-      enable = true;
-      path = "/srv/tftp";
-    };
-
     ntopng = {
       # It constantly breaks due to geoip database hash changes.
       # TODO: See if fetching geoip databases can be done with a systemd
