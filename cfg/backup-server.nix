@@ -184,7 +184,7 @@ in
   systemd.services.backup-status = {
     description = "Send weekly status email about the backup";
     path = [ "/run/wrappers" /* for sendmail */ ];
-    startAt = "Sun *-*-* 09:00:00";  # weekly, sunday morning
+    startAt = "Mon *-*-* 17:00:00";  # weekly
     script =
       let
         repos =
