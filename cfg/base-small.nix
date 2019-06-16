@@ -134,6 +134,7 @@
   '';
 
   environment.systemPackages = with pkgs; [
+    ctags  # needed by vim (plugin)
     fzf
     my.git
     my.tmux
