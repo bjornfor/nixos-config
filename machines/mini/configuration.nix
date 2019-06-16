@@ -81,14 +81,6 @@
       cidr_allow 192.168.1.0/24
     '';
 
-    mysql = {
-      enable = true;
-      package = pkgs.mysql;
-      extraOptions = ''
-        # This is added in the [mysqld] section in my.cnf
-      '';
-    };
-
     nfs.server = {
       enable = true;
       exports = ''
