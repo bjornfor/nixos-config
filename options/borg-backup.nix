@@ -31,6 +31,7 @@ $ borg umount /mnt/fuse-mountpoint
 3. Make the backup available to borg.
    Here, an SSH example:
    $ export BORG_REMOTE_PATH="sudo borg"
+   $ export BORG_RSH="ssh -i /path/to/private/key"
    $ export BORG_REPO=ssh://user@server/backups/repo.borg
    (Remember to add SSH keys for the root user to be able to login to
    server as user.)
