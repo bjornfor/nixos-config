@@ -58,10 +58,26 @@ let
     '';
   };
 
+  youtube = makeDesktopItem {
+    name = "youtube";  # nix store path name
+    exec = "chromium-browser --app=https://www.youtube.com/";
+    icon = fetchurl {
+      url = "https://upload.wikimedia.org/wikipedia/commons/4/40/Youtube_icon.svg";
+      sha256 = "0gqnp61pbcsfd34w6r9bjxnpzkrlb0nhwb8z3h2a4xbyawa9dpcq";
+    };
+    comment = "YouTube";
+    desktopName = "YouTube";
+    #categories = "Network;WebBrowser";
+    extraEntries = ''
+      StartupWMClass=www.youtube.com
+    '';
+  };
+
 in
   runCommand "custom-desktop-entries" {} ''
     mkdir -p "$out"
     cp -r "${get-nett-tv}/"* "$out"; chmod -R +w "$out"
     cp -r "${netflix}/"* "$out"; chmod -R +w "$out"
     cp -r "${nrk-tv}/"* "$out"; chmod -R +w "$out"
+    cp -r "${youtube}/"* "$out"; chmod -R +w "$out"
   ''
