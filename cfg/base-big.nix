@@ -3,7 +3,6 @@
 {
   imports = [
     ./base-medium.nix
-    ./lttng.nix
   ];
 
   environment.systemPackages = with pkgs; [
