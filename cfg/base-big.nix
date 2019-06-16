@@ -3,10 +3,7 @@
 {
   imports = [
     ./base-medium.nix
-  ];
-
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    lttng-modules
+    ./lttng.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -15,7 +12,6 @@
     aspell
     aspellDicts.en
     aspellDicts.nb
-    babeltrace
     bind
     bmon
     llvmPackages.clang   # for libclang, required by clang_complete.vim
@@ -55,7 +51,6 @@
     ltsa
     config.boot.kernelPackages.perf
     ltrace
-    lttng-tools
     lynx
     meld
     mercurial
@@ -105,13 +100,4 @@
     wpa_supplicant_gui
     youtube-dl
   ];
-
-  systemd.services.lttng-sessiond = {
-    description = "LTTng Session Daemon";
-    wantedBy = [ "multi-user.target" ];
-    environment.MODULE_DIR = "/run/current-system/kernel-modules/lib/modules";
-    serviceConfig = {
-      ExecStart = "${pkgs.lttngTools}/bin/lttng-sessiond";
-    };
-  };
 }
