@@ -181,4 +181,39 @@
       '';
     };
   };
+
+  systemd.services."status-email@" = {
+    description = "Send Status Email For Unit %i";
+    path = [ "/run/wrappers" ];
+    serviceConfig = {
+      Type = "oneshot";
+      # If running as nobody:systemd-journal the log is missing and this
+      # warning is shown:
+      #  Warning: Journal has been rotated since unit was started. Log output is incomplete or unavailable.
+      #User = "nobody";
+      #Goup = "systemd-journal";
+      SyslogIdentifier = "status-email";
+      ExecStart =
+        let
+          statusEmail = pkgs.writeScript "status-email" ''
+            #!${pkgs.bash}/bin/sh
+            set -e
+            addr=$1
+            unit=$2
+            sendmail -t <<__EOF__
+            To: $addr
+            From: systemd@$HOSTNAME <root@$HOSTNAME>
+            Subject: $unit
+            Content-Transfer-Encoding: 8bit
+            Content-Type: text/plain; charset=UTF-8
+
+            $(systemctl status --full "$unit" -n80)
+            __EOF__
+            echo "Status mail sent to $addr for unit $unit"
+          '';
+        in
+          # Use config.postfix.rootAlias to configure who gets root's email.
+          "${statusEmail} root %i";
+    };
+  };
 }
