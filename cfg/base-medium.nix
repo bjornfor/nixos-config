@@ -71,8 +71,6 @@
     my.custom-desktop-entries
     ncdu
     nethogs
-    networkmanager
-    networkmanagerapplet
     nixops
     nixpkgs-lint
     nix-bash-completions
