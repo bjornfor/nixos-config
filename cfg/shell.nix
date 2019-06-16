@@ -60,10 +60,6 @@
     source "${pkgs.fzf}/share/fzf/key-bindings.bash"
   '';
 
-  environment.profileRelativeEnvVars = {
-    GRC_BLOCKS_PATH = [ "/share/gnuradio/grc/blocks" ];
-  };
-
   environment.sessionVariables = {
     NIX_AUTO_INSTALL = "1";
     EDITOR = "vim";

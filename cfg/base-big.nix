@@ -35,14 +35,12 @@
     gnome3.dconf  # Required by virt-manager to store settings (dconf-service will be started when needed). NOTE: enabling GNOME 3 desktop auto-enables this.
     gource
     gparted
-    gqrx
     graphviz
     gsmartcontrol
     hexchat
     iftop
     ioping
     irssi
-    kalibrate-rtl
     lftp
     libfaketime
     libreoffice
@@ -69,7 +67,6 @@
     #qtcreator
     remake
     remmina
-    rtl-sdr
     saleae-logic
     shotwell
     sigrok-cli
