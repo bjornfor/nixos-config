@@ -83,11 +83,12 @@ some tips:
    perform NixOS install. However, this allows changing between
    BIOS/MBR and EFI booting, as well as completely redesigning
    partitions/filesystems.
-   * Check that bootloader and filesystem(s) is set up to your liking
-     in NixOS configuration (which disk label/uuid to use etc.). If
-     restoring onto new HW, pay attention when updating
-     hardware-configuration.nix (`nixos-generate-config --dir /tmp`,
-     then manually merge with /mnt/etc/nixos).
-   * nixos-install
+
+     * Check that bootloader and filesystem(s) is set up to your liking
+       in NixOS configuration (which disk label/uuid to use etc.). If
+       restoring onto new HW, pay attention when updating
+       hardware-configuration.nix (`nixos-generate-config --dir /tmp`,
+       then manually merge with /mnt/etc/nixos).
+     * nixos-install
 
 8. Reboot into your new old system :-)
