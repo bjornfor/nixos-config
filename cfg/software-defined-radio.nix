@@ -2,6 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
+    gnuradio-with-packages
     gqrx
     kalibrate-rtl
     rtl-sdr
