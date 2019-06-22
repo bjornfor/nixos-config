@@ -56,7 +56,6 @@
   hardware.cpu.intel.updateMicrocode = true;
 
   networking = {
-    firewall.enable = false;
     networkmanager.enable = true;
   };
 

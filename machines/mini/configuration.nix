@@ -28,6 +28,16 @@
     "/dev/disk/by-id/ata-KINGSTON_SH103S3240G_50026B722A027195";
 
   networking.hostName = "mini";
+  networking.firewall.allowedTCPPorts = [
+    80    # web / http
+    #139   # samba
+    443   # web / https
+    445   # samba
+  ];
+  networking.firewall.allowedUDPPorts = [
+    #137    # samba
+    #138    # samba
+  ];
 
   environment.systemPackages = with pkgs; [
   ];
