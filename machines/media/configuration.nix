@@ -18,6 +18,11 @@
 
   networking.hostName = "media";
 
+  networking.firewall.allowedTCPPorts = [
+    8081 # kodi web ui / remote control
+    9090 # kodi web ui / remote control
+  ];
+
   system.autoUpgrade = {
     enable = false;  # too many issues with the desktop disappearing
     dates = "04:40";
