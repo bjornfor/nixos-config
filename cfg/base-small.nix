@@ -55,10 +55,6 @@
   hardware.cpu.amd.updateMicrocode = true;
   hardware.cpu.intel.updateMicrocode = true;
 
-  networking = {
-    networkmanager.enable = true;
-  };
-
   nix = {
     useSandbox = true;
     buildCores = 0;  # 0 means auto-detect number of CPUs (and use all)
