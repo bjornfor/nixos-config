@@ -49,6 +49,55 @@ let
       url = "http://ftpmirror.gnu.org/glibc/${name}.tar.xz";
       sha256 = "1lxmprg9gm73gvafxd503x70z32phwjzcy74i0adfi6ixzla7m4r";
     };
+    # Use installLocales and postInstall from nixpkgs-18.09 to prevent build
+    # breakage on nixpkgs >= 19.03.
+    installLocales = true;
+    postInstall = ''
+      if test -n "$installLocales"; then
+          make -j''${NIX_BUILD_CORES:-1} -l''${NIX_BUILD_CORES:-1} localedata/install-locales
+      fi
+
+      test -f $out/etc/ld.so.cache && rm $out/etc/ld.so.cache
+
+      if test -n "$linuxHeaders"; then
+          # Include the Linux kernel headers in Glibc, except the `scsi'
+          # subdirectory, which Glibc provides itself.
+          (cd $dev/include && \
+           ln -sv $(ls -d $linuxHeaders/include/* | grep -v scsi\$) .)
+      fi
+
+      # Fix for NIXOS-54 (ldd not working on x86_64).  Make a symlink
+      # "lib64" to "lib".
+      if test -n "$is64bit"; then
+          ln -s lib $out/lib64
+      fi
+
+      # Get rid of more unnecessary stuff.
+      rm -rf $out/var $bin/bin/sln
+    ''
+      # For some reason these aren't stripped otherwise and retain reference
+      # to bootstrap-tools; on cross-arm this stripping would break objects.
+    + stdenv.lib.optionalString (stdenv.hostPlatform == stdenv.buildPlatform) ''
+
+      for i in "$out"/lib/*.a; do
+          [ "$i" = "$out/lib/libm.a" ] || $STRIP -S "$i"
+      done
+    '' + ''
+
+      # Put libraries for static linking in a separate output.  Note
+      # that libc_nonshared.a and libpthread_nonshared.a are required
+      # for dynamically-linked applications.
+      mkdir -p $static/lib
+      mv $out/lib/*.a $static/lib
+      mv $static/lib/lib*_nonshared.a $out/lib
+      # Some of *.a files are linker scripts where moving broke the paths.
+      sed "/^GROUP/s|$out/lib/lib|$static/lib/lib|g" \
+        -i "$static"/lib/*.a
+
+      # Work around a Nix bug: hard links across outputs cause a build failure.
+      cp $bin/bin/getconf $bin/bin/getconf_
+      mv $bin/bin/getconf_ $bin/bin/getconf
+    '';
   };
 
   # Backport upstream patch to fix build against nixpkgs-18.09.
