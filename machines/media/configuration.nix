@@ -26,7 +26,7 @@
   system.autoUpgrade = {
     enable = false;  # too many issues with the desktop disappearing
     dates = "04:40";
-    channel = "https://nixos.org/channels/nixos-18.09";
+    channel = "https://nixos.org/channels/nixos-19.03";
   };
 
   nixpkgs.config = {
