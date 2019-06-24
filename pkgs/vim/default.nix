@@ -30,6 +30,7 @@ let
         fzf-vim
         fzfWrapper
         gundo-vim
+        LanguageClient-neovim  # also supports vim >= 8.0
         matchit-zip
         nerdcommenter
         taglist-vim
