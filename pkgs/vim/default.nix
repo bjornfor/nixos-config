@@ -33,6 +33,7 @@ let
         LanguageClient-neovim  # also supports vim >= 8.0
         matchit-zip
         nerdcommenter
+        nerdtree
         taglist-vim
         vim-airline
         vim-gitgutter
