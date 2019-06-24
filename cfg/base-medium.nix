@@ -37,6 +37,7 @@
     bridge-utils
     chromium
     cifs_utils  # for mount.cifs, needed for cifs filesystems in systemd.mounts.
+    cquery
     ddrescue
     diffstat
     dmidecode
