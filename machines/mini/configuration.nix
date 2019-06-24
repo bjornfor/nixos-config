@@ -143,7 +143,6 @@
 
   users.extraUsers.bf.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
     whitetip.bf.default
-    (''command="./bin/restricted-hamster-scp-command",restrict '' + virtualbox_at_work.bf.default)
     (''command="/run/current-system/sw/bin/uptime",restrict '' + my_phone.user.default)
   ];
 
