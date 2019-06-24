@@ -107,6 +107,7 @@
     sysstat
     taskwarrior
     tcpdump
+    tmuxp
     torbrowser
     traceroute
     tree
