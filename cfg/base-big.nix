@@ -87,7 +87,6 @@
     unoconv
     virtmanager
     virtviewer
-    weston
     wineUnstable
     winpdb
     wirelesstools
