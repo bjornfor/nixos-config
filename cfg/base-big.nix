@@ -84,7 +84,6 @@
     surfraw
     sweethome3d.application
     #teamviewer  # changes hash all the time
-    telnet
     unoconv
     virtmanager
     virtviewer
