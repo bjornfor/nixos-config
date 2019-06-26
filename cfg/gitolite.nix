@@ -8,7 +8,8 @@ let
     miniciGcRootDir = miniciGcRootDir;
   };
 
-  # Make a VREF script that takes one optional argument. Usage:
+  # Make a VREF script that takes one optional argument.
+  # Usage (in gitolite-admin.git/gitolite.conf):
   #   - VREF/$name                  = @all   # run on all branches/refs
   #   - VREF/$name/master           = @all   # run only on master branch
   #   - VREF/$name/refs/tags/[0-9]  = @all   # run only on these tag patterns
