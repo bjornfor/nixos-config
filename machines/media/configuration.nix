@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
     ../../cfg/base-medium.nix
     ../../cfg/disable-suspend.nix
+    ../../cfg/bcache.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
