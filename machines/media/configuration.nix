@@ -13,10 +13,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # TODO: patch nixos-generate-config to detect bcache, so this ends up in
-  # hardware-configuration.nix automatically.
-  boot.initrd.availableKernelModules = [ "bcache" ];
-
   networking.hostName = "media";
 
   networking.firewall.allowedTCPPorts = [
