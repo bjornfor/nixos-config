@@ -40,7 +40,7 @@ in
       enable = true;
       #mod_status = true; # don't expose to the public
       mod_userdir = true;
-      enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" "mod_redirect" ];
+      enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" "mod_redirect" "mod_openssl" ];
       extraConfig = ''
         # Uncomment one or more of these in case something doesn't work right
         #debug.log-request-header = "enable"
