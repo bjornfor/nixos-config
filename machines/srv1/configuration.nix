@@ -4,6 +4,8 @@
   imports = [
     ./hardware-configuration.nix
 
+    ./syncthing.nix
+
     ../../cfg/base-small.nix
     ../../cfg/bcache.nix
     ../../cfg/postfix.nix
