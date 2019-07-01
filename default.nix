@@ -34,5 +34,6 @@ in
   machines = pkgs.recurseIntoAttrs {
     media = buildConfig ./machines/media/configuration.nix;
     mini = buildConfig ./machines/mini/configuration.nix;
+    srv1 = buildConfig ./machines/srv1/configuration.nix;
   };
 }
