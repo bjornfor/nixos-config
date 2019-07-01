@@ -6,6 +6,7 @@
     ./munin.nix
     ./desktop-gnome3.nix
     ./dictionary.nix
+    ./postfix.nix
     ./syncthing.nix
     ./virtualisation.nix
   ];
@@ -188,26 +189,6 @@
 
     # for hamster-time-tracker
     dbus.packages = with pkgs; [ gnome2.GConf ];
-
-    postfix = {
-      enable = true;
-      # Possibly set "domain" in machine specific configs.
-      # The default "From:" address is
-      #   user@${config.networking.hostName}.localdomain
-      #domain = "server1.example";
-      rootAlias = "bjorn.forsman@gmail.com";
-      extraConfig = ''
-        inet_interfaces = loopback-only
-
-        # Postfix (or my system) seems to prefer ipv6 now, but that breaks on
-        # my network:
-        #
-        #   connect to gmail-smtp-in.l.google.com[2a00:1450:4010:c09::1b]:25: Network is unreachable
-        #
-        # So let's force ipv4.
-        smtp_address_preference = ipv4
-      '';
-    };
 
     # Provide "MODE=666" or "MODE=664 + GROUP=plugdev" for a bunch of USB
     # devices, so that we don't have to run as root.
