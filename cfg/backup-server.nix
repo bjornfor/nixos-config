@@ -38,10 +38,6 @@ in
 
   services.borg-backup = {
     enable = true;
-    jobs."default" = {
-      repository = "${backupDiskMountpoint}/backups/hosts/mini.local/mini.borg";
-      pathsToBackup = [ "/" "/mnt/data" ];
-    };
     jobs."maria-pc" = rec {
       repository = "${backupDiskMountpoint}/backups/hosts/maria-pc/maria-pc.borg";
       archiveBaseName = "maria-pc_seagate_expansion_drive_4tb";
@@ -320,8 +316,10 @@ in
 
   users.extraUsers.backup.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
     (''command="dir=\"${backupDiskMountpoint}/backups/hosts/media.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + media.root.backup)
+    (''command="dir=\"${backupDiskMountpoint}/backups/hosts/mini.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + mini.root.backup)
     (''command="dir=\"${backupDiskMountpoint}/backups/hosts/whitetip.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + whitetip.root.backup)
     # For convenience, allow bf too
+    (''command="dir=\"${backupDiskMountpoint}/backups/hosts/mini.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + mini.bf.default)
     (''command="dir=\"${backupDiskMountpoint}/backups/hosts/whitetip.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + whitetip.bf.default)
   ];
 }

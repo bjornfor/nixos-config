@@ -3,14 +3,9 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./webserver.nix
     ../../cfg/base-big.nix
-    ../../cfg/cgit.nix
     ../../cfg/clamav.nix
     ../../cfg/disable-suspend.nix
-    ../../cfg/gitolite.nix
-    ../../cfg/git-daemon.nix
-    ../../cfg/backup-server.nix
     ../../cfg/smart-daemon.nix
   ];
 
@@ -27,11 +22,8 @@
 
   networking.hostName = "mini";
   networking.firewall.allowedTCPPorts = [
-    80    # web / http
     #139   # samba
-    443   # web / https
     445   # samba
-    9418  # git daemon
   ];
   networking.firewall.allowedUDPPorts = [
     #137    # samba
@@ -43,16 +35,18 @@
 
   services = {
 
+    borg-backup = {
+      enable = true;
+      jobs."default" = {
+        repository = "backup@srv1.local:mini.borg";
+        pathsToBackup = [ "/" "/mnt/data" ];
+        environment.BORG_RSH = "ssh -i /root/.ssh/id_ed25519_backup";
+        environment.BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
+      };
+    };
+
     xserver.displayManager.gdm.autoLogin.enable = true;
     xserver.displayManager.gdm.autoLogin.user = "bf";
-
-    ddclient = {
-      enable = true;
-      # Use imperative configuration to keep secrets out of the (world
-      # readable) Nix store. If this option is not set, the NixOS options from
-      # services.ddclient.* will be used to populate /etc/ddclient.conf.
-      configFile = "/var/lib/ddclient/secrets/ddclient.conf";
-    };
 
     samba = {
       enable = true;
