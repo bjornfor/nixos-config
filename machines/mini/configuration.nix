@@ -31,6 +31,7 @@
     #139   # samba
     443   # web / https
     445   # samba
+    9418  # git daemon
   ];
   networking.firewall.allowedUDPPorts = [
     #137    # samba
