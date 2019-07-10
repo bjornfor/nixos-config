@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     ./webserver.nix
-    ../../cfg/apcupsd.nix
     ../../cfg/base-big.nix
     ../../cfg/cgit.nix
     ../../cfg/clamav.nix
