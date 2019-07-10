@@ -195,9 +195,9 @@ in
     startAt = "Mon *-*-* 17:00:00";  # weekly
     script =
       let
-        repos =
+        jobsAsList =
           lib.mapAttrsToList
-            (n: v: v.repository)
+            (n: v: v)
             config.services.borg-backup.jobs;
       in
         ''
@@ -237,10 +237,11 @@ in
           check_local_repos()
           {
               ${lib.concatMapStringsSep "\n"
-                (x: ''
-                  check_repo "${x}" 4
+                (job: ''
+                  export BORG_RSH="${job.environment.BORG_RSH or ""}"
+                  check_repo "${job.repository}" 4
                 '')
-                repos
+                jobsAsList
               }
           }
 
@@ -249,10 +250,10 @@ in
               for repo in ${backupDiskMountpoint}/backups/hosts/*/*.borg; do
                   case "$repo" in
                     ${lib.concatMapStringsSep "\n"
-                      (x: ''
-                        ${x}) true;;  # skip locally configured repo
+                      (job: ''
+                        ${job.repository}) true;;  # skip locally configured repo
                       '')
-                      repos
+                      jobsAsList
                     }
                     *) check_repo "$repo" 4;;
                     esac
