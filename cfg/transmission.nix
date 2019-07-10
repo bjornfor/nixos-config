@@ -15,18 +15,14 @@
     };
   };
 
-  # Creating /srv/torrents requires root privileges. The transmission service
-  # itself runs as unprivileged user. Use this helper service to create the
-  # needed directories.
-  systemd.services.transmission-setup-srv-torrents = {
-    description = "Create /srv/torrents Directory For Transmission";
-    requiredBy = [ "transmission.service" ];
-    before = [ "transmission.service" ];
-    script = ''
-      mkdir -p /srv/torrents
-      chown transmission:transmission /srv/torrents
-    '';
-    serviceConfig.Type = "oneshot";
-  };
+  systemd.tmpfiles.rules =
+    let
+      user = "transmission";
+      group = "transmission";
+      downloadDir = config.services.transmission.settings.download-dir;
+    in
+      [ #Type Path                      Mode UID     GID      Age Argument
+        "d    ${downloadDir}            0755 ${user} ${group} -   -"
+      ];
 
 }
