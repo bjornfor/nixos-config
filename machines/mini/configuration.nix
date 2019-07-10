@@ -13,7 +13,6 @@
     ../../cfg/git-daemon.nix
     ../../cfg/backup-server.nix
     ../../cfg/smart-daemon.nix
-    ../../cfg/transmission.nix
   ];
 
   fileSystems = {
