@@ -231,7 +231,14 @@ in
               else
                   suffix=
               fi
-              echo "$latest_archive_name -> nfiles=$nfiles, age_days=$n_days_old$suffix" | indent $(($indent * 2))
+              if [ "x$latest_archive_name" = x ]; then
+                  echo "\$latest_archive_name is empty, failed to get info from repo $repository (missing ssh key? repo locked?)" | indent $(($indent * 2))
+                  if [ "x$set_overall_status" = "x1" ]; then
+                      overall_status=BAD
+                  fi
+              else
+                  echo "$latest_archive_name -> nfiles=$nfiles, age_days=$n_days_old$suffix" | indent $(($indent * 2))
+              fi
           }
 
           check_local_repos()
