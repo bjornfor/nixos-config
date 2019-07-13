@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 
+let
+  lan0 = "enp0s25";
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -41,6 +44,12 @@
     445   # samba
     9418  # git daemon
   ];
+
+  # Add a bridge interface to be able to put libvirt/QEMU/KVM VMs directly on
+  # the LAN.
+  networking.bridges = {
+    br0 = { interfaces = [ lan0 ]; };
+  };
 
   users.extraUsers.bf.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
     mini.bf.default
