@@ -47,6 +47,8 @@
     whitetip.bf.default
   ];
 
+  virtualisation.libvirtd.enable = true;
+
   swapDevices = [
     { device = "/var/swap"; size = 32*1024; /* MiB */ }
   ];
