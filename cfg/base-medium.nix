@@ -105,6 +105,7 @@
     smartmontools
     sqlite-interactive
     sshfsFuse
+    sshuttle
     stdmanpages
     sysdig
     sysstat
