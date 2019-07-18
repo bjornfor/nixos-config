@@ -36,6 +36,10 @@ in
   # prevent the display from going black / freeze in stage-2 boot.
   boot.kernelParams = [ "nomodeset" ];
 
+  environment.systemPackages = with pkgs; [
+    python  # sshuttle needs python on the server side
+  ];
+
   networking.hostName = "srv1";
 
   networking.firewall.allowedTCPPorts = [
