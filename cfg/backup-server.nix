@@ -200,7 +200,9 @@ in
           set -e
           set -u
 
-          overall_status=GOOD
+          overall_status_file=$(mktemp)
+          trap "rm $overall_status_file" EXIT
+          echo "GOOD" > "$overall_status_file"
 
           indent()
           {
@@ -221,7 +223,7 @@ in
               n_days_old=$(${printBackupAgeInDays} "$repository")
               if [ "$n_days_old" -ge 2 ]; then
                   if [ "x$set_overall_status" = "x1" ]; then
-                      overall_status=BAD
+                      echo "BAD" > "$overall_status_file"
                   fi
                   suffix=" (WARNING)"
               else
@@ -230,7 +232,7 @@ in
               if [ "x$latest_archive_name" = x ]; then
                   echo "\$latest_archive_name is empty, failed to get info from repo $repository (missing ssh key? repo locked?)" | indent $(($indent * 2))
                   if [ "x$set_overall_status" = "x1" ]; then
-                      overall_status=BAD
+                      echo "BAD" > "$overall_status_file"
                   fi
               else
                   echo "$latest_archive_name -> nfiles=$nfiles, age_days=$n_days_old$suffix" | indent $(($indent * 2))
@@ -267,6 +269,8 @@ in
           local_repos_info=$(check_local_repos)
           set_overall_status=0
           other_repos_info=$(check_other_repos)
+
+          overall_status=$(cat "$overall_status_file")
 
           cat << EOM | sendmail -t
           From: "Mr. Robot" <noreply>
