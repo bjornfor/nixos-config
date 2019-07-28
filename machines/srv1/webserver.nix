@@ -93,9 +93,7 @@ in
             ssl.pemfile = "/var/lib/acme/${myDomain}/full.pem"
           }
           $HTTP["scheme"] == "http" {
-            $HTTP["url"] =~ "^/nextcloud" {
-              url.redirect = ("^/.*" => "https://${myDomain}$0")
-            }
+            url.redirect = ("^/.*" => "https://${myDomain}$0")
           }
         }
 
@@ -103,6 +101,9 @@ in
           $SERVER["socket"] == ":443" {
             ssl.engine = "enable"
             ssl.pemfile = "/var/lib/acme/${myDomain}/full.pem"
+          }
+          $HTTP["scheme"] == "http" {
+            url.redirect = ("^/.*" => "https://mariaogbjorn.no$0")
           }
         }
 
@@ -114,9 +115,7 @@ in
           }
           url.redirect += ("^/$" => "/nextcloud/")
           $HTTP["scheme"] == "http" {
-            $HTTP["url"] =~ "^/nextcloud" {
-              url.redirect = ("^/.*" => "https://sky.mariaogbjorn.no$0")
-            }
+            url.redirect = ("^/.*" => "https://sky.mariaogbjorn.no$0")
           }
         }
       '';
