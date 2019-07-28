@@ -22,6 +22,7 @@ in
     ../../cfg/postfix.nix
     ../../cfg/smart-daemon.nix
     ../../cfg/swraid.nix
+    ../../cfg/transmission.nix
     ../../cfg/users-and-groups.nix
   ];
 
