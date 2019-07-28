@@ -14,6 +14,7 @@ in
       repository = "${backupDiskMountpoint}/backups/hosts/srv1.local/srv1.borg";
       rootDir = "/tmp/backup-temp-root";
       pathsToBackup = [
+        "etc/lighttpd"
         "etc/nixos"
         "home"
         "root"

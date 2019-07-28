@@ -37,6 +37,7 @@ in
   boot.kernelParams = [ "nomodeset" ];
 
   environment.systemPackages = with pkgs; [
+    apacheHttpd  # for `htpasswd` (manage users/passwords for lighttpd)
     python  # sshuttle needs python on the server side
   ];
 

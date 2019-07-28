@@ -40,7 +40,7 @@ in
       enable = true;
       mod_status = true;
       mod_userdir = true;
-      enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" "mod_redirect" "mod_openssl" ];
+      enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" "mod_redirect" "mod_openssl" "mod_auth" ];
       extraConfig = ''
         # Uncomment one or more of these in case something doesn't work right
         #debug.log-request-header = "enable"
@@ -76,12 +76,13 @@ in
               ))
           )
 
-          # Block access to certain URLs if remote IP is not on LAN
-          $HTTP["remoteip"] !~ "^(192\.168\.1|127\.0\.0\.1)" {
-              $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^${config.services.lighttpd.collectd-graph-panel.urlPrefix}.*)" {
-                  url.access-deny = ( "" )
-              }
-          }
+          ## Block access to certain URLs if remote IP is not on LAN
+          ## Use auth instead (see below)
+          #$HTTP["remoteip"] !~ "^(192\.168\.1|127\.0\.0\.1)" {
+          #    $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^${config.services.lighttpd.collectd-graph-panel.urlPrefix}.*)" {
+          #        url.access-deny = ( "" )
+          #    }
+          #}
         }
 
         # Lighttpd SSL/HTTPS documentation:
@@ -117,6 +118,26 @@ in
           $HTTP["scheme"] == "http" {
             url.redirect = ("^/.*" => "https://sky.mariaogbjorn.no$0")
           }
+        }
+
+        # Authentication/authorization
+        # To add or update a user:
+        #   sudo -u lighttpd htpasswd /etc/lighttpd/users.htpasswd USERNAME
+        auth.backend = "htpasswd"
+        auth.backend.htpasswd.userfile = "/etc/lighttpd/users.htpasswd"
+
+        $HTTP["url"] =~ "(^/transmission/.*|^/server-.*|^/munin/.*|^${config.services.lighttpd.collectd-graph-panel.urlPrefix}.*)" {
+            auth.require += (
+                "" => (
+                         "method"    => "basic",
+                         "realm"     => "Misc apps",
+                         # Allow all users with a valid password
+                         #"require"   => "valid-user"
+                         # Or specific (sub)set of users
+                         #"require"   => "user=agent007|user=agent008"
+                         "require"   => "user=bf"
+                      )
+                )
         }
       '';
       collectd-graph-panel.enable = true;
