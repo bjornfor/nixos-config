@@ -38,7 +38,7 @@ in
 
     lighttpd = {
       enable = true;
-      #mod_status = true; # don't expose to the public
+      mod_status = true;
       mod_userdir = true;
       enableModules = [ "mod_alias" "mod_proxy" "mod_access" "mod_fastcgi" "mod_redirect" "mod_openssl" ];
       extraConfig = ''
