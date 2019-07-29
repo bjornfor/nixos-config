@@ -58,7 +58,7 @@ in
           alias.url += ( "/.well-known/acme-challenge" => "${acmeChallengesDir}/.well-known/acme-challenge" )
 
           # Reverse proxy for transmission bittorrent client
-          proxy.server = (
+          proxy.server += (
             "/transmission" => ( "transmission" => (
                                  "host" => "127.0.0.1",
                                  "port" => 9091
@@ -67,7 +67,7 @@ in
           # Fix transmission URL corner case: get error 409 if URL is
           # /transmission/ or /transmission/web. Redirect those URLs to
           # /transmission (no trailing slash).
-          url.redirect = ( "^/transmission/(web)?$" => "/transmission" )
+          url.redirect += ( "^/transmission/(web)?$" => "/transmission" )
 
           fastcgi.server = (
             ".php" => (
@@ -94,7 +94,7 @@ in
             ssl.pemfile = "/var/lib/acme/${myDomain}/full.pem"
           }
           $HTTP["scheme"] == "http" {
-            url.redirect = ("^/.*" => "https://${myDomain}$0")
+            url.redirect += ("^/.*" => "https://${myDomain}$0")
           }
         }
 
@@ -104,7 +104,7 @@ in
             ssl.pemfile = "/var/lib/acme/${myDomain}/full.pem"
           }
           $HTTP["scheme"] == "http" {
-            url.redirect = ("^/.*" => "https://mariaogbjorn.no$0")
+            url.redirect += ("^/.*" => "https://mariaogbjorn.no$0")
           }
         }
 
@@ -116,7 +116,7 @@ in
           }
           url.redirect += ("^/$" => "/nextcloud/")
           $HTTP["scheme"] == "http" {
-            url.redirect = ("^/.*" => "https://sky.mariaogbjorn.no$0")
+            url.redirect += ("^/.*" => "https://sky.mariaogbjorn.no$0")
           }
         }
 
