@@ -78,8 +78,8 @@
     nix-bash-completions
     nix-generate-from-cpan
     nix-prefetch-scripts
+    nix-review
     nix-serve
-    nox
     ntfs3g
     owncloud-client
     p7zip
