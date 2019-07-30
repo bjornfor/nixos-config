@@ -19,6 +19,7 @@ in
         "home"
         "root"
         "var/lib/gitolite"
+        "var/lib/mytinytodo"
         "var/lib/nextcloud"
         "var/lib/syncthing"
       ];

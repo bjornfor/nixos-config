@@ -12,6 +12,10 @@ let
   };
 in
 {
+  imports = [
+    ../../cfg/mytinytodo.nix
+  ];
+
   users.extraUsers."lighttpd".extraGroups = [ "git" ];
 
   security.acme.certs = {
@@ -136,6 +140,16 @@ in
                          # Or specific (sub)set of users
                          #"require"   => "user=agent007|user=agent008"
                          "require"   => "user=bf"
+                      )
+                )
+        }
+
+        $HTTP["url"] =~ "(^/mytinytodo)" {
+            auth.require += (
+                "" => (
+                         "method"    => "basic",
+                         "realm"     => "Misc apps",
+                         "require"   => "user=bf|user=maria"
                       )
                 )
         }
