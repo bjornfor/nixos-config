@@ -7,6 +7,7 @@
     "..2" = "cd ../..";
     "..3" = "cd ../../..";
     "..4" = "cd ../../../..";
+    "t" = "task";
   };
 
   environment.interactiveShellInit = ''
