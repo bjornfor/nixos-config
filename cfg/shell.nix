@@ -54,6 +54,9 @@
     stty stop ""
     stty start ""
 
+    # Add completion for my taskwarrior "t" alias
+    complete -o nospace -F _task t
+
     # FZF fuzzy finder configuration
     # Try "cd **<TAB>"
     source "${pkgs.fzf}/share/fzf/completion.bash"
