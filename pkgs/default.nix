@@ -3,6 +3,8 @@
 {
   altera-quartuses = pkgs.callPackage ./altera-quartus { };
 
+  deconz = pkgs.qt5.callPackage ./deconz {};
+
   keil-uvision-c51 = pkgs.callPackage ./keil-uvision-c51 { };
 
   libfaketime = pkgs.libfaketime.overrideAttrs (oldAttrs: rec {
