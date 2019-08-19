@@ -1,14 +1,13 @@
 { stdenv, fetchurl, mkDerivation, dpkg, autoPatchelfHook
 , qtserialport, qtwebsockets
-, buildFHSUserEnv, writeScript
+, libredirect, makeWrapper
 }:
 
-# deCONZ is a prebuilt app that hardcodes "/usr/..." in several places (i.e. in
-# ELF files). Notably, the webui (and probably firmware update app) doesn't
-# work out of the box with Nix. The workaround is to use buildFHSUserEnv.
+# The default user and password for the WebApp is delight/delight. Hm, it looks
+# like the "WebApp" is deprecated, and the new Phoscon App is its replacement
+# (the button to the left of the WebApp). The Phoscon App asks to create
+# user/password at first startup, instead of hardcoding a default.
 
-let
-  deconz =
 mkDerivation rec {
   name = "deconz-${version}";
   version = "2.05.66";
@@ -18,40 +17,48 @@ mkDerivation rec {
     sha256 = "1b2c0r5l4n0sgjmswmp5cvg95z7hwjkys66k9c3hywxrispyz7vy";
   };
 
-  nativeBuildInputs = [ dpkg autoPatchelfHook ];
+  nativeBuildInputs = [ dpkg autoPatchelfHook makeWrapper ];
 
   buildInputs = [ qtserialport qtwebsockets ];
 
-  unpackPhase = "dpkg -x $src ./";
+  unpackPhase = "dpkg -x $src ./deconz-src";
 
   installPhase = ''
     mkdir -p "$out"
-    cp -r usr/* etc "$out"
-    substituteInPlace "$out/share/applications/deCONZ.desktop" \
-        --replace "/usr/" "$out/"
+    cp -r deconz-src/* "$out"
+
+    # Flatten /usr and manually merge lib/ and usr/lib/, since mv refuses to.
+    mv "$out/lib" "$out/orig_lib"
+    mv "$out/usr/"* "$out/"
+    mv "$out/orig_lib/systemd/system/"* "$out/lib/systemd/system/"
+    rmdir "$out/orig_lib/systemd/system"
+    rmdir "$out/orig_lib/systemd"
+    rmdir "$out/orig_lib"
+    rmdir "$out/usr"
+
+    # Remove empty directory tree
+    rmdir "$out/etc/systemd/system"
+    rmdir "$out/etc/systemd"
+    rmdir "$out/etc"
+
+    for f in "$out/lib/systemd/system/"*.service \
+             "$out/share/applications/"*.desktop; do
+        substituteInPlace "$f" \
+            --replace "/usr/" "$out/"
+    done
+
+    wrapProgram "$out/bin/deCONZ" \
+        --set LD_PRELOAD "${libredirect}/lib/libredirect.so" \
+        --set NIX_REDIRECTS "/usr/share=$out/share"
   '';
 
   meta = with stdenv.lib; {
     description = "Manage ZigBee network with ConBee, ConBee II or RaspBee hardware";
+    # 2019-08-19: The homepage links to old software that doesn't even work --
+    # it fails to detect ConBee2.
     homepage = "https://www.dresden-elektronik.de/funktechnik/products/software/pc-software/deconz/?L=1";
     license = licenses.unfree;
     platforms = with platforms; linux;
     maintainers = with maintainers; [ bjornfor ];
   };
-};
-
-deconz-fhs = buildFHSUserEnv {
-  name = "deCONZ";
-
-  targetPkgs = pkgs: with pkgs; [
-    deconz
-  ];
-
-  runScript = writeScript "run-deconz" ''
-    exec "${deconz}/bin/deCONZ" "$@"
-  '';
-};
-
-in
-  deconz-fhs   # working webapp etc.
-  #deconz      # broken webapp etc.
+}
