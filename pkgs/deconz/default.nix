@@ -1,6 +1,6 @@
 { stdenv, fetchurl, mkDerivation, dpkg, autoPatchelfHook
 , qtserialport, qtwebsockets
-, libredirect, makeWrapper
+, libredirect, makeWrapper, gzip, gnutar
 }:
 
 # The default user and password for the WebApp is delight/delight. Hm, it looks
@@ -49,7 +49,8 @@ mkDerivation rec {
 
     wrapProgram "$out/bin/deCONZ" \
         --set LD_PRELOAD "${libredirect}/lib/libredirect.so" \
-        --set NIX_REDIRECTS "/usr/share=$out/share"
+        --set NIX_REDIRECTS "/usr/share=$out/share" \
+        --prefix PATH : "${stdenv.lib.makeBinPath [ gzip gnutar ]}"
   '';
 
   meta = with stdenv.lib; {
