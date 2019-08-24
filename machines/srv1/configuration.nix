@@ -39,7 +39,13 @@ in
 
   environment.systemPackages = with pkgs; [
     apacheHttpd  # for `htpasswd` (manage users/passwords for lighttpd)
+    htop
+    iotop
+    ncdu
+    nix-review
     python  # sshuttle needs python on the server side
+    sysstat
+    usbutils
   ];
 
   networking.hostName = "srv1";
