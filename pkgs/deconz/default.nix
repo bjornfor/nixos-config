@@ -17,15 +17,24 @@ mkDerivation rec {
     sha256 = "1b2c0r5l4n0sgjmswmp5cvg95z7hwjkys66k9c3hywxrispyz7vy";
   };
 
+  devsrc = fetchurl {
+    url = "https://www.dresden-elektronik.de/deconz/ubuntu/beta/deconz-dev-${version}.deb";
+    sha256 = "00d98fcc9dwxgqspz5xr9d0fnry9db7bag1l15j2xbcl03z4yij2";
+  };
+
   nativeBuildInputs = [ dpkg autoPatchelfHook makeWrapper ];
 
   buildInputs = [ qtserialport qtwebsockets ];
 
-  unpackPhase = "dpkg -x $src ./deconz-src";
+  unpackPhase = ''
+    dpkg -x $src ./deconz-src
+    dpkg -x $devsrc ./deconz-devsrc
+  '';
 
   installPhase = ''
     mkdir -p "$out"
     cp -r deconz-src/* "$out"
+    cp -r deconz-devsrc/* "$out"
 
     # Flatten /usr and manually merge lib/ and usr/lib/, since mv refuses to.
     mv "$out/lib" "$out/orig_lib"
