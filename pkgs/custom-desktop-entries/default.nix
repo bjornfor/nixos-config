@@ -27,6 +27,20 @@ let
     '';
   };
 
+  gmail = makeDesktopItem {
+    name = "gmail";  # nix store path name
+    exec = "chromium-browser --app=https://mail.google.com/";
+    icon = fetchurl {
+      url = "https://upload.wikimedia.org/wikipedia/commons/a/ab/Gmail_Icon.svg";
+      sha256 = "1avrc2laqmviih3gx4pkxrd7v2hkcgp48c7zcb1wmxbnxvcqxgqr";
+    };
+    comment = "Web Mail";
+    desktopName = "GMail";
+    extraEntries = ''
+      StartupWMClass=mail.google.com
+    '';
+  };
+
   netflix = makeDesktopItem {
     name = "netflix";  # nix store path name
     # It's a pain to maintain widewine for Chromium (slow to build, breaks), so
