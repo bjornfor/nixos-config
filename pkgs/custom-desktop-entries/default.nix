@@ -74,6 +74,23 @@ let
     '';
   };
 
+  sbanken = makeDesktopItem {
+    name = "sbanken";  # nix store path name
+    exec = "chromium-browser --app=https://sbanken.no/";
+    # icon from google play
+    # (https://play.google.com/store/apps/details?id=no.skandiabanken)
+    icon = fetchurl {
+      name = "sbanken_icon.png";
+      url = "https://lh3.googleusercontent.com/qY0PzdGykNPdmbLmHQKGYAesB7CgmXO-bqCJdI957RRMZ57p82BME081WcSgDCH4OSQ=s180";
+      sha256 = "1n4mjyhjn3npc785bvb3r0cpwndrzdzq8qq60d93hbgh9y04mdda";
+    };
+    comment = "Online bank";
+    desktopName = "Sbanken";
+    extraEntries = ''
+      StartupWMClass=sbanken.no
+    '';
+  };
+
   youtube = makeDesktopItem {
     name = "youtube";  # nix store path name
     exec = "chromium-browser --app=https://www.youtube.com/";
