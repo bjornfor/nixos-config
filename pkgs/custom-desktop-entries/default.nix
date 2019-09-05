@@ -1,10 +1,12 @@
-{ fetchurl, makeDesktopItem, runCommand }:
+{ lib, fetchurl, makeDesktopItem, runCommand }:
 
 # StartupWMClass is found with `xprop WM_CLASS`. When multiple entries are
 # returned, use the first one (most specific). (Ideally, all values could be
 # used, for most precise match, but I haven't found a way to do so.)
 
 let
+  entries = {
+
   get-nett-tv = makeDesktopItem {
     name = "get-nett-tv";  # nix store path name
     # Chromium fails with
@@ -73,11 +75,13 @@ let
     '';
   };
 
+};
+
+  mkCommand = drv: ''
+    cp -r "${drv}/"* "$out"; chmod -R +w "$out"
+  '';
+
 in
-  runCommand "custom-desktop-entries" {} ''
+  runCommand "custom-desktop-entries" {} (''
     mkdir -p "$out"
-    cp -r "${get-nett-tv}/"* "$out"; chmod -R +w "$out"
-    cp -r "${netflix}/"* "$out"; chmod -R +w "$out"
-    cp -r "${nrk-tv}/"* "$out"; chmod -R +w "$out"
-    cp -r "${youtube}/"* "$out"; chmod -R +w "$out"
-  ''
+  '' + (lib.concatMapStringsSep "\n" mkCommand (lib.attrValues entries)))
