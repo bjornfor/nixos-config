@@ -25,9 +25,9 @@ let
       // (if desktopName != null then { inherit desktopName; } else {})
       // (if categories != null then { inherit categories; } else {}));
 
-  entries = {
+  entries = [
 
-  get-nett-tv = makeSimpleWebApp {
+  (makeSimpleWebApp {
     server = "tv.get.no";
     # Chromium fails with
     #   This video file cannot be played.
@@ -40,18 +40,18 @@ let
       sha256 = "0acrlix5qmnb32zaqcch0khb6s7ajrw4qv5ikx33bpf71mimkc94";
     };
     comment = "Get Nett-TV";
-  };
+  })
 
-  gmail = makeSimpleWebApp {
+  (makeSimpleWebApp {
     server = "mail.google.com";
     icon = fetchurl {
       url = "https://upload.wikimedia.org/wikipedia/commons/a/ab/Gmail_Icon.svg";
       sha256 = "1avrc2laqmviih3gx4pkxrd7v2hkcgp48c7zcb1wmxbnxvcqxgqr";
     };
     comment = "GMail";
-  };
+  })
 
-  netflix = makeSimpleWebApp {
+  (makeSimpleWebApp {
     server = "www.netflix.com";
     # It's a pain to maintain widewine for Chromium (slow to build, breaks), so
     # use google-chrome for netflix.
@@ -61,9 +61,9 @@ let
       sha256 = "06n3crmfc3k8yahybic399p832vzj5afrdqvlizrk8lbk3plrjd2";
     };
     comment = "Netflix";
-  };
+  })
 
-  nrk-tv = makeSimpleWebApp {
+  (makeSimpleWebApp {
     server = "tv.nrk.no";
     icon = fetchurl {
       name = "nrk-tv-logo.png";
@@ -71,9 +71,9 @@ let
       sha256 = "0a0cn831qcn1wn2zqrgjhw3q3ch9li7fqgazvcii4a8gcrvcc3sm";
     };
     comment = "NRK TV";
-  };
+  })
 
-  sbanken = makeSimpleWebApp {
+  (makeSimpleWebApp {
     server = "sbanken.no";
     # icon from google play
     # (https://play.google.com/store/apps/details?id=no.skandiabanken)
@@ -83,18 +83,18 @@ let
       sha256 = "1n4mjyhjn3npc785bvb3r0cpwndrzdzq8qq60d93hbgh9y04mdda";
     };
     comment = "Sbanken";
-  };
+  })
 
-  youtube = makeSimpleWebApp {
+  (makeSimpleWebApp {
     server = "www.youtube.com";
     icon = fetchurl {
       url = "https://upload.wikimedia.org/wikipedia/commons/4/40/Youtube_icon.svg";
       sha256 = "0gqnp61pbcsfd34w6r9bjxnpzkrlb0nhwb8z3h2a4xbyawa9dpcq";
     };
     comment = "YouTube";
-  };
+  })
 
-};
+];
 
   mkCommand = drv: ''
     cp -r "${drv}/"* "$out"; chmod -R +w "$out"
@@ -103,4 +103,4 @@ let
 in
   runCommand "custom-desktop-entries" {} (''
     mkdir -p "$out"
-  '' + (lib.concatMapStringsSep "\n" mkCommand (lib.attrValues entries)))
+  '' + (lib.concatMapStringsSep "\n" mkCommand entries))
