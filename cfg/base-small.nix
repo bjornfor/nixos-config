@@ -131,6 +131,7 @@
   environment.systemPackages = with pkgs; [
     ctags  # needed by vim (plugin)
     fzf
+    moreutils
     my.git
     my.tmux
     my.vim
