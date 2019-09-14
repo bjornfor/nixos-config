@@ -399,6 +399,10 @@ let g:LanguageClient_serverCommands = {
     \ 'rust': ['rls'],
     \ }
 
+" Uncomment if the environment is not set up properly and LSP spams the view
+" with warnings and errors.
+" let g:LanguageClient_autoStart = 0
+
 nnoremap <Leader>l :call LanguageClient_contextMenu()<CR>
 " Or map each action separately
 "nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
