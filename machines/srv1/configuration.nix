@@ -63,6 +63,10 @@ in
     br0 = { interfaces = [ lan0 ]; };
   };
 
+  nix = {
+    gc.dates = lib.mkForce "weekly";
+  };
+
   users.extraUsers.bf.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
     mini.bf.default
     whitetip.bf.default
