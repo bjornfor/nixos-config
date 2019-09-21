@@ -7,6 +7,7 @@
     ../../cfg/disable-suspend.nix
     ../../cfg/bcache.nix
     ../../cfg/nix-remote-build-client.nix
+    ../../cfg/smart-daemon.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
