@@ -19,6 +19,7 @@ in
     ../../cfg/cgit.nix
     ../../cfg/git-daemon.nix
     ../../cfg/gitolite.nix
+    ../../cfg/nix-remote-build-server.nix
     ../../cfg/postfix.nix
     ../../cfg/smart-daemon.nix
     ../../cfg/swraid.nix

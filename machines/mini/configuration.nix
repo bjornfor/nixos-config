@@ -6,6 +6,7 @@
     ../../cfg/base-big.nix
     ../../cfg/clamav.nix
     ../../cfg/disable-suspend.nix
+    ../../cfg/nix-remote-build-client.nix
     ../../cfg/smart-daemon.nix
   ];
 

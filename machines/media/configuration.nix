@@ -6,6 +6,7 @@
     ../../cfg/base-medium.nix
     ../../cfg/disable-suspend.nix
     ../../cfg/bcache.nix
+    ../../cfg/nix-remote-build-client.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
