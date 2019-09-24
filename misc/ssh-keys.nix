@@ -11,9 +11,9 @@
   mini.root.backup = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPCwtdqwE2WLolrNQmf5M/DmzaKjG29yq0lr4WgUa2z7 root@mini (for backup automation)'';
   mini.root.nix_remote_build = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE62OwZK96RYNiHbVWpQR+aD98wJn9TFmjKTnCV9pv5k root@mini (nix remote build)'';
 
-  mini.bf.default = ''ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTl8tsKUmHqO5eJoPvAVSu5vm7Ibml9rYxAblTUU/dl+zip7RNfl178qaX4nwUHkI3qsITJ8yQr42iIanvIPpCvM5V4rYjDmD7R4R8wSvzsrxegipG+kXfItlgsmCIuNsYZNCPtxESsLMW6tuJBfFy8L0IGmwYXLNNj7NIsrI4ElOhmWHz+VppZU1R74IghC+ZWJkkqoc9Ayt17ezLfBPYYuoan60H2/KOBtJX5qjfdxGXF5H7Oa7SBE/0zZ5Eaq8MudM/7CClc2nA787xadp8O6aQoF/ZB27dwr3mK2IugYc7w2rDlT67iQHLT27LKMU74CY//xSqkGUZOyGDAN7B bf@mini'';
+  mini.bf.default = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILCS9V2jUQGA3qcd7x7amjdhRZidqz8iD+MBkgjY0AN/ bf@mini'';
 
-  whitetip.bf.default = ''ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfy7XFi35G277tbjGzFeFdbtz8c3b9dQcBpE9KlcVVKMG9mMzVQeLJkehqi/NGyzV7DcJgvFW0vFJaRbQbOVuIlnC3rCwO+NUJW+48aarnna1Izv6ihHp5vprYhZT9AANfUUsaCy5ZBVljlJ34S8gJNvmq7oogh9ioi9hE3LvdZMC0M6k2WZG5+lPlDWbNjuWlYF9e9XVJlopU+xfNy98u0djyBo2urkqtNT8vXu49JarKpxgi3tMDv2pZFNNICukWsg8EEH6YIhJjsiO0RdnanzO/yQK2/SQtq0GjnzEaRilAgiUnGHC7f7iOBeNhc+hUcKltBlWmPsF9ZV5txZDT bf@whitetip'';
+  whitetip.bf.default = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEp3BjfuW2qc4qmAogtPOPdKChXOWY3PIx4UQkQbQg+A bf@whitetip'';
   whitetip.root.nix_remote_build = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOgHOn3+Sr8WUZQiEVN3NZ6nXOL1NPUSo2Sen+63G6j root@whitetip (nix remote build)'';
   whitetip.root.backup = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAMnppoIYKUmeW09hw2nEofL3aDL12T/P8P81HMnwPpE root@whitetip (for backup automation)'';
 
