@@ -235,4 +235,6 @@ in
     lib.mkIf (lib.versionAtLeast (lib.version or lib.nixpkgsVersion) "18.09")
       gitwebConfig;
 
+  # nextcloud startup can take a lot of time due to rsync in the data dir
+  systemd.services.lighttpd.serviceConfig.TimeoutStartSec = "60m";
 }
