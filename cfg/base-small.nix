@@ -32,26 +32,6 @@
     #device = /*lib.mkDefault*/ "nodev";
   };
 
-  boot.extraModprobeConfig = ''
-    # Disable UAS for Seagate Expansion Drive, because it is unstable. At least
-    # on USB3. The end result is disconnects and filesystem corruption (NTFS).
-    # TODO: Report to upstream about UAS instability. (Run
-    # '<linux>/scripts/get_maintainer.pl -f ./drivers/usb/storage/uas.c') to
-    # see who to email.)
-    #
-    # UPDATE: The blacklisting doesn't have any effect on my main desktop
-    # system, the disk is still handled by "uas" driver. My main system is
-    # Intel i5-3570K, Zotac Z77ITX motherboard, running the mini.nix NixOS
-    # configuration. However, on _another_ Intel i5-3570K system, with an MSI
-    # Z68A-GD65 motherboard and running a minimal configuration on top of
-    # base-medium.nix, the blacklisting _does work_:
-    #
-    #   kernel: usb 6-2: UAS is blacklisted for this device, using usb-storage instead
-    #
-    # How weird.
-    options usb-storage quirks=0bc2:2322:u
-  '';
-
   hardware.cpu.amd.updateMicrocode = true;
   hardware.cpu.intel.updateMicrocode = true;
 
