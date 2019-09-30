@@ -7,15 +7,6 @@
 
   keil-uvision-c51 = pkgs.callPackage ./keil-uvision-c51 { };
 
-  libfaketime = pkgs.libfaketime.overrideAttrs (oldAttrs: rec {
-    name = "libfaketime-${version}";
-    version = "0.9.7";
-    src = pkgs.fetchurl {
-      url = "https://github.com/wolfcw/libfaketime/archive/v${version}.tar.gz";
-      sha256 = "07l189881q0hybzmlpjyp7r5fwz23iafkm957bwy4gnmn9lg6rad";
-    };
-  });
-
   ltsa = pkgs.callPackage ./ltsa/default.nix { };
 
   roomeqwizard = pkgs.callPackage ./roomeqwizard { };
