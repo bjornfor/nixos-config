@@ -2,7 +2,7 @@
 
 let
   myDomain = "bforsman.name";
-  phpSockName1 = "/run/phpfpm/pool1.sock";
+  phpSockName1 = config.services.phpfpm.pools.pool1.socket;
   acmeChallengesDir = "/var/www/challenges/";
   gitwebConfig = {
     projectroot = "${config.services.gitolite.dataDir}/repositories";
@@ -163,18 +163,21 @@ in
         else {});
     };
 
-    phpfpm.poolConfigs = lib.mkIf config.services.lighttpd.enable {
-      pool1 = ''
-        listen = ${phpSockName1}
-        listen.group = lighttpd
-        user = nobody
-        pm = dynamic
-        pm.max_children = 75
-        pm.start_servers = 10
-        pm.min_spare_servers = 5
-        pm.max_spare_servers = 20
-        pm.max_requests = 500
-      '';
+    phpfpm.pools = lib.mkIf config.services.lighttpd.enable {
+      pool1 = {
+        user = "lighttpd";
+        group = "lighttpd";
+        settings = {
+          "listen.owner" = "lighttpd";
+          "listen.group" = "lighttpd";
+          "pm" = "dynamic";
+          "pm.max_children" = 75;
+          "pm.start_servers" = 10;
+          "pm.min_spare_servers" = 5;
+          "pm.max_spare_servers" = 20;
+          "pm.max_requests" = 500;
+        };
+      };
     };
 
     collectd = {
@@ -235,6 +238,11 @@ in
     lib.mkIf (lib.versionAtLeast (lib.version or lib.nixpkgsVersion) "18.09")
       gitwebConfig;
 
-  # nextcloud startup can take a lot of time due to rsync in the data dir
-  systemd.services.lighttpd.serviceConfig.TimeoutStartSec = "60m";
+  systemd.services.lighttpd = {
+    # nextcloud startup can take a lot of time due to rsync in the data dir
+    serviceConfig.TimeoutStartSec = "60m";
+    wants = [ "acme-selfsigned-${myDomain}.service" "acme-${myDomain}.service" ];
+    after = [ "acme-selfsigned-${myDomain}.service" ];
+  };
+
 }

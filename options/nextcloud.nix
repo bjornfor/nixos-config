@@ -4,7 +4,7 @@ with lib;
 
 let
   cfg = config.services.lighttpd.nextcloud;
-  phpfpmSocketName = "/run/phpfpm/nextcloud.sock";
+  phpfpmSocketName = config.services.phpfpm.pools.nextcloud.socket;
 in
 {
   options.services.lighttpd.nextcloud = {
@@ -96,19 +96,21 @@ in
       '';
     };
 
-    services.phpfpm.poolConfigs = {
-      nextcloud = ''
-        listen = ${phpfpmSocketName}
-        listen.group = lighttpd
-        user = lighttpd
-        group = lighttpd
-        pm = dynamic
-        pm.max_children = 75
-        pm.start_servers = 10
-        pm.min_spare_servers = 5
-        pm.max_spare_servers = 20
-        pm.max_requests = 500
-      '';
+    services.phpfpm.pools = {
+      nextcloud = {
+        user = "lighttpd";
+        group = "lighttpd";
+        settings = {
+          "listen.owner" = "lighttpd";
+          "listen.group" = "lighttpd";
+          "pm" = "dynamic";
+          "pm.max_children" = 75;
+          "pm.start_servers" = 10;
+          "pm.min_spare_servers" = 5;
+          "pm.max_spare_servers" = 20;
+          "pm.max_requests" = 500;
+        };
+      };
     };
 
   };

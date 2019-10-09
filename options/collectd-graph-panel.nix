@@ -5,7 +5,7 @@ with lib;
 let
   cfg = config.services.lighttpd.collectd-graph-panel;
 
-  phpfpmSocketName = "/run/phpfpm/collectd-graph-panel.sock";
+  phpfpmSocketName = config.services.phpfpm.pools.collectd-graph-panel.socket;
 
   collectd-graph-panel-1 =
     pkgs.stdenv.mkDerivation rec {
@@ -109,19 +109,21 @@ in
       '';
     };
 
-    services.phpfpm.poolConfigs = {
-      collectd-graph-panel = ''
-        listen = ${phpfpmSocketName}
-        listen.group = lighttpd
-        user = lighttpd
-        group = lighttpd
-        pm = dynamic
-        pm.max_children = 75
-        pm.start_servers = 10
-        pm.min_spare_servers = 5
-        pm.max_spare_servers = 20
-        pm.max_requests = 500
-      '';
+    services.phpfpm.pools = {
+      collectd-graph-panel = {
+        user = "lighttpd";
+        group = "lighttpd";
+        settings = {
+          "listen.owner" = "lighttpd";
+          "listen.group" = "lighttpd";
+          "pm" = "dynamic";
+          "pm.max_children" = 75;
+          "pm.start_servers" = 10;
+          "pm.min_spare_servers" = 5;
+          "pm.max_spare_servers" = 20;
+          "pm.max_requests" = 500;
+        };
+      };
     };
   };
 

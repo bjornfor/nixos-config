@@ -5,16 +5,11 @@
     MAILADDR root
   '';
 
-  systemd.services.mdadm-monitor = {
-    description = "Mdadm Raid Array Monitor";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "postfix.service" ];
-    serviceConfig.ExecStart = "${pkgs.mdadm}/bin/mdadm --monitor --scan";
-  };
-
   # Hack to run degraded arrays.
   # TODO: Let upstream (mdadm) udev rules invoke upstream systemd service
-  # units. dracut initrds do this, NixOS initrd does not.
+  # units. dracut initrds do this, NixOS initrd does not (AFAIK). Since version
+  # 19.09, NixOS does use upstream units, but only after the rootfs has been
+  # mounted (too late).
   boot.initrd.preLVMCommands = ''
     for dev in /dev/md*; do
         if [ -b "$dev" ]; then

@@ -15,7 +15,7 @@ let
 
   appDir = "/var/lib/${appName}";
 
-  phpfpmSocketName = "/run/phpfpm/${appName}.sock";
+  phpfpmSocketName = config.services.phpfpm.pools."${appName}".socket;
 
   mytinytodo =
     pkgs.stdenv.mkDerivation rec {
@@ -69,19 +69,21 @@ in
       '';
     };
 
-    services.phpfpm.poolConfigs = {
-      mytinytodo = ''
-        listen = ${phpfpmSocketName}
-        listen.group = lighttpd
-        user = lighttpd
-        group = lighttpd
-        pm = dynamic
-        pm.max_children = 75
-        pm.start_servers = 10
-        pm.min_spare_servers = 5
-        pm.max_spare_servers = 20
-        pm.max_requests = 500
-      '';
+    services.phpfpm.pools = {
+      "${appName}" = {
+        user = "lighttpd";
+        group = "lighttpd";
+        settings = {
+          "listen.owner" = "lighttpd";
+          "listen.group" = "lighttpd";
+          "pm" = "dynamic";
+          "pm.max_children" = 75;
+          "pm.start_servers" = 10;
+          "pm.min_spare_servers" = 5;
+          "pm.max_spare_servers" = 20;
+          "pm.max_requests" = 500;
+        };
+      };
     };
 
     systemd.services.lighttpd.preStart = ''
