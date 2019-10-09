@@ -68,6 +68,8 @@ in
     gc.dates = lib.mkForce "weekly";
   };
 
+  services.atd.enable = true;
+
   users.extraUsers.bf.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
     mini.bf.default
     whitetip.bf.default
