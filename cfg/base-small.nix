@@ -86,11 +86,6 @@
     wheelNeedsPassword = false;
   };
 
-  security.pam.loginLimits = [
-    { domain = "@audio"; type = "-"; item = "rtprio"; value = "75"; }
-    { domain = "@audio"; type = "-"; item = "memlock"; value = "500000"; }
-  ];
-
   nixpkgs.config = import ./nixpkgs-config.nix;
 
   time.timeZone = "Europe/Oslo";
