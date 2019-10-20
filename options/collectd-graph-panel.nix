@@ -111,6 +111,9 @@ in
 
     services.phpfpm.pools = {
       collectd-graph-panel = {
+        # Unbreak by using php-7.2 instead of default 7.3:
+        # Ref. https://github.com/pommi/CGP/issues/171
+        phpPackage = pkgs.php72;
         user = "lighttpd";
         group = "lighttpd";
         settings = {
