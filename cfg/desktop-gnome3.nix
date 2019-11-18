@@ -15,6 +15,13 @@
     gnomeExtensions.gsconnect
     gnomeExtensions.nohotcorner
     gnomeExtensions.system-monitor
+
+    gnome3.gnome-documents
+    gnome3.gnome-nettool
+    gnome3.gnome-power-manager
+    gnome3.gnome-todo
+    gnome3.gnome-tweaks
+    gnome3.gnome-usage
   ];
 
 }
