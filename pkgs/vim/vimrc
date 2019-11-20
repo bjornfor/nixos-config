@@ -367,6 +367,8 @@ autocmd BufNewFile,BufRead *.robomachine setlocal ft=robot
 "au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 "set completeopt=menuone,menu,longest,preview
 set completeopt=menuone
+" with deoplete, this allows inserting the current selection more naturally
+set completeopt+=noinsert
 
 " AutoTag
 "let g:autotagCtagsCmd="ctags --c++-kinds=+p --c-kinds=+l --fields=+iaS --extra=+q"
