@@ -25,6 +25,7 @@ let
       start = [
         csapprox
         csv-vim
+        deoplete-nvim
         editorconfig-vim
         fugitive
         fzf-vim

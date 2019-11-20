@@ -409,6 +409,8 @@ nnoremap <Leader>l :call LanguageClient_contextMenu()<CR>
 "nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 "nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
+" deoplete is a completion engine, a useful complement to LSP servers
+let g:deoplete#enable_at_startup = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Host specific
