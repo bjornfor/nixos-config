@@ -394,12 +394,18 @@ nnoremap <silent> <M-k> :TmuxNavigateUp<CR>
 nnoremap <silent> <M-l> :TmuxNavigateRight<CR>
 "nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<CR>
 
+let s:cclsCmd = ['ccls']
+"let s:cclsCmd += ['-log-file=ccls.log', '-v=1']
 let g:LanguageClient_serverCommands = {
-    \ 'c': ['ccls'],
-    \ 'cpp': ['ccls'],
+    \ 'c': s:cclsCmd,
+    \ 'cpp': s:cclsCmd,
     \ 'python': ['pyls'],
     \ 'rust': ['rls'],
     \ }
+
+"let g:LanguageClient_loggingLevel='DEBUG'
+"let g:LanguageClient_loggingFile='languageclient.log'
+"let g:LanguageClient_trace = 'messages'
 
 " Uncomment if the environment is not set up properly and LSP spams the view
 " with warnings and errors.
