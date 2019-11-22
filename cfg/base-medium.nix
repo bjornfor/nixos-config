@@ -36,6 +36,7 @@
     bc
     borgbackup
     bridge-utils
+    ccls
     chromium
     cifs_utils  # for mount.cifs, needed for cifs filesystems in systemd.mounts.
     cquery

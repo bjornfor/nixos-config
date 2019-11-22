@@ -395,8 +395,8 @@ nnoremap <silent> <M-l> :TmuxNavigateRight<CR>
 "nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<CR>
 
 let g:LanguageClient_serverCommands = {
-    \ 'c': ['cquery'],
-    \ 'cpp': ['cquery'],
+    \ 'c': ['ccls'],
+    \ 'cpp': ['ccls'],
     \ 'python': ['pyls'],
     \ 'rust': ['rls'],
     \ }
