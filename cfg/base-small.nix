@@ -50,7 +50,7 @@
 
     # Automatic garbage collection
     gc.automatic = true;
-    gc.dates = "00:15";
+    gc.dates = "Mon *-*-* 00:00:00";
     gc.options = "--delete-older-than 14d";
   };
 
