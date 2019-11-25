@@ -318,6 +318,22 @@ in
     cifs_utils  # for mount.cifs, needed for cifs filesystems in systemd.mounts.
   ];
 
+  users.extraUsers = {
+    # A system user for backup automation
+    backup = {
+      description = "Backup user";
+      uid = 600;
+      group = "backup";
+      home = "/var/lib/backup";
+      createHome = true;
+      useDefaultShell = true;
+    };
+  };
+
+  users.extraGroups = {
+    backup = { gid = 600; };
+  };
+
   users.extraUsers.backup.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
     (''command="dir=\"${backupDiskMountpoint}/backups/hosts/media.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + media.root.backup)
     (''command="dir=\"${backupDiskMountpoint}/backups/hosts/mini.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + mini.root.backup)

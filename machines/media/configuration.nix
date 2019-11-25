@@ -8,6 +8,8 @@
     ../../cfg/bcache.nix
     ../../cfg/nix-remote-build-client.nix
     ../../cfg/smart-daemon.nix
+    ../../users/bf.nix
+    ../../users/media.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -61,20 +63,6 @@
   services.xserver.displayManager.gdm.autoLogin.enable = true;
   services.xserver.displayManager.gdm.autoLogin.user = "media";
   virtualisation.libvirtd.enable = lib.mkForce false;
-
-  users.extraUsers = {
-    media = {
-      description = "Media user";
-      uid = 1001;
-      extraGroups = [
-        "cdrom"
-        "transmission"
-        "wheel"
-      ];
-      isNormalUser = true;
-      initialPassword = "media";
-    };
-  };
 
   users.extraUsers.bf.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
     mini.bf.default

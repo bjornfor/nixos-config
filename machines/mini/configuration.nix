@@ -8,6 +8,7 @@
     ../../cfg/disable-suspend.nix
     ../../cfg/nix-remote-build-client.nix
     ../../cfg/smart-daemon.nix
+    ../../users/bf.nix
   ];
 
   fileSystems = {

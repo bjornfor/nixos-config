@@ -6,7 +6,6 @@
     ./kernel.nix
     ./keyboard.nix
     ./shell.nix
-    ./users-and-groups.nix
 
     ../options/borg-backup.nix
     ../options/cifs-user-mount.nix
@@ -188,5 +187,14 @@
           # Use config.postfix.rootAlias to configure who gets root's email.
           "${statusEmail} root %i";
     };
+  };
+
+  # groups for managing permissions
+  users.extraGroups = {
+    plugdev = { gid = 500; };
+    tracing = { gid = 501; };
+    usbtmc = { gid = 502; };
+    wireshark = { gid = 503; };
+    usbmon = { gid = 504; };
   };
 }

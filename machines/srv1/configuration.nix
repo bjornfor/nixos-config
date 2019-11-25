@@ -13,7 +13,6 @@ in
     ./webserver.nix
 
     ../../cfg/base-small.nix
-
     ../../cfg/backup-server.nix
     ../../cfg/bcache.nix
     ../../cfg/cgit.nix
@@ -24,7 +23,7 @@ in
     ../../cfg/smart-daemon.nix
     ../../cfg/swraid.nix
     ../../cfg/transmission.nix
-    ../../cfg/users-and-groups.nix
+    ../../users/bf.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
