@@ -158,6 +158,8 @@
     ];
   };
 
+  programs.wireshark.enable = true;
+
   services = {
     atd.enable = true;
 

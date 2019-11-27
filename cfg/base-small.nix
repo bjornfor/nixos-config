@@ -55,18 +55,6 @@
   };
 
   security.wrappers = {}
-    // (if (builtins.elem pkgs.wireshark config.environment.systemPackages) then {
-         dumpcap = {
-           # Limit access to dumpcap to root and members of the wireshark group.
-           source = "${pkgs.wireshark}/bin/dumpcap";
-           program = "dumpcap";
-           owner = "root";
-           group = "wireshark";
-           setuid = true;
-           setgid = false;
-           permissions = "u+rx,g+x";
-         };
-       } else {})
     // (if (builtins.elem pkgs.smartmontools config.environment.systemPackages) then {
          smartctl = {
            # Limit access to smartctl to root and members of the munin group.
@@ -194,7 +182,6 @@
     plugdev = { gid = 500; };
     tracing = { gid = 501; };
     usbtmc = { gid = 502; };
-    wireshark = { gid = 503; };
     usbmon = { gid = 504; };
   };
 }
