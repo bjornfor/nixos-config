@@ -5,7 +5,4 @@
 
   firefox.enableAdobeFlash = true;
   chromium.enablePepperFlash = true;
-
-  packageOverrides = pkgs:
-    import ../pkgs/default.nix { inherit pkgs;  };
 }

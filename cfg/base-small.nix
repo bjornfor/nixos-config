@@ -74,6 +74,7 @@
   };
 
   nixpkgs.config = import ./nixpkgs-config.nix;
+  nixpkgs.overlays = import ./nixpkgs-overlays.nix;
 
   time.timeZone = "Europe/Oslo";
 
