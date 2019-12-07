@@ -40,6 +40,7 @@ let
 in
 {
   inherit iso;
+  localPkgs = import ./pkgs/default.nix { inherit pkgs; };
   machines = pkgs.recurseIntoAttrs {
     media = buildConfig ./machines/media/configuration.nix;
     mini = buildConfig ./machines/mini/configuration.nix;
