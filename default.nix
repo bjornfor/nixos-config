@@ -23,6 +23,15 @@ let
           mini.bf.default
           whitetip.bf.default
         ];
+
+        isoImage.contents = [
+          { source = pkgs.writeText "readme"
+              ''
+                Custom NixOS installer built from @bjornfor's nixos-config git repo.
+              '';
+            target = "/README.txt";
+          }
+        ];
       };
     }).config.system.build.isoImage;
 
