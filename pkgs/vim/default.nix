@@ -37,6 +37,7 @@ let
         nerdtree
         taglist-vim
         vim-airline
+        vim-eunuch
         vim-gitgutter
         vim-nix
         vim-speeddating
