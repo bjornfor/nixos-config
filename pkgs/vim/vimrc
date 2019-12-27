@@ -394,7 +394,7 @@ nnoremap <silent> <M-k> :TmuxNavigateUp<CR>
 nnoremap <silent> <M-l> :TmuxNavigateRight<CR>
 "nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<CR>
 
-let s:cclsCmd = ['ccls']
+let s:cclsCmd = ['ccls', '-init={"cache": {"directory": "/tmp/ccls-cache"}}']
 "let s:cclsCmd += ['-log-file=ccls.log', '-v=1']
 let g:LanguageClient_serverCommands = {
     \ 'c': s:cclsCmd,
