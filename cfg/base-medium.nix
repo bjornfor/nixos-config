@@ -100,6 +100,7 @@
     pythonPackages.sympy
     python2nix
     ripgrep
+    rls
     rmlint
     samba
     silver-searcher

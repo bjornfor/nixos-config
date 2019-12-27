@@ -19,7 +19,18 @@
 
 let
   vimConfig = {
-    customRC = builtins.readFile ./vimrc;
+    customRC =
+      let
+        # get the ./src/ tree from the source tarball of a rustc package
+        mkRustSrcPath = rustc:
+          pkgs.runCommand "${rustc.name}-srcpath" { preferLocalBuild = true; } ''
+            mkdir -p "$out"
+            tar --strip-components=2 -xf "${rustc.src}" -C "$out" "${rustc.name}-src"
+          '';
+      in
+        (builtins.readFile ./vimrc) + ''
+          let $RUST_SRC_PATH = '${mkRustSrcPath pkgs.rustc}'
+        '';
     packages.myVimPackage = with pkgs.vimPlugins; {
       # loaded on launch
       start = [
@@ -40,6 +51,7 @@ let
         vim-eunuch
         vim-gitgutter
         vim-nix
+        vim-racer
         vim-speeddating
         vim-tmux-navigator
       ];
