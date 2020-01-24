@@ -2,11 +2,39 @@
 
 let
   backupDiskMountpoint = "/mnt/backup-disk";
-  externalBackupDiskLabels = [
-    "usb_4tb_backup4"
-    "usb_4tb_backup5"
-    "usb_4tb_backup6"
-  ];
+
+  # The external backup is split over two disk sets. Each set has 3 disks in
+  # rotation. Complete sets are found on disks (n,n+3), for example (1,4). Each
+  # week the disk set gets rotated in a round robin fashion.
+  #
+  # sourceDirs is relative to "${backupDiskMountpoint}/backups/hosts".
+  backupSet0 = {
+    sourceDirs = [
+      "maria-pc"
+    ];
+    diskLabels = [
+      "usb_4tb_backup1"
+      "usb_4tb_backup2"
+      "usb_4tb_backup3"
+    ];
+  };
+
+  backupSet1 = {
+    sourceDirs = [
+      "media.local"
+      "mini.local"
+      "srv1.local"
+      "whitetip.local"
+    ];
+    diskLabels = [
+      "usb_4tb_backup4"
+      "usb_4tb_backup5"
+      "usb_4tb_backup6"
+    ];
+  };
+
+  externalBackupDiskLabels = backupSet0.diskLabels ++ backupSet1.diskLabels;
+
   printBackupAgeInDays = pkgs.writeScript "print-backup-age-in-days" ''
     #!${pkgs.bash}/bin/sh
     set -e
@@ -29,6 +57,34 @@ let
         exit 1
     fi
   '';
+
+  # Use borg for this?
+  mkExternalBackupService = backupSetInfo: id:
+  {
+    description = "External Backup Set ${toString id}";
+    # every morning (try to make it so all other backup jobs have completed
+    # before this)
+    startAt = "*-*-* 06:00:00";
+    path = with pkgs; [ utillinux rsync ];
+    script = ''
+      num_copies=0
+      for diskLabel in ${toString backupSetInfo.diskLabels}; do
+         if [ -a "/dev/disk/by-label/$diskLabel" ]; then
+             mp="/mnt/$diskLabel"
+             set -x
+             for srcDir in ${toString backupSetInfo.sourceDirs}; do
+                 rsync -ai --delete "${backupDiskMountpoint}/backups/hosts/$srcDir/" "$mp/backups/hosts/$srcDir/"
+             done
+             set +x
+             num_copies=$((num_copies + 1))
+         fi
+      done
+
+      echo "Made $num_copies backup copies of: ${toString backupSetInfo.sourceDirs}"
+    '';
+    serviceConfig.Restart = "on-failure";
+  };
+
 in
 {
   fileSystems = {
@@ -132,28 +188,8 @@ in
     '';
   };
 
-  # Use borg for this?
-  systemd.services.external-backup = {
-    description = "External Backup";
-    # every morning (try to make it so all other backup jobs have completed
-    # before this)
-    startAt = "*-*-* 06:00:00";
-    path = with pkgs; [ utillinux rsync ];
-    script = ''
-      num_copies=0
-      for dev in ${lib.concatMapStringsSep " " (x: "/dev/disk/by-label/${x}") externalBackupDiskLabels}; do
-         if [ -a "$dev" ]; then
-             mp="/mnt/$(basename "$dev")"
-             set -x
-             rsync -ai --delete "${backupDiskMountpoint}/backups/" "$mp"/backups/
-             set +x
-             num_copies=$((num_copies + 1))
-         fi
-      done
-      echo "Made $num_copies backup copies"
-    '';
-    serviceConfig.Restart = "on-failure";
-  };
+  systemd.services.external-backup0 = mkExternalBackupService backupSet0 0;
+  systemd.services.external-backup1 = mkExternalBackupService backupSet1 1;
 
   systemd.services.mount-borg-backup-maria-pc = {
     description = "Mount Borg Backup Repository for Maria PC";
