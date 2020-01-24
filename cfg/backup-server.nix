@@ -81,6 +81,10 @@ let
       done
 
       echo "Made $num_copies backup copies of: ${toString backupSetInfo.sourceDirs}"
+
+      if [ "$num_copies" -eq 0 ]; then
+          exit 1
+      fi
     '';
     serviceConfig.Restart = "on-failure";
   };
