@@ -87,6 +87,7 @@ let
       fi
     '';
     serviceConfig.Restart = "on-failure";
+    serviceConfig.SyslogIdentifier = "external-backup${toString id}";
   };
 
 in
