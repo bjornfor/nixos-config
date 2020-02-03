@@ -187,9 +187,10 @@ in
     # borg-backup-maria-pc is set to conflict with mount-borg-backup-maria-pc.
     # Because of that we have to start the latter _after_ the backup service.
     # If not, systemd would kill the backup service to resolve the conflict.
-    postStop = ''
-      systemctl start mount-borg-backup-maria-pc
-    '';
+    # TODO: mount-borg-backup-maria-pc cause frequent borg repo locking issues
+    #postStop = ''
+    #  systemctl start mount-borg-backup-maria-pc
+    #'';
   };
 
   systemd.services.external-backup0 = mkExternalBackupService backupSet0 0;
@@ -197,6 +198,8 @@ in
 
   systemd.services.mount-borg-backup-maria-pc = {
     description = "Mount Borg Backup Repository for Maria PC";
+    # TODO: mount-borg-backup-maria-pc cause frequent borg repo locking issues
+    enable = false;
     wantedBy = [ "multi-user.target" ];
     before = [ "samba.target" ];
     conflicts = [ "borg-backup-maria-pc.service" ];
