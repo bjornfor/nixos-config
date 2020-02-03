@@ -86,7 +86,6 @@ let
           exit 1
       fi
     '';
-    serviceConfig.Restart = "on-failure";
     serviceConfig.SyslogIdentifier = "external-backup${toString id}";
   };
 
