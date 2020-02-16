@@ -21,7 +21,7 @@ let
 
   fullTmuxConf = pkgs.runCommand "tmux.conf"
     { # Variables to be substituted in tmux.conf
-      pythonPackages_powerline = pkgs.pythonPackages.powerline;
+      pythonPackages_powerline = pkgs.python3Packages.powerline;
     }
     ''
       cp ${./tmux.conf} "$out"
@@ -47,7 +47,7 @@ let
 
   tmuxWithConf = pkgs.writeScriptBin "tmux" ''
     #!${pkgs.bash}/bin/bash
-    export PATH="''${PATH}''${PATH:+:}${with pkgs; lib.makeBinPath [ pythonPackages.powerline xclip ]}"
+    export PATH="''${PATH}''${PATH:+:}${with pkgs; lib.makeBinPath [ python3Packages.powerline xclip ]}"
     exec "${pkgs.tmux}/bin/tmux" -f "${fullTmuxConf}" "$@"
   '';
 
