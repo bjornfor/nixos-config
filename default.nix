@@ -42,6 +42,9 @@ in
   inherit iso;
   localPkgs = import ./pkgs/default.nix { inherit pkgs; };
   machines = pkgs.recurseIntoAttrs {
+    # FIXME: Machines that set 'boot.loader.systemd-boot.enable = true' fail to
+    # build the vmWithBootloader attribute, ref
+    # https://github.com/NixOS/nixpkgs/pull/65133.
     media = buildConfig ./machines/media/configuration.nix;
     mini = buildConfig ./machines/mini/configuration.nix;
     srv1 = buildConfig ./machines/srv1/configuration.nix;
