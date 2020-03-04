@@ -3,6 +3,7 @@
 {
   imports = [
     ./avahi.nix
+    ./cpu-update-microcode.nix
     ./kernel.nix
     ./keyboard.nix
     ./shell.nix
@@ -25,9 +26,6 @@
     # Then you install using "/dev/..." and set it to "nodev" afterwards.
     #device = /*lib.mkDefault*/ "nodev";
   };
-
-  hardware.cpu.amd.updateMicrocode = true;
-  hardware.cpu.intel.updateMicrocode = true;
 
   nix = {
     useSandbox = true;
