@@ -67,6 +67,7 @@
     #qtcreator
     remake
     remmina
+    roomeqwizard
     saleae-logic
     shotwell
     sigrok-cli
