@@ -73,6 +73,7 @@
     sigrok-cli
     simplescreenrecorder
     skype
+    slack
     sloccount
     socat
     solfege
