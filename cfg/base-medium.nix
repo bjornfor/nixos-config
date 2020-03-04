@@ -51,6 +51,7 @@
     firefox
     gcc
     gdb
+    gitAndTools.git-recent
     gitFull
     gnumake
     hdparm
