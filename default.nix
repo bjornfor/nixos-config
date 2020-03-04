@@ -53,6 +53,7 @@ let
       configuration = {
         imports = [
           (pkgs.path + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
+          #(pkgs.path + "/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix")
           #(pkgs.path + "/nixos/modules/installer/cd-dvd/installation-cd-graphical-kde.nix")
 
           # Provide an initial copy of the NixOS channel so that the user
