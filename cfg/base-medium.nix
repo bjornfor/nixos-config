@@ -124,6 +124,7 @@
     vbindiff
     vifm
     vlc
+    wavemon
     wget
     wgetpaste
     which
