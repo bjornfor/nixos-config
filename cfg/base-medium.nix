@@ -83,6 +83,7 @@
     nix-prefetch-scripts
     nix-review
     nix-serve
+    nix-top
     ntfs3g
     owncloud-client
     p7zip
