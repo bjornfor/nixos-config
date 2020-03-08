@@ -77,6 +77,7 @@
     networkmanager
     networkmanagerapplet
     nixops
+    nixpkgs-fmt
     nixpkgs-lint
     nix-bash-completions
     nix-generate-from-cpan
