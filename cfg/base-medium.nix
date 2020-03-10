@@ -100,7 +100,6 @@
     psmisc
     pv
     pythonFull
-    pythonPackages.demjson  # has a jsonlint command line tool (alternative: json_pp from perl)
     pythonPackages.glances
     pythonPackages.ipython
     pythonPackages.sympy
