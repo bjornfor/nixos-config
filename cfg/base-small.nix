@@ -95,7 +95,7 @@
   ];
 
   fonts.fonts = with pkgs; [
-    #pythonPackages.powerline  # looks ok
+    #python3Packages.powerline  # looks ok
     powerline-fonts            # looks better
   ];
 
@@ -107,8 +107,8 @@
         mkdir -p /bin /usr/bin
         ln -sfv ${pkgs.bash}/bin/sh /bin/bash
         ln -sfv ${pkgs.perl}/bin/perl /usr/bin/perl
-        ln -sfv ${pkgs.python2Full}/bin/python /usr/bin/python
-        ln -sfv ${pkgs.python2Full}/bin/python /usr/bin/python2
+        ln -sfv ${pkgs.python3Full}/bin/python /usr/bin/python
+        ln -sfv ${pkgs.python3Full}/bin/python /usr/bin/python3
     else
         # clean up
         find /bin /usr/bin -type l | while read file; do if [ "$file" != "/bin/sh" -a "$file" != "/usr/bin/env" ]; then rm -v "$file"; fi; done

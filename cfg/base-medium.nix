@@ -99,10 +99,10 @@
     powertop
     psmisc
     pv
-    pythonFull
-    pythonPackages.glances
-    pythonPackages.ipython
-    pythonPackages.sympy
+    python3Full
+    python3Packages.glances
+    python3Packages.ipython
+    python3Packages.sympy
     python2nix
     (python3.pkgs.buildPythonPackage rec {
       pname = "nix-bisect";
