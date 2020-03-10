@@ -99,24 +99,25 @@
     powertop
     psmisc
     pv
-    python3Full
-    python3Packages.glances
+    (python3Full.withPackages (ps: [
+      (python3.pkgs.buildPythonPackage rec {
+        pname = "nix-bisect";
+        version = "0.2.0";
+        src = pkgs.fetchFromGitHub {
+          owner = "timokau";
+          repo = "nix-bisect";
+          rev = "v${version}";
+          sha256 = "0rg7ndwbn44kximipabfbvvv5jhgi6vs87r64wfs5by81iw0ivam";
+        };
+      })
+    ]))
     (python3Packages.ipython.overrideAttrs (oldAttrs: {
       propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or []) ++ [
         python3Packages.sympy
       ];
     }))
     python2nix
-    (python3.pkgs.buildPythonPackage rec {
-      pname = "nix-bisect";
-      version = "0.2.0";
-      src = pkgs.fetchFromGitHub {
-        owner = "timokau";
-        repo = "nix-bisect";
-        rev = "v${version}";
-        sha256 = "0rg7ndwbn44kximipabfbvvv5jhgi6vs87r64wfs5by81iw0ivam";
-      };
-    })
+    python3Packages.glances
     ripgrep
     rls
     rmlint
