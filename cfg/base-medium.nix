@@ -81,6 +81,7 @@
     nixpkgs-lint
     nix-bash-completions
     nix-generate-from-cpan
+    nix-index
     nix-prefetch-scripts
     nix-review
     nix-serve
