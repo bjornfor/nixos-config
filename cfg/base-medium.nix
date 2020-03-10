@@ -101,8 +101,11 @@
     pv
     python3Full
     python3Packages.glances
-    python3Packages.ipython
-    python3Packages.sympy
+    (python3Packages.ipython.overrideAttrs (oldAttrs: {
+      propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or []) ++ [
+        python3Packages.sympy
+      ];
+    }))
     python2nix
     (python3.pkgs.buildPythonPackage rec {
       pname = "nix-bisect";
