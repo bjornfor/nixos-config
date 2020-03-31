@@ -122,6 +122,7 @@
     rls
     rmlint
     samba
+    scrcpy
     silver-searcher
     smartmontools
     sqlite-interactive
