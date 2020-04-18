@@ -67,6 +67,7 @@
     #qtcreator
     remake
     remmina
+    riot-desktop
     roomeqwizard
     saleae-logic
     shotwell
