@@ -259,4 +259,12 @@
     };
 
   };
+
+  # Sources that often disappear from the internet and makes rebuilding
+  # impossible without upgrading first.
+  system.extraDependencies = with pkgs; [
+    flashplayer.src
+    spotify.src
+    torbrowser.src
+  ];
 }
