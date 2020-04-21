@@ -47,12 +47,23 @@
     export HISTCONTROL=ignoreboth   # ignorespace + ignoredups
     export HISTSIZE=1000000         # big big history
     export HISTFILESIZE=$HISTSIZE
-    shopt -s histappend             # append to history, don't overwrite it
 
     # Disable use of Ctrl-S/Ctrl-Q to stop/start process output. This frees up
     # those keys to do other stuff.
     stty stop ""
     stty start ""
+  '';
+
+  environment.sessionVariables = {
+    NIX_AUTO_INSTALL = "1";
+    EDITOR = "vim";
+    VISUAL = "vim";
+  };
+
+  programs.bash.enableCompletion = true;
+
+  programs.bash.interactiveShellInit = ''
+    shopt -s histappend             # append to history, don't overwrite it
 
     # Add completion for my taskwarrior "t" alias. Hm, we must force load the
     # original completion file first, or else the _task function will not be
@@ -66,14 +77,6 @@
     # Try ctrl-r, ctrl-t or alt-c
     source "${pkgs.fzf}/share/fzf/key-bindings.bash"
   '';
-
-  environment.sessionVariables = {
-    NIX_AUTO_INSTALL = "1";
-    EDITOR = "vim";
-    VISUAL = "vim";
-  };
-
-  programs.bash.enableCompletion = true;
 
   # Show git info in bash prompt and display a colorful hostname if using ssh.
   programs.bash.promptInit = ''
