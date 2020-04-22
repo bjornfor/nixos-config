@@ -10,12 +10,12 @@ let
     # a snapshot of stable
     pinned = builtins.fetchGit {
       url = nixpkgsGitUrl;
-      ref = "refs/heads/nixos-19.09";
-      rev = "ea553d8c67c6a718448da50826ff5b6916dc9c59"; # 2020-02-03
+      ref = "refs/heads/nixos-20.03";
+      rev = "025deb80b2412e5b7e88ea1de631d1bd65af1840"; # 2020-05-16
     };
     release = builtins.fetchGit {
       url = nixpkgsGitUrl;
-      ref = "refs/heads/release-19.09";
+      ref = "refs/heads/release-20.03";
     };
     master = builtins.fetchGit {
       url = nixpkgsGitUrl;
@@ -25,7 +25,7 @@ let
     # functionality), but command-not-found.pl hardcodes that path (no
     # $NIX_PATH lookup).
     stable-channel = builtins.fetchTarball {
-      url = "https://nixos.org/channels/nixos-19.09/nixexprs.tar.xz";
+      url = "https://nixos.org/channels/nixos-20.03/nixexprs.tar.xz";
     };
     unstable-channel = builtins.fetchTarball {
       url = "https://nixos.org/channels/nixpkgs-unstable/nixexprs.tar.xz";
