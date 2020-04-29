@@ -62,6 +62,11 @@ in
   networking.bridges = {
     br0 = { interfaces = [ lan0 ]; };
   };
+  # TODO: shouldn't have to turn off useDHCP just because dhcpcd doesn't enable
+  # dhcp for bridges by default (that should be handled by the next line).
+  # Ref. https://github.com/NixOS/nixpkgs/pull/82295
+  networking.useDHCP = lib.mkForce false;
+  networking.interfaces.br0.useDHCP = true;
 
   services.atd.enable = true;
 

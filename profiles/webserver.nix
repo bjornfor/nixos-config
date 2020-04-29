@@ -18,6 +18,9 @@ in
 
   users.extraUsers."lighttpd".extraGroups = [ "git" ];
 
+  # See https://letsencrypt.org/repository/
+  security.acme.acceptTerms = true;
+
   security.acme.certs = {
     "${myDomain}" = {
       email = "bjorn.forsman@gmail.com";
