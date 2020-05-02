@@ -63,6 +63,19 @@
   programs.bash.enableCompletion = true;
 
   programs.bash.interactiveShellInit = ''
+    # Continuously save history.
+    # Use "history -n" to load global history into the shell on demand. This is
+    # not on by default because it'd be pretty confusing if arrow-up shows
+    # stuff from _other_ sessions.
+    _append_history()
+    {
+        # preserve exit code
+        local ret=$?
+        history -a
+        return "$ret"
+    }
+    PROMPT_COMMAND+="_append_history;"
+
     shopt -s histappend             # append to history, don't overwrite it
 
     # Add completion for my taskwarrior "t" alias. Hm, we must force load the
