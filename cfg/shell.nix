@@ -7,9 +7,9 @@
     "..2" = "cd ../..";
     "..3" = "cd ../../..";
     "..4" = "cd ../../../..";
-    "g" = "git";
-    "t" = "task";
-    "tmuxm" = "tmux new -A -s main";
+    g = "git";
+    t = "task";
+    tmuxm = "tmux new -A -s main";
   };
 
   environment.interactiveShellInit = ''
