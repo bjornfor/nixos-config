@@ -78,6 +78,11 @@
         history -a
         return "$ret"
     }
+    # Add trailing semi-colon, if needed. (Two consecutive semi-colons is an
+    # error.)
+    if [ "''${PROMPT_COMMAND}" != "" ] && [ "''${PROMPT_COMMAND: -1}" != ";" ]; then
+        PROMPT_COMMAND+=";"
+    fi
     PROMPT_COMMAND+="_append_history;"
 
     shopt -s histappend             # append to history, don't overwrite it
