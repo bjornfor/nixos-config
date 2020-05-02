@@ -8,6 +8,7 @@
     "..3" = "cd ../../..";
     "..4" = "cd ../../../..";
     "t" = "task";
+    "tmuxm" = "tmux new -A -s main";
   };
 
   environment.interactiveShellInit = ''
