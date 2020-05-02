@@ -8,6 +8,7 @@
     "..3" = "cd ../../..";
     "..4" = "cd ../../../..";
     g = "git";
+    grep = "grep --color=auto";
     t = "task";
     tmuxm = "tmux new -A -s main";
   };
