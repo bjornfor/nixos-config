@@ -61,7 +61,7 @@
     NIX_AUTO_INSTALL = "1";
     EDITOR = "vim";
     VISUAL = "vim";
-    LESS = "--ignore-case";
+    LESS = "--ignore-case --quit-if-one-screen";
   };
 
   programs.bash.enableCompletion = true;
