@@ -11,6 +11,7 @@
   environment.systemPackages = with pkgs; [
     # Extensions must be manually enabled in GNOME Tweaks (previously named
     # Tweak Tool). Adding them here only makes them available, but not active.
+    gnomeExtensions.clipboard-indicator
     gnomeExtensions.dash-to-dock
     gnomeExtensions.gsconnect
     gnomeExtensions.system-monitor
