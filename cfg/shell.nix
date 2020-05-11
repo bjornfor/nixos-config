@@ -94,8 +94,18 @@
     complete -o nospace -F _task t
 
     # FZF fuzzy finder configuration
-    # Try "cd **<TAB>"
-    source "${pkgs.fzf}/share/fzf/completion.bash"
+    ${if lib.versionOlder lib.version "20.03" then
+      # git completion is broken when fzf/.../completion.bash is sourced since
+      # nixpkgs commit dc45fc4c ("Install git’s bash completion so that it is
+      # loaded on demand"), i.e. NixOS 20.03. Workaround: instead of "cd
+      # **<TAB>", just "cd <ctrl-t>". (Perhaps it has other features too, but
+      # I'm not using them.)
+      ''
+        # Try "cd **<TAB>"
+        source "${pkgs.fzf}/share/fzf/completion.bash"
+      ''
+      else ""
+    }
     # Try ctrl-r, ctrl-t or alt-c
     source "${pkgs.fzf}/share/fzf/key-bindings.bash"
   '';
