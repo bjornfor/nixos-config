@@ -8,6 +8,7 @@
     ./keyboard.nix
     ./nix-settings.nix
     ./shell.nix
+    ./sudo.nix
 
     ../options/module-list.nix
   ];
@@ -41,11 +42,6 @@
            permissions = "u+rx,g+x";
          };
        } else {});
-
-  security.sudo = {
-    enable = true;
-    wheelNeedsPassword = false;
-  };
 
   nixpkgs.config = import ./nixpkgs-config.nix;
   nixpkgs.overlays = import ./nixpkgs-overlays.nix;
