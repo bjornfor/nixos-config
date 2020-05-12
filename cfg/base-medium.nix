@@ -11,10 +11,6 @@
     ./virtualisation.nix
   ];
 
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    sysdig
-  ];
-
   hardware.sane.enable = true; # scanner support
 
   hardware.pulseaudio = {
@@ -129,7 +125,6 @@
     sshfsFuse
     sshuttle
     stdmanpages
-    sysdig
     sysstat
     taskwarrior
     tcpdump
@@ -179,6 +174,8 @@
       "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
     ];
   };
+
+  programs.sysdig.enable = true;
 
   programs.wireshark.enable = true;
 
