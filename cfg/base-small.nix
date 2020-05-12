@@ -6,6 +6,7 @@
     ./cpu-update-microcode.nix
     ./fhs-compat.nix
     ./fonts.nix
+    ./fstrim.nix
     ./kernel.nix
     ./keyboard.nix
     ./nix-settings.nix
@@ -74,11 +75,6 @@
   ];
 
   services = {
-    fstrim = {
-      enable = true;
-      interval = "daily";
-    };
-
     openssh = {
       enable = true;
       forwardX11 = true;
