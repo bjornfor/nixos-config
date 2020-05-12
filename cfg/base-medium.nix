@@ -7,19 +7,12 @@
     ./desktop-gnome3.nix
     ./dictionary.nix
     ./postfix.nix
+    ./pulseaudio.nix
     ./syncthing.nix
     ./virtualisation.nix
   ];
 
   hardware.sane.enable = true; # scanner support
-
-  hardware.pulseaudio = {
-    enable = true;
-    package = pkgs.pulseaudioFull;
-    daemon.config = {
-      flat-volumes = "no";
-    };
-  };
 
   hardware.bluetooth.enable = true;
 
