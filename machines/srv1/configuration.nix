@@ -13,7 +13,6 @@ in
     ./webserver.nix
 
     ../../cfg/base-small.nix
-    ../../cfg/backup-server.nix
     ../../cfg/bcache.nix
     ../../cfg/cgit.nix
     ../../cfg/git-daemon.nix
@@ -23,6 +22,7 @@ in
     ../../cfg/smart-daemon.nix
     ../../cfg/swraid.nix
     ../../cfg/transmission.nix
+    ../../profiles/backup-server.nix
     ../../users/bf.nix
   ];
 
