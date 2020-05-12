@@ -10,7 +10,6 @@ in
     ./backup.nix
     ./ddclient.nix
     ./syncthing.nix
-    ./webserver.nix
 
     ../../cfg/base-small.nix
     ../../cfg/bcache.nix
@@ -23,6 +22,7 @@ in
     ../../cfg/swraid.nix
     ../../cfg/transmission.nix
     ../../profiles/backup-server.nix
+    ../../profiles/webserver.nix
     ../../users/bf.nix
   ];
 

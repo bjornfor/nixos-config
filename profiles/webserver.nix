@@ -13,7 +13,7 @@ let
 in
 {
   imports = [
-    ../../cfg/mytinytodo.nix
+    ../cfg/mytinytodo.nix
   ];
 
   users.extraUsers."lighttpd".extraGroups = [ "git" ];
