@@ -3,6 +3,7 @@
 {
   imports = [
     ./base-medium.nix
+    ./virtualisation.nix
   ];
 
   environment.systemPackages = with pkgs; [

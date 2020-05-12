@@ -10,7 +10,6 @@
     ./postfix.nix
     ./pulseaudio.nix
     ./syncthing.nix
-    ./virtualisation.nix
   ];
 
   hardware.sane.enable = true; # scanner support
