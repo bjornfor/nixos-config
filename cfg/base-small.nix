@@ -116,6 +116,11 @@
   '';
 
   services = {
+    fstrim = {
+      enable = true;
+      interval = "daily";
+    };
+
     openssh = {
       enable = true;
       forwardX11 = true;
