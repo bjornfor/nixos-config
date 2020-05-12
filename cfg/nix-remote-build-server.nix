@@ -8,7 +8,7 @@ in
   # must be trusted to be allowed to build derivations
   nix.trustedUsers = [ user ];
 
-  users.users.nix-remote-build = {
+  users.users."${user}" = {
     group = user;
     isSystemUser = true;
     useDefaultShell = true;
