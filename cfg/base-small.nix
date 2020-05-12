@@ -4,6 +4,7 @@
   imports = [
     ./avahi.nix
     ./cpu-update-microcode.nix
+    ./fonts.nix
     ./kernel.nix
     ./keyboard.nix
     ./nix-settings.nix
@@ -69,11 +70,6 @@
     my.tmux
     my.vim
     tig
-  ];
-
-  fonts.fonts = with pkgs; [
-    #python3Packages.powerline  # looks ok
-    powerline-fonts            # looks better
   ];
 
   # Make it easier to work with external scripts
