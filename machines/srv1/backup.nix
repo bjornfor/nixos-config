@@ -54,11 +54,7 @@ in
         mountpoint -q "${rootDir}" && { umount_retry "${rootDir}" || exit_status=1; }
         test -d "${rootDir}" && { rmdir "${rootDir}" || exit_status=1; }
         if "${pkgs.lvm2}/bin/lvdisplay" "/dev/${vgname}/$snapshotName" >/dev/null 2>&1; then
-            # expect the first lvremove to hang, due to NixOS 19.09 / systemd / udev / LVM bug,
-            # see https://github.com/NixOS/nixpkgs/issues/71701.
-            { timeout 1m "${pkgs.lvm2}/bin/lvremove" --yes "/dev/${vgname}/$snapshotName" ||
-              "${pkgs.lvm2}/bin/lvremove" --yes "/dev/${vgname}/$snapshotName";
-            } || exit_status=1
+            "${pkgs.lvm2}/bin/lvremove" --yes "/dev/${vgname}/$snapshotName" || exit_status=1
         fi
       '';
     };
