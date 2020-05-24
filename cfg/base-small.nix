@@ -132,9 +132,9 @@
 
   # groups for managing permissions
   users.extraGroups = {
-    plugdev = { gid = 500; };
-    tracing = { gid = 501; };
-    usbtmc = { gid = 502; };
-    usbmon = { gid = 504; };
+    plugdev = { };
+    tracing = { };
+    usbtmc = { };
+    usbmon = { };
   };
 }
