@@ -14,8 +14,8 @@ in
     package = mkOption {
       type = types.package;
       default = pkgs.fetchzip {
-        url = "https://download.nextcloud.com/server/releases/nextcloud-16.0.4.zip";
-        sha256 = "02k6bhwhx6zd156j0gxrfr0xg6pgzdq0z9la1rb8mpzj69yg19gf";
+        url = "https://download.nextcloud.com/server/releases/nextcloud-16.0.10.zip";
+        sha256 = "06x07899p6h7sayarvjc3gfmkk5nzpx2h4i4xx45gzwrhldz6r7s";
       };
       description = "Nextcloud package to use.";
     };
