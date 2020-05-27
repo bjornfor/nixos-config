@@ -162,8 +162,8 @@
       "cmedhionkhpnakcndndgjdbohmhepckk" # Adblock for Youtube™
       "bodncoafpihbhpfljcaofnebjkaiaiga" # appear.in screen sharing
       "iaalpfgpbocpdfblpnhhgllgbdbchmia" # Asciidoctor.js Live Preview
-      "ompiailgknfdndiefoaoiligalphfdae" # chromeIPass
       "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
+      "oboonakemofpalcgghocfoadofidjkkk" # KeePassXC-Browser
       "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
     ];
   };
