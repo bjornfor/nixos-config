@@ -3,15 +3,15 @@ branch:
 let
   nixpkgsGitUrl = "https://github.com/NixOS/nixpkgs.git";
 
+  pinnedInfo = builtins.fromJSON (builtins.readFile ./nixpkgs.json);
+
   # TODO: Check if 'versionOlder version "20.03"' behaves differently when
   # using channels or git trees due to the "pre-git" suffix from lib.version
   # when using git trees. If it differs, fix it.
   branches = {
     # a snapshot of stable
     pinned = builtins.fetchGit {
-      url = nixpkgsGitUrl;
-      ref = "refs/heads/nixos-20.03";
-      rev = "025deb80b2412e5b7e88ea1de631d1bd65af1840"; # 2020-05-16
+      inherit (pinnedInfo) url ref rev;
     };
     release = builtins.fetchGit {
       url = nixpkgsGitUrl;

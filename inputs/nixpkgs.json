@@ -1,0 +1,8 @@
+{
+  "url": "https://github.com/nixos/nixpkgs",
+  "ref": "refs/heads/nixos-20.03",
+  "rev": "e7752db2fb6c5e05f1de2b275535dbde07d30090",
+  "date": "2020-05-29T14:39:09+02:00",
+  "sha256": "1lx2wdagigq5c7qp1fcy25ccpfvz5cl5x0b9rhnz1x409vn7icx1",
+  "fetchSubmodules": false
+}
