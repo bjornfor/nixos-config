@@ -45,7 +45,7 @@ update_source()
 
 cleanup()
 {
-    rm -f "$selfdir"/*.tmp
+    rm -f "$selfdir"/*.json.tmp
 }
 
 main()
