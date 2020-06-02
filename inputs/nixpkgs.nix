@@ -5,9 +5,6 @@ let
 
   pinnedInfo = builtins.fromJSON (builtins.readFile ./nixpkgs.json);
 
-  # TODO: Check if 'versionOlder version "20.03"' behaves differently when
-  # using channels or git trees due to the "pre-git" suffix from lib.version
-  # when using git trees. If it differs, fix it.
   branches = {
     # a snapshot of stable
     pinned = builtins.fetchGit {
