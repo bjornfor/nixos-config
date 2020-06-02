@@ -1,4 +1,5 @@
-branch:
+# default to pinned/reproducible branch
+{ branch ? "pinned" }:
 
 let
   nixpkgsGitUrl = "https://github.com/NixOS/nixpkgs.git";

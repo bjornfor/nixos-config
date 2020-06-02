@@ -1,7 +1,7 @@
 # Sanity check the repo by evaluating/building all machine configs.
 
 { branch ? "pinned"  # default to pinned/reproducible
-, nixpkgs ? import ./inputs/nixpkgs.nix branch
+, nixpkgs ? import ./inputs/nixpkgs.nix { inherit branch; }
 , pkgs ? let p = import nixpkgs { config = {}; overlays = []; }; in builtins.trace "nixpkgs version: ${p.lib.version} (rev: ${nixpkgs.rev or "unknown"})" p
 }:
 
