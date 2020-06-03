@@ -68,6 +68,7 @@
     ctags  # needed by vim (plugin)
     fzf
     moreutils
+    morph
     my.git
     my.tmux
     my.vim
