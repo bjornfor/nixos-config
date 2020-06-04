@@ -26,6 +26,8 @@
 
     nix-check-before-push = pkgs.callPackage ./nix-check-before-push { };
 
+    popwk = pkgs.callPackage ./popwk/default.nix {};
+
     tmux = pkgs.callPackage ./tmux { };
 
     vim = pkgs.callPackage ./vim { };
