@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
+# A simple replacement for 'niv', until it adds "datetime of commit" to the
+# generated JSON file.
 
 set -euo pipefail
+
+### options
 
 # array of "name url ref" tuples
 sources=(
     "nixpkgs https://github.com/nixos/nixpkgs refs/heads/nixos-20.03"
 )
+
+### implementation
 
 compare_and_rename()
 {
