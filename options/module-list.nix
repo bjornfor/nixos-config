@@ -6,5 +6,6 @@
     ../options/gitolite-mirror.nix
     ../options/nextcloud.nix
     ../options/pia/pia-nm.nix
+    ../options/resources.nix
   ];
 }

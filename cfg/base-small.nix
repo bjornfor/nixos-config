@@ -10,6 +10,7 @@
     ./kernel.nix
     ./keyboard.nix
     ./nix-settings.nix
+    ./resources.nix
     ./shell.nix
     ./sudo.nix
 

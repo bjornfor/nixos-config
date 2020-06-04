@@ -65,7 +65,7 @@
   services.xserver.displayManager.gdm.autoLogin.enable = true;
   services.xserver.displayManager.gdm.autoLogin.user = "media";
 
-  users.extraUsers.bf.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
+  users.extraUsers.bf.openssh.authorizedKeys.keys = with config.local.resources.sshKeys; [
     mini.bf.default
     whitetip.bf.default
   ];

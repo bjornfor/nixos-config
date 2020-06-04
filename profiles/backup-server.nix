@@ -377,7 +377,7 @@ in
     backup = { gid = 600; };
   };
 
-  users.extraUsers.backup.openssh.authorizedKeys.keys = with import ../misc/ssh-keys.nix; [
+  users.extraUsers.backup.openssh.authorizedKeys.keys = with config.local.resources.sshKeys; [
     (''command="dir=\"${backupDiskMountpoint}/backups/hosts/media.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + media.root.backup)
     (''command="dir=\"${backupDiskMountpoint}/backups/hosts/mini.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + mini.root.backup)
     (''command="dir=\"${backupDiskMountpoint}/backups/hosts/whitetip.local\" && cd \"$dir\" && borg serve --restrict-to-path \"$dir\"",restrict '' + whitetip.root.backup)

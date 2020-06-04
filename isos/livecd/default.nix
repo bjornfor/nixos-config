@@ -19,7 +19,7 @@ let
 
       # Activate SSH at boot
       systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
-      users.users.root.openssh.authorizedKeys.keys = with import ../../misc/ssh-keys.nix; [
+      users.users.root.openssh.authorizedKeys.keys = with import ../../resources/ssh-keys.nix; [
         mini.bf.default
         whitetip.bf.default
       ];

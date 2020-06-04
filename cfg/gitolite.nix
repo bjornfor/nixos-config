@@ -68,7 +68,7 @@ in
     enable = true;
     dataDir = "/var/lib/gitolite";
     # Initial admin key (ssh)
-    adminPubkey = with import ../misc/ssh-keys.nix; mini.bf.default;
+    adminPubkey = config.local.resources.sshKeys.mini.bf.default;
     user = "git";
     group = "git";
     extraGitoliteRc =
