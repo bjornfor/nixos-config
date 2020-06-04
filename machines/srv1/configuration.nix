@@ -31,8 +31,6 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.tmpOnTmpfs = true;
-
   # This machine has an old nvidia gfx card and "nomodeset" is needed to
   # prevent the display from going black / freeze in stage-2 boot.
   boot.kernelParams = [ "nomodeset" ];

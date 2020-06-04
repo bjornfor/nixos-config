@@ -32,6 +32,8 @@
     #device = /*lib.mkDefault*/ "nodev";
   };
 
+  boot.tmpOnTmpfs = true;
+
   security.wrappers = {}
     // (if (builtins.elem pkgs.smartmontools config.environment.systemPackages) then {
          smartctl = {
