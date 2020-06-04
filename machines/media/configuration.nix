@@ -8,6 +8,7 @@
     ../../cfg/bcache.nix
     ../../cfg/kdeconnect.nix
     ../../cfg/nix-remote-build-client.nix
+    ../../cfg/popwk.nix
     ../../cfg/smart-daemon.nix
     ../../users/bf.nix
     ../../users/media.nix
