@@ -2,6 +2,7 @@
 
 {
   local.resources = {
+    hostAddrs = import ../resources/host-addrs.nix;
     sshKeys = import ../resources/ssh-keys.nix;
   };
 }

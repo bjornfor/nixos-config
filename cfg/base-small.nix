@@ -4,6 +4,7 @@
   imports = [
     ./avahi.nix
     ./cpu-update-microcode.nix
+    ./extra-host-addrs.nix
     ./fhs-compat.nix
     ./fonts.nix
     ./fstrim.nix
