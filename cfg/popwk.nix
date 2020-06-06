@@ -3,7 +3,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  projectorIpAddr = "192.168.0.11";
+  projectorIpAddr = config.local.resources.hostAddrs.projector;
 in
 {
   # This must be a system service so it works even at the login screen
