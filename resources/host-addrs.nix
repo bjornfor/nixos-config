@@ -8,6 +8,7 @@
   bf-work-laptop = "192.168.0.32";
   chromecast = "192.168.0.3";
   maria-pc = "192.168.0.14";
+  maria-phone = "192.168.0.19";
   media = "192.168.0.6";
   mini = "192.168.0.5";
   projector = "192.168.0.11";
