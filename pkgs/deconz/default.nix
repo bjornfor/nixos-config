@@ -13,12 +13,12 @@ mkDerivation rec {
   version = "2.05.67";
 
   src = fetchurl {
-    url = "https://www.dresden-elektronik.de/deconz/ubuntu/beta/deconz-${version}-qt5.deb";
+    url = "https://deconz.dresden-elektronik.de/ubuntu/beta/deconz-${version}-qt5.deb";
     sha256 = "0i1d0szwj0iicdczi9b21nd9j6jyk3g8w82srf4dg2zwwjcwbim0";
   };
 
   devsrc = fetchurl {
-    url = "https://www.dresden-elektronik.de/deconz/ubuntu/beta/deconz-dev-${version}.deb";
+    url = "https://deconz.dresden-elektronik.de/ubuntu/beta/deconz-dev-${version}.deb";
     sha256 = "0iiqyfi04dr3cn53qf14vr6xnkh67x70dj6cyq42xfysyx4cmyw3";
   };
 
