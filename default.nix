@@ -2,7 +2,7 @@
 
 { branch ? "pinned"  # default to pinned/reproducible
 , nixpkgs ? import ./inputs/nixpkgs.nix { inherit branch; }
-, pkgs ? let p = import nixpkgs { config = {}; overlays = []; }; in builtins.trace "nixpkgs version: ${p.lib.version} (rev: ${nixpkgs.rev or "unknown"})" p
+, pkgs ? let p = import nixpkgs { config = import ./cfg/nixpkgs-config.nix; overlays = []; }; in builtins.trace "nixpkgs version: ${p.lib.version} (rev: ${nixpkgs.rev or "unknown"})" p
 }:
 
 let
