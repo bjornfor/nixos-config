@@ -43,14 +43,6 @@ in
     description = "ZigBee gateway";
     wantedBy = [ "multi-user.target" ];
 
-    # The app requires some GUI plugins, even when running headless
-    # (-platform minimal). The Qt wrapper in NixOS 19.09 makes this setting
-    # unneeded. Keep for backwards compat with 19.03.
-    environment = with pkgs; if lib.versionOlder lib.version "19.09" then {
-      QT_QPA_PLATFORM_PLUGIN_PATH = with pkgs.qt5;
-          "${qtbase.bin}/lib/qt-${qtbase.qtCompatVersion}/plugins/platforms";
-    } else {};
-
     preStart = ''
       # The service puts a nix store path reference in here, and that path can
       # be garbage collected. Ensure the file gets "refreshed" on every start.
