@@ -8,8 +8,8 @@
 
 let
   # options
-  #httpPort = 1080;
-  httpPort = 80; # trying to work around #1788 (see above)
+  httpPort = 1080;
+  #httpPort = 80; # trying to work around #1788 (see above)
   wsPort = 1443;
   openFirewall = true;
   allowRebootSystem = false;

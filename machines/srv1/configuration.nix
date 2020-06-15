@@ -14,6 +14,7 @@ in
     ../../cfg/base-small.nix
     ../../cfg/bcache.nix
     ../../cfg/cgit.nix
+    ../../cfg/deconz.nix
     ../../cfg/git-daemon.nix
     ../../cfg/gitolite.nix
     ../../cfg/nix-remote-build-server.nix
