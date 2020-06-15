@@ -62,7 +62,7 @@ in
       AmbientCapabilities =
         let
           # ref. upstream deconz.service
-          caps = lib.optionals (httpPort < 1024) [ "CAP_NET_BIND_SERVICE" ]
+          caps = lib.optionals (httpPort < 1024 || wsPort < 1024) [ "CAP_NET_BIND_SERVICE" ]
               ++ lib.optionals (allowRebootSystem) [ "CAP_SYS_BOOT" ]
               ++ lib.optionals (allowRestartService) [ "CAP_KILL" ]
               ++ lib.optionals (allowSetSystemTime) [ "CAP_SYS_TIME" ];
