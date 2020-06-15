@@ -25,6 +25,15 @@ in
       description = "Which deCONZ package to use.";
     };
 
+    device = mkOption {
+      type = types.str;
+      default = "";
+      description = ''
+        Force deCONZ to use a specific USB device (e.g. /dev/ttyACM0). By
+        default it does a search.
+      '';
+    };
+
     httpPort = mkOption {
       type = types.port;
       default = 80;
@@ -81,6 +90,7 @@ in
           + " -platform minimal"
           + " --http-port=${toString cfg.httpPort}"
           + " --ws-port=${toString cfg.wsPort}"
+          + (if cfg.device != "" then " --dev=${cfg.device}" else "")
           + " " + (lib.concatStringsSep " " cfg.extraOpts);
         Restart = "on-failure";
         AmbientCapabilities =
