@@ -10,16 +10,16 @@
 
 mkDerivation rec {
   name = "deconz-${version}";
-  version = "2.05.67";
+  version = "2.05.77";
 
   src = fetchurl {
-    url = "https://www.dresden-elektronik.de/deconz/ubuntu/beta/deconz-${version}-qt5.deb";
-    sha256 = "0i1d0szwj0iicdczi9b21nd9j6jyk3g8w82srf4dg2zwwjcwbim0";
+    url = "http://deconz.dresden-elektronik.de/ubuntu/beta/deconz-${version}-qt5.deb";
+    sha256 = "16ssp6rxnqpgl9avdlcaabja05rr3l4xhghbv2l8afv0wcgbj29k";
   };
 
   devsrc = fetchurl {
-    url = "https://www.dresden-elektronik.de/deconz/ubuntu/beta/deconz-dev-${version}.deb";
-    sha256 = "0iiqyfi04dr3cn53qf14vr6xnkh67x70dj6cyq42xfysyx4cmyw3";
+    url = "http://deconz.dresden-elektronik.de/ubuntu/beta/deconz-dev-${version}.deb";
+    sha256 = "0xav93kd9l8lpaw0fikghmrxfglan85krgh47rjpd7napr648ikg";
   };
 
   nativeBuildInputs = [ dpkg autoPatchelfHook makeWrapper ];
