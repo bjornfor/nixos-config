@@ -40,7 +40,7 @@ in
   ];
 
   systemd.services.deconz = {
-    description = "ZigBee gateway";
+    description = "deCONZ ZigBee gateway";
     wantedBy = [ "multi-user.target" ];
 
     preStart = ''
