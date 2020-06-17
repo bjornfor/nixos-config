@@ -10,6 +10,7 @@
     ./fstrim.nix
     ./kernel.nix
     ./keyboard.nix
+    ./nix-path.nix
     ./nix-settings.nix
     ./resources.nix
     ./shell.nix
