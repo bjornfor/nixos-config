@@ -3,4 +3,4 @@
 set -euo pipefail
 set -x
 
-morph deploy ./home-network.nix switch
+morph deploy ./home-network.nix switch "$@"
