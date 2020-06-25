@@ -49,7 +49,7 @@
     iptables
     iw
     jq
-    keepassx-community
+    keepassxc
     lm_sensors
     lshw
     lsof
