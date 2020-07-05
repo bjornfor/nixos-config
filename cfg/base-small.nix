@@ -81,6 +81,7 @@
   ];
 
   services = {
+    fwupd.enable = true;
     openssh = {
       enable = true;
       forwardX11 = true;
