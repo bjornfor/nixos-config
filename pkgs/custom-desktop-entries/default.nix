@@ -1,29 +1,13 @@
-{ lib, fetchurl, makeDesktopItem, runCommand }:
+{ lib, fetchurl, runCommand, pkgs }:
 
 # StartupWMClass is found with `xprop WM_CLASS`. When multiple entries are
 # returned, use the first one (most specific). (Ideally, all values could be
 # used, for most precise match, but I haven't found a way to do so.)
 
 let
-  makeSimpleWebApp =
-    { server
-    , icon ? null
-    , comment ? null
-    , desktopName ? comment
-    , categories ? null
-    , browser ? "chromium-browser"
-    }:
-    makeDesktopItem
-    ({
-      name = server;
-      exec = "${browser} --app=https://${server}/";
-      extraEntries = ''
-        StartupWMClass=${server}
-      '';
-    } // (if icon != null then { inherit icon; } else {})
-      // (if comment != null then { inherit comment; } else {})
-      // (if desktopName != null then { inherit desktopName; } else {})
-      // (if categories != null then { inherit categories; } else {}));
+  localLib = import ../../lib/default.nix { inherit pkgs; };
+
+  makeSimpleWebApp = localLib.makeSimpleWebApp;
 
   entries = [
 
