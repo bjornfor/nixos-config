@@ -6,16 +6,32 @@ let
 
   pinnedInfo = builtins.fromJSON (builtins.readFile ./nixpkgs.json);
 
+  # A special nixpkgs fetcher that injects .version-suffix file for better
+  # lib.version info.
+  fetchGitWithVersionSuffix = { url, ref, rev ? null }:
+    let
+      base =
+        builtins.fetchGit ({
+          inherit url ref;
+        } // (if rev != null then { inherit rev; } else {}));
+      basePkgs = import base { config = {}; overlays = []; };
+    in
+      basePkgs.runCommandLocal "nixpkgs-source" { passthru = base; } ''
+        mkdir -p "$out"
+        (shopt -s dotglob; cp -r "${base}/"* "$out")
+        echo ".git.${base.shortRev}" > "$out/.version-suffix"
+      '';
+
   branches = {
     # a snapshot of stable
-    pinned = builtins.fetchGit {
+    pinned = fetchGitWithVersionSuffix {
       inherit (pinnedInfo) url ref rev;
     };
-    release = builtins.fetchGit {
+    release = fetchGitWithVersionSuffix {
       url = nixpkgsGitUrl;
       ref = "refs/heads/release-20.03";
     };
-    master = builtins.fetchGit {
+    master = fetchGitWithVersionSuffix {
       url = nixpkgsGitUrl;
       ref = "refs/heads/master";
     };
