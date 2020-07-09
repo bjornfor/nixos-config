@@ -60,7 +60,12 @@
     mtr
     mutt
     my.nix-check-before-push
-    my.custom-desktop-entries
+    my.custom-desktop-entries.gmail
+    my.custom-desktop-entries.netflix
+    my.custom-desktop-entries.sbanken
+    my.custom-desktop-entries.tv-get-no
+    my.custom-desktop-entries.tv-nrk-no
+    my.custom-desktop-entries.youtube
     ncdu
     nethogs
     networkmanager
