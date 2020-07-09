@@ -15,10 +15,7 @@ let
     # build the vmWithBootloader attribute, ref
     # https://github.com/NixOS/nixpkgs/pull/65133.
     pkgs.lib.filterAttrs
-    (n: v: if n == "vmWithBootLoader"
-           then pkgs.lib.warn "FIXME: skipping vmWithBootLoader" false
-           else true
-    )
+    (n: v: n != "vmWithBootLoader")
     ((nixosFunc { configuration = config; }) // { recurseForDerivations = true; });
 in
 {
