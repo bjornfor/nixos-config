@@ -137,6 +137,7 @@
     which
     wireshark
     w3m
+    xournalpp
     xpra
     yubico-piv-tool
     yubikey-personalization
