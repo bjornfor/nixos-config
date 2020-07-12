@@ -137,7 +137,6 @@
   };
 
   users.extraUsers.bf.openssh.authorizedKeys.keys = with config.local.resources.sshKeys; [
-    whitetip.bf.default
     (''command="/run/current-system/sw/bin/uptime",restrict '' + my_phone.user.default)
   ];
 

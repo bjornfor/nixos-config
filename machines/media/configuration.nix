@@ -65,11 +65,6 @@
   services.xserver.displayManager.gdm.autoLogin.enable = true;
   services.xserver.displayManager.gdm.autoLogin.user = "media";
 
-  users.extraUsers.bf.openssh.authorizedKeys.keys = with config.local.resources.sshKeys; [
-    mini.bf.default
-    whitetip.bf.default
-  ];
-
   # The NixOS release to be compatible with for stateful data such as databases.
   system.stateVersion = "20.03";
 }

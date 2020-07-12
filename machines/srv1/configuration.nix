@@ -69,11 +69,6 @@ in
 
   services.atd.enable = true;
 
-  users.extraUsers.bf.openssh.authorizedKeys.keys = with config.local.resources.sshKeys; [
-    mini.bf.default
-    whitetip.bf.default
-  ];
-
   virtualisation.libvirtd.enable = true;
 
   swapDevices = [

@@ -39,6 +39,10 @@
       subGidRanges = [
         { startGid = 100000; count = 65536; }
       ];
+      openssh.authorizedKeys.keys = with config.local.resources.sshKeys; [
+        mini.bf.default
+        whitetip.bf.default
+      ];
     };
   };
 
