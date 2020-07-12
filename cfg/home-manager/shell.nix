@@ -53,5 +53,13 @@
 
   programs.fzf.enable = true;
 
-  programs.starship.enable = true;
+  programs.starship = {
+    enable = true;
+    settings =
+      let
+        disabledModules = [ "python" "java" ];
+      in
+        (lib.genAttrs disabledModules (x: { disabled = true; }))
+        // { character.symbol = "$"; };
+  };
 }
