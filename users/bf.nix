@@ -46,6 +46,6 @@
     };
   };
 
-  #home-manager.users.bf = ...;
+  home-manager.users.bf = import ../cfg/home-manager/home.nix;
 
 }
