@@ -41,4 +41,7 @@
       ];
     };
   };
+
+  #home-manager.users.bf = ...;
+
 }

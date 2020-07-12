@@ -9,6 +9,7 @@ set -euo pipefail
 # array of "name url ref" tuples
 sources=(
     "nixpkgs https://github.com/nixos/nixpkgs refs/heads/nixos-20.03"
+    "home-manager https://github.com/rycee/home-manager refs/heads/release-20.03"
 )
 
 ### implementation

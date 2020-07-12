@@ -80,6 +80,13 @@
     tig
   ];
 
+  home-manager = {
+    # Set options recommended when running on NixOS (ref.
+    # https://rycee.gitlab.io/home-manager/#sec-install-nixos-module).
+    useGlobalPkgs = true;
+    useUserPackages = true;
+  };
+
   services = {
     fwupd.enable = true;
     openssh = {

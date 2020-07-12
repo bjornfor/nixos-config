@@ -1,5 +1,6 @@
 {
   imports = [
+    "${import ../inputs/home-manager.nix {}}/nixos/default.nix"
     ../options/borg-backup.nix
     ../options/cifs-user-mount.nix
     ../options/deconz.nix
