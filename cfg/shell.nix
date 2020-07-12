@@ -14,18 +14,6 @@
   };
 
   environment.interactiveShellInit = ''
-    # A nix query helper function
-    nq()
-    {
-      case "$@" in
-        -h|--help|"")
-          printf "nq: A tiny nix-env wrapper to search for packages in package name, attribute name and description fields\n";
-          printf "\nUsage: nq <case insensitive regexp>\n";
-          return;;
-      esac
-      nix-env -qaP --description \* | grep -i "$@"
-    }
-
     # Edit the real configuration.nix file, not the /etc/nixos/configuration.nix
     # symlink. This fixes using Vim 'gf' to jump to relative file paths.
     en()
