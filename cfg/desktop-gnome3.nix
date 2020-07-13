@@ -16,6 +16,8 @@
     gnomeExtensions.gsconnect
     gnomeExtensions.system-monitor
 
+    gnome3.dconf-editor
+
     gnome3.gnome-documents
     gnome3.gnome-nettool
     gnome3.gnome-power-manager
