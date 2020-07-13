@@ -10,6 +10,7 @@ set -euo pipefail
 sources=(
     "nixpkgs https://github.com/nixos/nixpkgs refs/heads/nixos-20.03"
     "home-manager https://github.com/rycee/home-manager refs/heads/release-20.03"
+    "nur https://github.com/nix-community/nur refs/heads/master"
 )
 
 ### implementation

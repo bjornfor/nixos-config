@@ -1,0 +1,8 @@
+{
+  "url": "https://github.com/nix-community/nur",
+  "ref": "refs/heads/master",
+  "rev": "dd503cb923ed9ced0f0e5bec0f8c4cf7f62fc8f6",
+  "date": "2020-07-13T20:20:29+00:00",
+  "sha256": "1nm6gsz14fc6r093jsdn7zc7m89s9d5smp6hk0w00ldhihs203bf",
+  "fetchSubmodules": false
+}
