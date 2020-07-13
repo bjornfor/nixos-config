@@ -1,10 +1,10 @@
 # This is a generated file.  Do not modify!
 # Make changes to /etc/nixos/configuration.nix instead.
-{ config, pkgs, ... }:
+{ config, pkgs, modulesPath, ... }:
 
 {
   require = [
-    <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+    (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   boot.initrd.kernelModules = [ "xhci_hcd" "ehci_pci" "ahci" "usbhid" "usb_storage" ];
