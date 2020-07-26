@@ -85,6 +85,9 @@
     # https://rycee.gitlab.io/home-manager/#sec-install-nixos-module).
     useGlobalPkgs = true;
     useUserPackages = true;
+
+    # auto-rename unmanaged files in $HOME
+    backupFileExtension = "before-home-manager";
   };
 
   services = {
